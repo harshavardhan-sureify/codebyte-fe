@@ -17,6 +17,10 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { DatePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
+import LinearProgress from "@mui/material/LinearProgress";
+import { createPollApi } from "../constants";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 
 const Option = ({
   option,
@@ -90,14 +94,17 @@ const PollCreate = () => {
   var minMax = require("dayjs/plugin/minMax");
   dayjs.extend(minMax);
   const today = dayjs(new Date());
-  const tommorrow = dayjs().add(1, "day");
   const [startDate, setStartDate] = useState(today);
   const [title, setTitle] = useState("");
   const [endDate, setEndDate] = useState(today);
   const [options, setOptions] = useState(["Option 1", "Option 2"]);
   const [isOpen, setIsOpen] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
-  const [optionErrors, setOptionErrors] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isMultiSelect, setIsMultiSelect] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
+  const [severity, setSeverity] = useState("");
+  const [alertMessage, setAlertMessage] = useState("");
   const [errors, setErrors] = useState({
     title: false,
     question: false,
@@ -136,6 +143,44 @@ const PollCreate = () => {
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
   };
+  const submitPoll = async () => {
+    setIsOpen(false)
+    setIsLoading(true);
+    const pollData = {
+      title,
+      question,
+      startDate: dayjs(startDate).format("DD/MM/YYYY"),
+      endDate: dayjs(endDate).format("DD/MM/YYYY"),
+      options,
+      isMultiSelect,
+    };
+
+    try {
+      const response = await fetch(createPollApi, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pollData),
+      });
+
+      if (!response.ok) {
+        throw new Error("Error occured");
+      }
+
+      const jsonResponse = await response.json();
+      setSeverity("success");
+      setAlertMessage("Success fully created a poll");
+      setAlertOpen(true);
+      console.log(jsonResponse);
+    } catch (error) {
+      console.error("Error:", error);
+      setSeverity("error");
+      setAlertMessage(error);
+      setAlertOpen(true);
+    }
+    setIsLoading(false);
+  };
 
   const validateForm = () => {
     const newOptionErrors = options.map(
@@ -164,6 +209,21 @@ const PollCreate = () => {
 
   return (
     <>
+      {isLoading && <LinearProgress />}
+      <Snackbar
+        open={alertOpen}
+        autoHideDuration={3000}
+        onClose={() => setAlertOpen(false)}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+      >
+        <Alert
+          onClose={() => setAlertOpen(false)}
+          severity={severity}
+          sx={{ width: "100%" }}
+        >
+        {alertMessage}
+        </Alert>
+      </Snackbar>
       <Grid
         container
         spacing={0}
@@ -225,8 +285,11 @@ const PollCreate = () => {
                 }}
               />
             </Box>
-            <Checkbox />
-            <Typography>Is Muilt select</Typography>
+            <Checkbox
+              checked={isMultiSelect}
+              onChange={(event) => setIsMultiSelect(event.target.checked)}
+            />
+            <Typography>Is Multi select</Typography>
           </Grid>
           <Box sx={{ textAlign: "left" }}>
             <StyledTextarea
@@ -248,7 +311,7 @@ const PollCreate = () => {
             sx={{
               maxHeight: "40vh",
               overflow: "auto",
-              my:2,
+              my: 2,
               width: "100%",
             }}
           >
@@ -291,13 +354,16 @@ const PollCreate = () => {
           justifyContent: "center",
         }}
       >
-        <Paper>
+        <Paper sx={{ p: 2 }}>
           <Box sx={{ p: 2 }}>
+            <Typography variant="h4" sx={{ marginBottom: 2 }}>
+              Preview
+            </Typography>
             <Typography variant="h5" sx={{ marginBottom: 2 }}>
               {question}?
             </Typography>
             <Box>
-              {options.map((option) => (
+              {options.map((option, index) => (
                 <Paper
                   elevation={0}
                   sx={{
@@ -305,6 +371,7 @@ const PollCreate = () => {
                     m: 1,
                     borderRadius: "15px",
                   }}
+                  key={index + "pre"}
                 >
                   <Typography
                     sx={{
@@ -320,6 +387,29 @@ const PollCreate = () => {
                 </Paper>
               ))}
             </Box>
+          </Box>
+          <Typography sx={{ px: 2 }}>
+            Are you sure you want to submit?
+          </Typography>
+          <Box
+            sx={{
+              p: 2,
+              m: 1,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
+            <Button
+              onClick={() => setIsOpen(false)}
+              variant="contained"
+              sx={{ bgcolor: "lightgrey", color: "black" }}
+            >
+              Cancel
+            </Button>
+            <Button onClick={submitPoll} variant="contained">
+              Submit
+            </Button>
           </Box>
         </Paper>
       </Modal>
