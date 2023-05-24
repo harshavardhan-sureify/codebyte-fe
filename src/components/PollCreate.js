@@ -9,7 +9,7 @@ import {
   Fab,
   Button,
 } from "@mui/material";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "@mui/material/Modal";
 import { TextareaAutosize } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
@@ -17,25 +17,73 @@ import ClearIcon from "@mui/icons-material/Clear";
 import { DatePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
+
+const Option = ({
+  option,
+  handleOptionChange,
+  handleDeleteOption,
+  errors,
+  index,
+  canDelete,
+}) => (
+  <Box sx={{ textAlign: "left" }}>
+    <Box
+      sx={{ width: "100%", marginTop: 2 }}
+      justifyContent="space-between"
+      display="flex"
+      alignItems="center"
+      textAlign="center"
+      gap={2}
+    >
+      <TextField
+        label={`Option ${index + 1}`}
+        variant="outlined"
+        sx={{ width: canDelete ? "88%" : "100%" }}
+        value={option}
+        onChange={(e) => handleOptionChange(e.target.value, index)}
+      />
+      {canDelete && (
+        <Fab
+          color="error"
+          aria-label="delete"
+          size="small"
+          onClick={() => handleDeleteOption(index)}
+        >
+          <ClearIcon />
+        </Fab>
+      )}
+    </Box>
+    {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
+    {!errors.options[index] && errors.optionErrors[index] && (
+      <ErrorText>Duplicate option</ErrorText>
+    )}
+  </Box>
+);
+
+const ErrorText = styled(Typography)(({ theme }) => ({
+  color: "red",
+  fontSize: "small",
+  margin: "4px 0px 0px 4px",
+}));
 const StyledTextarea = styled(TextareaAutosize)(({ theme }) => ({
-    border: "1px solid #ced4da",
-    borderRadius: "4px",
-    backgroundColor: "#fff",
-    fontSize: "1rem",
-    padding: "1rem 0.75rem",
-    lineHeight: "1.5",
-    textAlign: "justify",
-    "&:focus": {
-      borderColor: "#80bdff",
-      borderWidth: "2px",
-      boxShadow: "0 0 0 0rem rgba(0,123,255,.25)",
-      outline: "none",
-    },
-    resize: "vertical",
-    width: "100%",
-    marginBottom: 2,
-    boxSizing: "border-box",
-  }));
+  border: "1px solid #ced4da",
+  borderRadius: "4px",
+  backgroundColor: "#fff",
+  fontSize: "1rem",
+  padding: "1rem 0.75rem",
+  lineHeight: "1.5",
+  textAlign: "justify",
+  "&:focus": {
+    borderColor: "#80bdff",
+    borderWidth: "2px",
+    boxShadow: "0 0 0 0rem rgba(0,123,255,.25)",
+    outline: "none",
+  },
+  resize: "vertical",
+  width: "100%",
+  marginBottom: 2,
+  boxSizing: "border-box",
+}));
 
 const PollCreate = () => {
   const [question, setQuestion] = useState("");
@@ -44,17 +92,20 @@ const PollCreate = () => {
   const today = dayjs(new Date());
   const tommorrow = dayjs().add(1, "day");
   const [startDate, setStartDate] = useState(today);
+  const [title, setTitle] = useState("");
   const [endDate, setEndDate] = useState(today);
   const [options, setOptions] = useState(["Option 1", "Option 2"]);
   const [isOpen, setIsOpen] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+  const [optionErrors, setOptionErrors] = useState([]);
   const [errors, setErrors] = useState({
     title: false,
     question: false,
     startDate: false,
     endDate: false,
     options: [],
+    optionErrors: [],
   });
-
 
   const handleOptionChange = (value, index) => {
     setOptions((prev) => {
@@ -63,6 +114,10 @@ const PollCreate = () => {
       return newOptions;
     });
   };
+
+  useEffect(() => {
+    if (isClicked) validateForm();
+  }, [title, question, options, isClicked, startDate, endDate]);
 
   const handleNewOption = () => {
     setOptions([...options, ""]);
@@ -81,15 +136,30 @@ const PollCreate = () => {
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
   };
+
   const validateForm = () => {
+    const newOptionErrors = options.map(
+      (option, i, arr) =>
+        arr.findIndex(
+          (item) => item.toLowerCase().trim() === option.toLowerCase().trim()
+        ) !== i
+    );
     const newErrors = {
+      title: title.trim() === "",
       question: question.trim() === "",
-      startDate: startDate === null && startDate > endDate,
-      endDate: endDate === null,
+      startDate: startDate === null || dayjs(startDate).isAfter(endDate),
+      endDate: endDate === null || dayjs(startDate).isAfter(endDate),
       options: options.map((option) => option.trim() === ""),
+      optionErrors: newOptionErrors,
     };
     setErrors(newErrors);
-    return !Object.values(newErrors).some((error) => error);
+    const isOptionsValid = newOptionErrors.every((val) => val === false);
+    return (
+      !Object.values(newErrors).some((error) => {
+        if (Array.isArray(error)) return error.some((er) => er);
+        return error;
+      }) && isOptionsValid
+    );
   };
 
   return (
@@ -113,7 +183,12 @@ const PollCreate = () => {
             alignItems="center"
             sx={{ marginbottom: 0 }}
           >
-            <TextField sx={{ width: "100%" }} label="Poll Title" />
+            <TextField
+              sx={{ width: "100%" }}
+              label="Poll Title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+            {errors.title && <ErrorText>Enter valid Title</ErrorText>}
             <Box
               sx={{
                 display: "flex",
@@ -126,7 +201,7 @@ const PollCreate = () => {
                 label="Start Date"
                 format="DD/MM/YYYY"
                 value={startDate}
-                minDate={dayjs.max(today, endDate)}
+                minDate={dayjs.min(today, endDate)}
                 onChange={(value) => setStartDate(value)}
                 slotProps={{
                   textField: {
@@ -143,7 +218,6 @@ const PollCreate = () => {
                 value={endDate}
                 minDate={startDate}
                 onChange={(value) => setEndDate(value)}
-                onError={(e) => console.log(e)}
                 slotProps={{
                   textField: {
                     helperText: errors.endDate ? "Select valid end Date" : "",
@@ -151,67 +225,43 @@ const PollCreate = () => {
                 }}
               />
             </Box>
-            <Checkbox sx={{ m: 0 }} />
+            <Checkbox />
             <Typography>Is Muilt select</Typography>
           </Grid>
-          <StyledTextarea
-            aria-label="empty textarea"
-            placeholder="Question"
-            id="hellonj"
-            sx={{
-              width: "100%",
-              marginBottom: 2,
-              boxSizing: "border-box",
-              borderColor: errors.question ? "red" : "primary",
-            }}
-            minRows={2}
-            // ref={questionRef}
-            value={question}
-            onChange={handleQuestionChange}
-          />
-          {/* <TextareaAutosize
+          <Box sx={{ textAlign: "left" }}>
+            <StyledTextarea
+              aria-label="empty textarea"
               placeholder="Question"
+              id="hellonj"
+              sx={{
+                width: "100%",
+                boxSizing: "border-box",
+                borderColor: errors.question ? "red" : "primary",
+              }}
               minRows={2}
               value={question}
               onChange={handleQuestionChange}
-            /> */}
-
+            />
+            {errors.question && <ErrorText>Enter valid Question</ErrorText>}
+          </Box>
           <Box
             sx={{
               maxHeight: "40vh",
               overflow: "auto",
-              marginBottom: 2,
+              my:2,
               width: "100%",
             }}
           >
             {options.map((option, index) => (
-              <Box
-                sx={{ width: "100%", marginTop: 2 }}
-                justifyContent="space-between"
-                display="flex"
-                alignItems="center"
-                textAlign="center"
+              <Option
+                option={option}
+                handleOptionChange={handleOptionChange}
+                handleDeleteOption={handleDeleteOption}
+                errors={errors}
+                index={index}
+                canDelete={options.length > 2}
                 key={index}
-                gap={2}
-              >
-                <TextField
-                  label={`Option ${index + 1}`}
-                  variant="outlined"
-                  sx={{ width: options.length > 2 ? "88%" : "100%" }}
-                  value={option}
-                  onChange={(e) => handleOptionChange(e.target.value, index)}
-                />
-                {options.length > 2 && (
-                  <Fab
-                    color="error"
-                    aria-label="delete"
-                    size="small"
-                    onClick={() => handleDeleteOption(index)}
-                  >
-                    <ClearIcon />
-                  </Fab>
-                )}
-              </Box>
+              />
             ))}
           </Box>
           <Box display="flex" justifyContent="space-between">
@@ -221,7 +271,8 @@ const PollCreate = () => {
             <Button
               variant="contained"
               onClick={() => {
-                validateForm();
+                setIsClicked(true);
+                if (validateForm()) setIsOpen(true);
               }}
             >
               Submit
@@ -241,7 +292,35 @@ const PollCreate = () => {
         }}
       >
         <Paper>
-          {/* <Typography>{questionRef.current?.value}</Typography> */}
+          <Box sx={{ p: 2 }}>
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>
+              {question}?
+            </Typography>
+            <Box>
+              {options.map((option) => (
+                <Paper
+                  elevation={0}
+                  sx={{
+                    border: 1,
+                    m: 1,
+                    borderRadius: "15px",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      width: "300px",
+                      maxWidth: "300px",
+                      p: 1,
+                      overflow: "auto",
+                    }}
+                  >
+                    <Checkbox />
+                    {option}
+                  </Typography>
+                </Paper>
+              ))}
+            </Box>
+          </Box>
         </Paper>
       </Modal>
     </>
