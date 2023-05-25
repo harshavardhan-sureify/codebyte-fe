@@ -1,7 +1,8 @@
-import { useTheme } from "@emotion/react";
-import { DataArray, Visibility, VisibilityOff } from "@mui/icons-material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { signUrl } from "../constants";
+import { theme } from "../themes/theme";
 import {
+  Alert, 
   AppBar,
   Avatar,
   Button,
@@ -15,48 +16,40 @@ import {
 } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
-var message = "";
+import { SignUpTextField } from "./styles";
+import image from "../images/image.png";
+import image2 from "../images/image2.png";
+import { ImagePaper } from "./styles";
+import { ImageText } from "./styles";
+let message = "";
 
-const paperStyle = {
-  padding: "15px",
-  margin: "20px 0px",
-};
-const textField = {
-  margin: "8px 0px",
-};
 const initialize = () => {
   return {
     name: "",
     email: "",
-    mobile: "",
+
     password: "",
     cpassword: "",
   };
 };
 const SignupPage = () => {
-  const theme = useTheme();
   const [signUpForm, setSignUpForm] = useState(initialize());
   const [error, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState("");
   const [seePassword, setSeePassword] = useState(false);
 
   const sendSignUpDataToServer = async (data) => {
-    console.log(data,"what a drag")
     try {
-      delete data.cpassword
+      delete data.cpassword;
       const res = await fetch(signUrl, {
         method: "POST",
-        headers: { "Content-Type": 'application/json' },
-        body:JSON.stringify(data)
-      })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
       if (res.ok) {
-        alert("submitted")
       }
-    }
-    catch (err) {
-      console.log(err)
-    }
-  }
+    } catch (err) {}
+  };
 
   const handleChange = (e) => {
     setSignUpForm({ ...signUpForm, [e.target.name]: e.target.value });
@@ -66,7 +59,7 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.keys(error).length != 5) {
+    if (Object.keys(error).length != 4) {
       if (Object.keys(error).length == 0) {
         setSubmitStatus("Please fill the form ");
         return;
@@ -83,7 +76,7 @@ const SignupPage = () => {
       }
     }
     setSubmitStatus("");
-    sendSignUpDataToServer(signUpForm)
+    sendSignUpDataToServer(signUpForm);
   };
   const validations = (clickedField, value) => {
     message = "";
@@ -110,29 +103,19 @@ const SignupPage = () => {
         if (!value) {
           message = "Password is required";
         } else if (value.length < 8) {
-          message = "password length should be atleast 8";
+          message = "Password length should be atleast 8";
         } else if (
           !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])/.test(value)
         ) {
           message =
-            "Passwors must contain atleast one upper,one lower,one digit and one special character";
+            "Password must contain atleast one upper,one lower,one digit and one special character";
         }
         break;
       case "cpassword":
         if (!value) {
-          message = " Confirm Password is required";
+          message = " Confirm password is required";
         } else if (value != signUpForm.password) {
-          message = "password not match";
-        }
-        break;
-      case "mobile":
-        if (!value) {
-          message = " mobile no. is required";
-        } else if (!/^\d{10}$/.test(value)) {
-          message = "mobile no. should have 10 digits";
-        } else if (!/^[9,8,7,6]\d{9}$/.test(value)) {
-          message =
-            "Mobile number should contain only digits and must start with 9,8,7 or 6";
+          message = "Password not match";
         }
         break;
     }
@@ -141,76 +124,89 @@ const SignupPage = () => {
   };
 
   return (
-    <Grid sx={{ backgroundColor: "#f7f5ff", minHeight: "100vh" }}>
+    <Grid
+      sx={{
+        backgroundColor: theme.palette.bColor.main,
+        minHeight: "100vh",
+      }}
+    >
       <AppBar position="sticky">
         <Toolbar>
-          <Typography variant="h5">Polls-App</Typography>
+          <img src={image2} alt="" width="32px" heigth="32px" />
+          <Typography variant="h5" sx={{ marginLeft: "5px" }}>
+            CodeByte
+          </Typography>
         </Toolbar>
       </AppBar>
       <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-        <Grid item xs={12} md={6} lg={4}>
-          <Paper elevation={3} style={paperStyle} align={"center"}>
+        <Grid item xs={6} md={6} lg={4}>
+          <ImagePaper elevation={3} align={"center"}>
+            <img src={image} alt="" width="100px" height="100px" />
+            <ImageText variant="h6">Hey,User</ImageText>
+            <ImageText variant="h6">
+              Get started by creating an account
+            </ImageText>
+          </ImagePaper>
+        </Grid>
+        <Grid item xs={6} md={6} lg={4}>
+          <Paper
+            elevation={3}
+            sx={{ padding: "2px 15px", margin: "20px 0px", height: "100%" }}
+            align={"center"}
+          >
             {submitStatus && (
-              <Typography variant="p" color="error">
-                {submitStatus}
-              </Typography>
+              <Alert severity="error">
+                <strong>{submitStatus} </strong>
+              </Alert>
             )}
             <Avatar
-              sx={{ backgroundColor: theme.palette.success.main }}
+              sx={{
+                backgroundColor: theme.palette.success.main,
+                marginTop: "8px",
+              }}
             ></Avatar>
             <Typography variant="h5">Sign up</Typography>
             <Typography variant="caption">
-              Create your Poll-App Account
+              Create your CodeByte Account
             </Typography>
             <form method="post" onSubmit={handleSubmit}>
               <Grid>
-                <TextField
+                <SignUpTextField
                   fullWidth
                   label="Name"
                   placeholder="Enter your Name"
-                  sx={textField}
                   onChange={handleChange}
                   name="name"
                   value={signUpForm.name}
-                  error={error.name}
+                  error={!!error.name}
                   helperText={error.name}
+                  size="small"
                 >
                   {" "}
-                </TextField>
-                <TextField
+                </SignUpTextField>
+
+                <SignUpTextField
                   fullWidth
                   label="Email"
                   placeholder="Enter your Email"
-                  sx={textField}
                   onChange={handleChange}
                   name="email"
                   value={signUpForm.email}
-                  error={error.email}
+                  error={!!error.email}
                   helperText={error.email}
+                  size="small"
                 >
                   {" "}
-                </TextField>
-                <TextField
-                  fullWidth
-                  label="Mobile"
-                  placeholder="Enter your Mobile"
-                  sx={textField}
-                  onChange={handleChange}
-                  name="mobile"
-                  value={signUpForm.mobile}
-                  error={error.mobile}
-                  helperText={error.mobile}
-                >
-                  {" "}
-                </TextField>
-                <TextField
+                </SignUpTextField>
+
+                <SignUpTextField
                   fullWidth
                   type={seePassword ? "text" : "password"}
                   label="Password"
                   placeholder="Enter your password"
-                  sx={textField}
                   onChange={handleChange}
                   name="password"
+                  size="small"
                   value={signUpForm.password}
                   error={!!error.password}
                   helperText={error.password}
@@ -227,19 +223,19 @@ const SignupPage = () => {
                   }}
                 >
                   {" "}
-                </TextField>
-                <TextField
+                </SignUpTextField>
+                <SignUpTextField
                   fullWidth
                   type="password"
                   label="Confirm Password"
                   placeholder="Enter your Pasword"
-                  sx={textField}
                   onChange={handleChange}
                   name="cpassword"
                   value={signUpForm.cpassword}
-                  error={error.cpassword}
+                  error={!!error.cpassword}
                   helperText={error.cpassword}
-                ></TextField>
+                  size="small"
+                ></SignUpTextField>
                 <Button
                   type="submit"
                   fullWidth
