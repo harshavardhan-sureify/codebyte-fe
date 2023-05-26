@@ -1,6 +1,6 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { GO_BASE_URL} from "../constants";
-import { theme } from "../themes/theme";
+import { GO_BASE_URL } from "../../constants";
+import { theme } from "../../themes/theme";
 import {
   Alert,
   AppBar,
@@ -16,11 +16,11 @@ import {
 } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
-import { SignUpTextField } from "./styles";
-import profileImage from "../images/profileImage.png";
-import logo from "../images/logo.png";
-import { ImagePaper } from "./styles";
-import { ImageText } from "./styles";
+import { SignUpTextField } from "./SignUpStyles";
+import profileImage from "../../images/profileImage.png";
+import logo from "../../images/logo.png";
+import { ImagePaper } from "./SignUpStyles";
+import { ImageText } from "./SignUpStyles";
 let message = "";
 
 const initialize = () => {
