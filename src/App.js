@@ -1,5 +1,5 @@
 import "./App.css";
-import PollCreate from "./components/PollCreate";
+import PollCreate from "./components/pollcreation/PollCreation";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 function App() {

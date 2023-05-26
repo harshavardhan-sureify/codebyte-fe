@@ -13,11 +13,55 @@ import { DatePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
 import LinearProgress from "@mui/material/LinearProgress";
-import { createPollApi } from "../constants";
+import { createPollApi } from "../../constants";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { Option, ErrorText } from "./styles";
+import { ErrorText, CreatePollContainer } from "./PollCreationStyles";
 import Tooltip from "@mui/material/Tooltip";
+import ClearIcon from "@mui/icons-material/Clear";
+
+const Option = ({
+  option,
+  handleOptionChange,
+  handleDeleteOption,
+  errors,
+  index,
+  canDelete,
+}) => (
+  <Box sx={{ textAlign: "left" }}>
+    <Box
+      sx={{ width: "100%", marginTop: 2 }}
+      justifyContent="space-between"
+      display="flex"
+      alignItems="center"
+      textAlign="center"
+      gap={2}
+    >
+      <TextField
+        label={`Option ${index + 1}`}
+        variant="outlined"
+        sx={{ width: canDelete ? "88%" : "100%" }}
+        value={option}
+        onChange={(e) => handleOptionChange(e.target.value, index)}
+      />
+      {canDelete && (
+        <Fab
+          color="error"
+          aria-label="delete"
+          size="small"
+          sx={{ width: "36px", height: "2px", borderRadius: "50%" }}
+          onClick={() => handleDeleteOption(index)}
+        >
+          <ClearIcon sx={{ width: "12px" }} />
+        </Fab>
+      )}
+    </Box>
+    {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
+    {!errors.options[index] && errors.optionErrors[index] && (
+      <ErrorText>Duplicate option</ErrorText>
+    )}
+  </Box>
+);
 
 const PollCreate = () => {
   const [question, setQuestion] = useState("");
@@ -94,7 +138,7 @@ const PollCreate = () => {
 
       const jsonResponse = await response.json();
       setSeverity("success");
-      setAlertMessage("Success fully created a poll");
+      setAlertMessage("Created a poll successfully");
       setAlertOpen(true);
       console.log(jsonResponse);
     } catch (error) {
@@ -145,7 +189,7 @@ const PollCreate = () => {
           severity={severity}
           sx={{ width: "100%" }}
         >
-          {alertMessage}
+          {JSON.stringify(alertMessage)}
         </Alert>
       </Snackbar>
       <Grid
@@ -156,7 +200,7 @@ const PollCreate = () => {
         justifyContent="center"
         sx={{ minHeight: "100vh" }}
       >
-        <Paper
+        <CreatePollContainer
           sx={{ width: "40%", minWidth: "350px", padding: 2 }}
           elevation={3}
         >
@@ -179,7 +223,7 @@ const PollCreate = () => {
                 gap: 0,
                 marginTop: 2,
                 alignItems: "center",
-                width:"100%"
+                width: "100%",
               }}
             >
               <DatePicker
@@ -226,11 +270,16 @@ const PollCreate = () => {
             alignItems="center"
             marginTop={2}
           >
-            <Typography variant="h5" sx={{ marginLeft: 1 }}>
-              Options
+            <Typography variant="p" sx={{ marginLeft: 1 }}>
+              OPTIONS
             </Typography>
             <Tooltip title="Add new option">
-              <Fab color="primary" aria-label="add" onClick={handleNewOption}>
+              <Fab
+                color="primary"
+                aria-label="add"
+                onClick={handleNewOption}
+                size="small"
+              >
                 <AddIcon />
               </Fab>
             </Tooltip>
@@ -274,7 +323,7 @@ const PollCreate = () => {
               Submit
             </Button>
           </Box>
-        </Paper>
+        </CreatePollContainer>
       </Grid>
     </>
   );

@@ -1,7 +1,6 @@
-const goBaseUrl = "http://localhost:8080/";
-const phpBaseUrl = "http://localhost/";
-const prefix = "";
+const GO_BASE_URL = "http://localhost:8080/api/v1";
+const PHP_BASE_URL = "http://localhost/api/v1";
 
-const createPollApi = phpBaseUrl + prefix + "createpoll";
+const createPollApi = PHP_BASE_URL + "createpoll";
 
 export { createPollApi };
