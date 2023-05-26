@@ -1,8 +1,8 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { signUrl } from "../constants";
+import { GO_BASE_URL} from "../constants";
 import { theme } from "../themes/theme";
 import {
-  Alert, 
+  Alert,
   AppBar,
   Avatar,
   Button,
@@ -17,8 +17,8 @@ import {
 
 import React, { useEffect, useState } from "react";
 import { SignUpTextField } from "./styles";
-import image from "../images/image.png";
-import image2 from "../images/image2.png";
+import profileImage from "../images/profileImage.png";
+import logo from "../images/logo.png";
 import { ImagePaper } from "./styles";
 import { ImageText } from "./styles";
 let message = "";
@@ -41,7 +41,7 @@ const SignupPage = () => {
   const sendSignUpDataToServer = async (data) => {
     try {
       delete data.cpassword;
-      const res = await fetch(signUrl, {
+      const res = await fetch(GO_BASE_URL, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -132,7 +132,7 @@ const SignupPage = () => {
     >
       <AppBar position="sticky">
         <Toolbar>
-          <img src={image2} alt="" width="32px" heigth="32px" />
+          <img src={logo} alt="" width="32px" heigth="32px" />
           <Typography variant="h5" sx={{ marginLeft: "5px" }}>
             CodeByte
           </Typography>
@@ -141,7 +141,7 @@ const SignupPage = () => {
       <Grid container sx={{ display: "flex", justifyContent: "center" }}>
         <Grid item xs={6} md={6} lg={4}>
           <ImagePaper elevation={3} align={"center"}>
-            <img src={image} alt="" width="100px" height="100px" />
+            <img src={profileImage} alt="" width="100px" height="100px" />
             <ImageText variant="h6">Hey,User</ImageText>
             <ImageText variant="h6">
               Get started by creating an account
@@ -169,7 +169,7 @@ const SignupPage = () => {
             <Typography variant="caption">
               Create your CodeByte Account
             </Typography>
-            <form method="post" onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit}>
               <Grid>
                 <SignUpTextField
                   fullWidth
