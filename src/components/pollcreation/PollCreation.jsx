@@ -56,9 +56,10 @@ const Option = ({
         </Fab>
       )}
     </Box>
-    {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
-    {!errors.options[index] && errors.optionErrors[index] && (
-      <ErrorText>Duplicate option</ErrorText>
+    {errors.options[index] && (
+      <ErrorText>
+        {errors.optionErrors[index] ? "Duplicate option" : "Enter valid option"}
+      </ErrorText>
     )}
   </Box>
 );
@@ -132,7 +133,7 @@ const PollCreate = () => {
         body: JSON.stringify(pollData),
       });
 
-      if (!response.ok) {
+      if (!response.status=== 200) {
         throw new Error("Error occured");
       }
 
@@ -140,9 +141,7 @@ const PollCreate = () => {
       setSeverity("success");
       setAlertMessage("Created a poll successfully");
       setAlertOpen(true);
-      console.log(jsonResponse);
     } catch (error) {
-      console.error("Error:", error);
       setSeverity("error");
       setAlertMessage(error);
       setAlertOpen(true);
@@ -189,7 +188,8 @@ const PollCreate = () => {
           severity={severity}
           sx={{ width: "100%" }}
         >
-          {JSON.stringify(alertMessage)}
+          {JSON.stringify(alertMessage)} 
+          {/* will be edited based on the backend api while integration  */}
         </Alert>
       </Snackbar>
       <Grid
@@ -331,79 +331,3 @@ const PollCreate = () => {
 
 export default PollCreate;
 
-// todo for optional preview
-
-{
-  /* <Modal
-        open={isOpen}
-        onClose={handleModalClose}
-        aria-labelledby="modal-title"
-        aria-describedby="modal-description"
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Paper sx={{ p: 2, bgcolor: "lightgrey" }}>
-          <Box sx={{ p: 2 }}>
-            <Typography variant="h4" sx={{ marginBottom: 2 }}>
-              Preview
-            </Typography>
-            <Typography
-              variant="h5"
-              sx={{
-                marginBottom: 2,
-                bgcolor: "white",
-                p: 2,
-                borderRadius: "16px",
-              }}
-            >
-              {question}
-              {question.endsWith("?") ? "" : "?"}
-            </Typography>
-            <Box bgcolor="white" sx={{ p: 2, borderRadius: "16px" }}>
-              <RadioGroup>
-              {options.map((option, index) => (
-                <Paper
-                  elevation={0}
-                  sx={{
-                    border: 1,
-                    m: 1,
-                    borderRadius: "15px",
-                  }}
-                  key={index + "pre"}
-                >
-                  <FormControlLabel
-                    sx={{
-                      width: "300px",
-                      maxWidth: "300px",
-                      p: 1,
-                      overflow: "auto",
-                    }}
-                    value={index}
-                    control={<Radio size="large"/>}
-                    label= {option}
-                  />
-                   
-                </Paper>
-              ))}
-              </RadioGroup>
-            </Box>
-          </Box>
-          <Box
-            sx={{
-              p: 2,
-              m: 1,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Button onClick={() => setIsOpen(false)} variant="contained">
-              Close
-            </Button>
-          </Box>
-        </Paper>
-      </Modal> */
-}
