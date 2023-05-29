@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Paper, TextField, Typography } from "@mui/material";
-import { theme } from "../../themes/theme";
-export const SignUpTextField = styled(TextField)({
+import { theme } from "../themes/theme";
+export const MyTextField = styled(TextField)({
   margin: "8px 0px",
 });
 export const ImagePaper = styled(Paper)({

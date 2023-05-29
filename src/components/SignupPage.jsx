@@ -1,6 +1,6 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { GO_BASE_URL } from "../../constants";
-import { theme } from "../../themes/theme";
+import { GO_BASE_URL } from "../constants";
+import { theme } from "../themes/theme";
 import {
   Alert,
   AppBar,
@@ -16,11 +16,11 @@ import {
 } from "@mui/material";
 
 import React, { useEffect, useState } from "react";
-import { SignUpTextField } from "./SignUpStyles";
-import profileImage from "../../images/profileImage.png";
-import logo from "../../images/logo.png";
-import { ImagePaper } from "./SignUpStyles";
-import { ImageText } from "./SignUpStyles";
+import { MyTextField } from "./Styles";
+import profileImage from "../images/profileImage.png";
+import logo from "../images/logo.png";
+import { ImagePaper } from "./Styles";
+import { ImageText } from "./Styles";
 let message = "";
 
 const initialize = () => {
@@ -80,7 +80,7 @@ const SignupPage = () => {
   };
   const validations = (clickedField, value) => {
     message = "";
-
+    value = value.trim();
     switch (clickedField) {
       case "name":
         if (!value) {
@@ -95,7 +95,9 @@ const SignupPage = () => {
       case "email":
         if (!value) {
           message = "Email is required";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        } else if (
+          !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(value)
+        ) {
           message = "Email is not valid";
         }
         break;
@@ -171,7 +173,7 @@ const SignupPage = () => {
             </Typography>
             <form onSubmit={handleSubmit}>
               <Grid>
-                <SignUpTextField
+                <MyTextField
                   fullWidth
                   label="Name"
                   placeholder="Enter your Name"
@@ -183,9 +185,9 @@ const SignupPage = () => {
                   size="small"
                 >
                   {" "}
-                </SignUpTextField>
+                </MyTextField>
 
-                <SignUpTextField
+                <MyTextField
                   fullWidth
                   label="Email"
                   placeholder="Enter your Email"
@@ -197,9 +199,9 @@ const SignupPage = () => {
                   size="small"
                 >
                   {" "}
-                </SignUpTextField>
+                </MyTextField>
 
-                <SignUpTextField
+                <MyTextField
                   fullWidth
                   type={seePassword ? "text" : "password"}
                   label="Password"
@@ -223,8 +225,8 @@ const SignupPage = () => {
                   }}
                 >
                   {" "}
-                </SignUpTextField>
-                <SignUpTextField
+                </MyTextField>
+                <MyTextField
                   fullWidth
                   type="password"
                   label="Confirm Password"
@@ -235,7 +237,7 @@ const SignupPage = () => {
                   error={!!error.cpassword}
                   helperText={error.cpassword}
                   size="small"
-                ></SignUpTextField>
+                ></MyTextField>
                 <Button
                   type="submit"
                   fullWidth
