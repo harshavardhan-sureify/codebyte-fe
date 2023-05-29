@@ -13,10 +13,10 @@ import { DatePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
 import LinearProgress from "@mui/material/LinearProgress";
-import { createPollApi } from "../../constants";
+import { createPollApi } from "../constants";
 import Alert from "@mui/material/Alert";
 import Snackbar from "@mui/material/Snackbar";
-import { ErrorText, CreatePollContainer } from "./PollCreationStyles";
+import { ErrorText, CreatePollContainer } from "./Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 
@@ -133,7 +133,7 @@ const PollCreate = () => {
         body: JSON.stringify(pollData),
       });
 
-      if (!response.status=== 200) {
+      if (!response.status === 200) {
         throw new Error("Error occured");
       }
 
@@ -188,7 +188,7 @@ const PollCreate = () => {
           severity={severity}
           sx={{ width: "100%" }}
         >
-          {JSON.stringify(alertMessage)} 
+          {JSON.stringify(alertMessage)}
           {/* will be edited based on the backend api while integration  */}
         </Alert>
       </Snackbar>
@@ -330,4 +330,3 @@ const PollCreate = () => {
 };
 
 export default PollCreate;
-

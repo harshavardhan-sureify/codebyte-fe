@@ -1,5 +1,4 @@
-import { Box, TextField, Typography, styled, Fab, Paper } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
+import { Typography, styled, Paper } from "@mui/material";
 
 export const ErrorText = styled(Typography)(({ theme }) => ({
   color: "red",
