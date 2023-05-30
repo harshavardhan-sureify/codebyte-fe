@@ -3,4 +3,4 @@ const PHP_BASE_URL = "http://localhost/api/v1";
 
 const createPollApi = PHP_BASE_URL + "createpoll";
 
-export { createPollApi };
+export { createPollApi,GO_BASE_URL,PHP_BASE_URL };

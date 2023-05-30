@@ -28,5 +28,5 @@ export const ErrorText = styled(Typography)(({ theme }) => ({
 export const CreatePollContainer = styled(Paper)({
   width: "40%",
   minWidth: "350px",
-  padding: 2,
+  padding: "16px",
 });

@@ -1,12 +1,4 @@
-import {
-  Box,
-  Grid,
-  Paper,
-  TextField,
-  Typography,
-  Fab,
-  Button,
-} from "@mui/material";
+import { Box, Grid, TextField, Typography, Fab, Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -56,10 +48,9 @@ const Option = ({
         </Fab>
       )}
     </Box>
-    {errors.options[index] && (
-      <ErrorText>
-        {errors.optionErrors[index] ? "Duplicate option" : "Enter valid option"}
-      </ErrorText>
+    {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
+    {!errors.options[index] && errors.optionErrors[index] && (
+      <ErrorText>Duplicate option</ErrorText>
     )}
   </Box>
 );

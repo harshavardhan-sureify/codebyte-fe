@@ -1,5 +1,7 @@
-import logo from './logo.svg';
-import './App.css';
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './components/routes/AppRoutes';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
 function App() {
   return (

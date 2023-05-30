@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import SignupPage from "../SignupPage";
+import PollCreate from "../PollCreation";
 
 const AppRoutes = () => {
   return (
