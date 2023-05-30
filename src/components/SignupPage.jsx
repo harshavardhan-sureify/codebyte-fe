@@ -20,6 +20,7 @@ import profileImage from "../images/profileImage.png";
 import logo from "../images/logo.png";
 import { ImagePaper } from "./Styles";
 import { ImageText } from "./Styles";
+import { Link } from "react-router-dom";
 let message = "";
 
 const initialize = () => {
@@ -119,6 +120,7 @@ const SignupPage = () => {
           message = "Password not match";
         }
         break;
+      default:
     }
 
     setErrors({ ...error, [clickedField]: message });
@@ -246,7 +248,7 @@ const SignupPage = () => {
                   Create account
                 </Button>
                 <Typography variant="p">
-                  Already have account? <a href="">Signin</a>
+                  Already have account? <Link style={{ textDecoration:"none"}} to="/login">Login</Link>
                 </Typography>
               </Grid>
             </form>
