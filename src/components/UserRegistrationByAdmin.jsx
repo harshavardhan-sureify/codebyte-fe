@@ -3,7 +3,7 @@ import { TextField, Paper, Avatar, Typography, Button, Alert } from "@mui/materi
 import Container from '@mui/material/Container';
 import React, { useState } from "react";
 
-import { GO_BASE_URL } from "../constant";
+import { adduserapi } from "../constant";
 const initialize = () => {
     return {
         name: "",
@@ -35,9 +35,8 @@ const UserRegistrationByAdmin = () => {
     };
 
     const sendSignUpDataToServer = async (data) => {
-        console.log("fwefew");
         try {
-            const res = await fetch(GO_BASE_URL, {
+            const res = await fetch(adduserapi, {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
                 method: "POST"
@@ -59,7 +58,6 @@ const UserRegistrationByAdmin = () => {
 
 
     const handleSubmit = (e) => {
-        console.log("hee");
         e.preventDefault();
         var temp = {};
         for (let x in addUserForm) {
@@ -77,7 +75,6 @@ const UserRegistrationByAdmin = () => {
             return;
         } else {
             for (let i in error) {
-                // console.log(error)
                 if (error[i].length !== 0) {
                     setSubmitStatus("Please fill the form properly");
                     return;
@@ -137,7 +134,7 @@ const UserRegistrationByAdmin = () => {
                         size="small"
                     />
                     <TextField
-                        sx={{ mt: 1 }}
+                        sx={{ mt: 1,mb:1 }}
                         label="Email"
                         fullWidth
                         placeholder="Enter your Email"
