@@ -1,10 +1,11 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import PollCreate from "../PollCreation";
+import SignupPage from "../SignupPage";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      <Route path="/" element={<SignupPage />}></Route>
       <Route path="/create" element={<PollCreate />}></Route>
     </Routes>
   );

@@ -1,8 +1,6 @@
-import { BrowserRouter } from "react-router-dom";
-import "./App.css";
-import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import AppRoutes from "./components/routes/AppRoutes";
+import logo from './logo.svg';
+import './App.css';
+
 function App() {
   return (
     <BrowserRouter>
@@ -11,6 +9,6 @@ function App() {
       </LocalizationProvider>
     </BrowserRouter>
   );
-}
+};
 
 export default App;
