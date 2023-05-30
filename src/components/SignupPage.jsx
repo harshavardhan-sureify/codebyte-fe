@@ -10,12 +10,11 @@ import {
   IconButton,
   InputAdornment,
   Paper,
-  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
 
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { MyTextField } from "./Styles";
 import profileImage from "../images/profileImage.png";
 import logo from "../images/logo.png";
@@ -59,8 +58,8 @@ const SignupPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (Object.keys(error).length != 4) {
-      if (Object.keys(error).length == 0) {
+    if (Object.keys(error).length !== 4) {
+      if (Object.keys(error).length === 0) {
         setSubmitStatus("Please fill the form ");
         return;
       }
@@ -68,7 +67,7 @@ const SignupPage = () => {
       return;
     } else {
       for (let i in error) {
-        if (error[i].length != 0) {
+        if (error[i].length !== 0) {
           setSubmitStatus("Please fill the form properly");
 
           return;
@@ -116,7 +115,7 @@ const SignupPage = () => {
       case "cpassword":
         if (!value) {
           message = " Confirm password is required";
-        } else if (value != signUpForm.password) {
+        } else if (value !== signUpForm.password) {
           message = "Password not match";
         }
         break;

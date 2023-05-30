@@ -1,13 +1,14 @@
-import { Box, useTheme } from "@mui/material";
-import React from "react";
+import { LocalizationProvider } from '@mui/x-date-pickers';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './components/routes/AppRoutes';
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 
-import AppRoutes from "./components/routes/AppRoutes";
-import { BrowserRouter } from "react-router-dom";
-
-const App = () => {
+function App() {
   return (
     <BrowserRouter>
-      <AppRoutes />
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+        <AppRoutes/>
+      </LocalizationProvider>
     </BrowserRouter>
   );
 };
