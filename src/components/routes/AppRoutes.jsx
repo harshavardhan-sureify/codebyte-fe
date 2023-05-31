@@ -7,9 +7,11 @@ import LoginPage from "../LoginPage";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<SignupPage />}></Route>
+      <Route path="/" element={<LoginPage />} />
+
+      <Route path="/signup" element={<SignupPage />}></Route>
       <Route path="/create" element={<PollCreate />}></Route>
-      <Route path="/login" element={ <LoginPage/>} /> 
+      
     </Routes>
   );
 };

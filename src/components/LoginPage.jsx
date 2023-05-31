@@ -14,8 +14,8 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import React, { useState } from "react";
 import { theme } from "../themes/theme";
-import logo from "../images/logo.png";
-import profileImage from "../images/profileImage.png";
+import logo from "../assets/images/logo.png";
+import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { MyTextField } from "./Styles";
 import { Link } from "react-router-dom";
@@ -39,7 +39,7 @@ const LoginPage = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      if (res.ok) {
+      if (res.status===200) {
       }
     } catch (error) {}
   };
@@ -123,7 +123,7 @@ const LoginPage = () => {
           >
             {submitStatus && (
               <Alert severity="error">
-                {/* <Typography variant="p">{submitStatus}</Typography> */}
+                 
                 {submitStatus}
               </Alert>
             )}
@@ -189,7 +189,7 @@ const LoginPage = () => {
               </Typography>
               <Typography variant="body2">
                 Dont have an account?{" "}
-                <Link to="/" style={{ textDecoration: "none" }}>
+                <Link to="/signup" style={{ textDecoration: "none" }}>
                   Signup
                 </Link>
               </Typography>
