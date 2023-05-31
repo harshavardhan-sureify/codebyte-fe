@@ -15,7 +15,7 @@ const regex = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
 
-const UserRegistrationByAdmin = () => {
+const AddUser = () => {
     const [addUserForm, setAddUserForm] = useState(initialize());
     const [error, setErrors] = useState({});
     const [submitStatus, setSubmitStatus] = useState("");
@@ -27,14 +27,17 @@ const UserRegistrationByAdmin = () => {
 
     const validate = (value, name) => {
         if (!value) {
-            return "Field is empty";
+            if(name==="name"){
+                return "Name field is empty";
+            }
+            return "Email field is empty";
         } else if (!regex[name].test(value)) {
             return errors[name];
         }
         return ""
     };
 
-    const sendSignUpDataToServer = async (data) => {
+    const postData = async (data) => {
         try {
             const res = await fetch(adduserapi, {
                 headers: { "Content-Type": "application/json" },
@@ -82,7 +85,7 @@ const UserRegistrationByAdmin = () => {
             }
         }
         setSubmitStatus("");
-        sendSignUpDataToServer(addUserForm);
+        postData(addUserForm);
     };
 
     const validations = (value, name) => {
@@ -104,7 +107,7 @@ const UserRegistrationByAdmin = () => {
                 }}
                 size="small">
                 {submitStatus && (
-                    <Alert severity="error">
+                    <Alert severity="error" sx={{mb:1}}>
                         <strong>{submitStatus} </strong>
                     </Alert>
                 )}<form onSubmit={handleSubmit} method="POST"
@@ -162,4 +165,4 @@ const UserRegistrationByAdmin = () => {
     )
 }
 
-export default UserRegistrationByAdmin;
+export default AddUser;
