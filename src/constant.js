@@ -1,5 +1,5 @@
-const GO_BASE_URL = "http://localhost:8080/api/v1";
-const PHP_BASE_URL = "http://localhost/api/v1";
+const GO_BASE_URL = "http://localhost:8080/api";
+const PHP_BASE_URL = "http://localhost/api";
 
 const adduserapi=PHP_BASE_URL+"/adduser"
 
