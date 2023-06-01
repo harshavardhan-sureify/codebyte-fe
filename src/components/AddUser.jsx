@@ -20,17 +20,17 @@ const AddUser = () => {
     const [error, setErrors] = useState({});
     const [submitStatus, setSubmitStatus] = useState("");
 
-    const errors = {
-        name: "Name should have atleast length 3",
-        email: "Email is not valid",
+    const errors = { 
+        name: "Name must consist of at least 3 characters",
+        email: "Please enter a valid email address",
     };
 
     const validate = (value, name) => {
         if (!value) {
             if(name==="name"){
-                return "Name field is empty";
+                return "Name is required";
             }
-            return "Email field is empty";
+            return "Email is required";
         } else if (!regex[name].test(value)) {
             return errors[name];
         }
