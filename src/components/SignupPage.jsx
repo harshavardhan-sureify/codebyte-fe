@@ -1,6 +1,8 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { GO_BASE_URL } from "../constants";
+import { signUp } from "../constants";
+import axios from "axios";
 import { theme } from "../themes/theme";
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Alert,
   AppBar,
@@ -10,6 +12,8 @@ import {
   IconButton,
   InputAdornment,
   Paper,
+  Snackbar,
+   
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -20,7 +24,7 @@ import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper } from "./Styles";
 import { ImageText } from "./Styles";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 let message = "";
 
 const initialize = () => {
@@ -37,18 +41,44 @@ const SignupPage = () => {
   const [error, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState("");
   const [seePassword, setSeePassword] = useState(false);
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(true);
+  const [responseStatus,setResponseStatus]=useState("")
 
-  const sendSignUpDataToServer = async (data) => {
+  const sendSignUpDataToServer = async (signUpdata) => {
     try {
-      delete data.cpassword;
-      const res = await fetch(GO_BASE_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const postData = { ...signUpdata }
+      delete postData.cpassword
+      const res = await axios.post(signUp, postData);
+      
       if (res.status === 200) {
+        const data = res.data.data
+         
+        localStorage.setItem("userToken",  data.token);
+        localStorage.setItem("role", data.role);
+        navigate("/dashborad");
       }
-    } catch (err) {}
+    } catch (err) {
+      const response = err.response;
+
+      if (response) {
+        const payload = response.data;
+         
+        if (payload.status ===400 && payload.data.error) {
+          setResponseStatus(payload.data.error);
+        } else if (payload.status ===400) {
+          let msg = "";
+          for (let i in payload.data) {
+            msg += payload.data[i] + "\n";
+
+            setResponseStatus(msg);
+          }
+        } else {
+          setResponseStatus("Something went wrong");
+        }
+        setOpen(true)
+      }
+    }
   };
 
   const handleChange = (e) => {
@@ -78,6 +108,7 @@ const SignupPage = () => {
     setSubmitStatus("");
     sendSignUpDataToServer(signUpForm);
   };
+
   const validations = (clickedField, value) => {
     message = "";
     value = value.trim();
@@ -86,7 +117,9 @@ const SignupPage = () => {
         if (!value) {
           message = "Name is required";
         } else if (value.length < 3) {
-          message = "Name should have atleast length 3";
+          message = "Name should have atleast 3 characters";
+        } else if (!/^[A-Za-z\s]+$/.test(value)) {
+          message = "Name should not have digits";
         } else {
           message = "";
         }
@@ -133,6 +166,34 @@ const SignupPage = () => {
         minHeight: "100vh",
       }}
     >
+      {responseStatus && (
+        <Snackbar
+          open={open}
+          autoHideDuration={3200}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+          onClose={() => setOpen(false)}
+        >
+          
+          <Alert
+            severity="error" 
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => setOpen(false)}
+              >
+                <CancelIcon  ></CancelIcon>
+              </IconButton>
+            }
+          >
+            {responseStatus}
+          </Alert>
+        </Snackbar>
+      )}
       <AppBar position="sticky">
         <Toolbar>
           <img src={logo} alt="" width="32px" heigth="32px" />
@@ -141,8 +202,9 @@ const SignupPage = () => {
           </Typography>
         </Toolbar>
       </AppBar>
+
       <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-        <Grid item xs={6} md={6} lg={4}>
+        <Grid item xs={6} md={6} lg={4} mt={5}>
           <ImagePaper elevation={3} align={"center"}>
             <img src={profileImage} alt="" width="100px" height="100px" />
             <ImageText variant="h6">Hey,User</ImageText>
@@ -151,7 +213,7 @@ const SignupPage = () => {
             </ImageText>
           </ImagePaper>
         </Grid>
-        <Grid item xs={6} md={6} lg={4}>
+        <Grid item xs={6} md={6} lg={4} mt={5}>
           <Paper
             elevation={3}
             sx={{ padding: "2px 15px", margin: "20px 0px", height: "100%" }}
@@ -225,13 +287,13 @@ const SignupPage = () => {
                     ),
                   }}
                 >
-                  {" "}
+                   
                 </MyTextField>
                 <MyTextField
                   fullWidth
                   type="password"
                   label="Confirm Password"
-                  placeholder="Enter your Pasword"
+                  placeholder="Enter your Password"
                   onChange={handleChange}
                   name="cpassword"
                   value={signUpForm.cpassword}
