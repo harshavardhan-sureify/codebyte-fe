@@ -1,7 +1,6 @@
 import { Person } from "@mui/icons-material";
-import { TextField, Paper, Avatar, Typography, Button, Alert } from "@mui/material";
-import Container from '@mui/material/Container';
-import React, { useState } from "react";
+import { TextField, Paper, Avatar, Typography, Button, Alert,Box } from "@mui/material";
+import React, { useState} from "react";
 
 import { adduserapi } from "../constant";
 const initialize = () => {
@@ -28,9 +27,9 @@ const AddUser = () => {
     const validate = (value, name) => {
         if (!value) {
             if(name==="name"){
-                return "Name is required";
+                return "Enter valid Name";
             }
-            return "Email is required";
+            return "Enter valid Email";
         } else if (!regex[name].test(value)) {
             return errors[name];
         }
@@ -95,19 +94,20 @@ const AddUser = () => {
     };
 
     return (
-        <Container align={"center"}>
             <Paper
                 sx={{
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
-                    mt: 8,
                     p: 4,
-                    maxWidth: 300
+                    maxWidth: 300,
+                    pt:1,
+                    boxShadow: 'none',
+                    borderRadius:'8px'
                 }}
                 size="small">
                 {submitStatus && (
-                    <Alert severity="error" sx={{mb:1}}>
+                    <Alert severity="error" sx={{mb:0.5}}>
                         <strong>{submitStatus} </strong>
                     </Alert>
                 )}<form onSubmit={handleSubmit} method="POST"
@@ -120,12 +120,12 @@ const AddUser = () => {
                         }}>
                         <Person />
                     </Avatar>
-                    <Typography sx={{ mt: 1, textAlign: "center" }}>
+                    <Typography sx={{ mt: 1, textAlign: "center",mb:2}}>
                         Add User
                     </Typography>
 
                     <TextField
-                        sx={{ mt: 1, mb: 1 }}
+                        sx={{ mt: 1, mb: 1,border:0 }}
                         label="Name"
                         placeholder="Enter your Name"
                         onChange={handleChange}
@@ -148,20 +148,27 @@ const AddUser = () => {
                         helperText={error.email}
                         size="small"
                     />
+                    <Box sx={{display:"flex",
+                            flexDirection:"row",
+                            justifyContent:"end",
+                            mt:1,
+                            gap:1,
+                            px:0}}
+                            >
                     <Button
                         type="submit"
                         variant="contained"
+                        fullwidth 
                         sx={{
                             height: 40,
-                            mt: 1
                         }}
                         size="small"
                     >
                         Add</Button>
+                    </Box>
                 </form>
-
             </Paper>
-        </Container>
+
     )
 }
 

@@ -4,6 +4,7 @@ import AddUser from "../AddUser";
 import SignupPage from "../SignupPage";
 import PollCreate from "../PollCreation";
 import LoginPage from "../LoginPage";
+import Trigger from "../Trigger";
 
 const AppRoutes = () => {
   return (
@@ -13,7 +14,7 @@ const AppRoutes = () => {
 
       <Route path="/signup" element={<SignupPage />}></Route>
       <Route path="/create" element={<PollCreate />}></Route>
-      
+      <Route path="/trigger" element={<Trigger />}></Route>      
     </Routes>
   );
 };
