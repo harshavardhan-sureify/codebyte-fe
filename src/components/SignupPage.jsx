@@ -13,7 +13,6 @@ import {
   InputAdornment,
   Paper,
   Snackbar,
-   
   Toolbar,
   Typography,
 } from "@mui/material";
@@ -22,8 +21,8 @@ import React, { useState } from "react";
 import { MyTextField } from "./Styles";
 import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
-import { ImagePaper } from "./Styles";
-import { ImageText } from "./Styles";
+import { ImagePaper, ImageText } from "./Styles";
+
 import { Link, useNavigate } from "react-router-dom";
 let message = "";
 
@@ -43,30 +42,28 @@ const SignupPage = () => {
   const [seePassword, setSeePassword] = useState(false);
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
-  const [responseStatus,setResponseStatus]=useState("")
+  const [responseStatus, setResponseStatus] = useState("");
 
   const sendSignUpDataToServer = async (signUpdata) => {
     try {
-      const postData = { ...signUpdata }
-      delete postData.cpassword
+      const postData = { ...signUpdata };
+      delete postData.cpassword;
       const res = await axios.post(signUp, postData);
-      
+
       if (res.status === 200) {
-        const data = res.data.data
-         
-        localStorage.setItem("userToken",  data.token);
+        const data = res.data.data;
+
+        localStorage.setItem("userToken", data.token);
         localStorage.setItem("role", data.role);
-        navigate("/dashborad");
+        navigate("/dashboard");
       }
     } catch (err) {
-      const response = err.response;
+      if (err.response) {
+        const payload = err.response.data;
 
-      if (response) {
-        const payload = response.data;
-         
-        if (payload.status ===400 && payload.data.error) {
+        if (payload.status === 400 && payload.data.error) {
           setResponseStatus(payload.data.error);
-        } else if (payload.status ===400) {
+        } else if (payload.status === 400) {
           let msg = "";
           for (let i in payload.data) {
             msg += payload.data[i] + "\n";
@@ -76,7 +73,7 @@ const SignupPage = () => {
         } else {
           setResponseStatus("Something went wrong");
         }
-        setOpen(true)
+        setOpen(true);
       }
     }
   };
@@ -117,7 +114,7 @@ const SignupPage = () => {
         if (!value) {
           message = "Name is required";
         } else if (value.length < 3) {
-          message = "Name should have atleast 3 characters";
+          message = "Name should contain atleast 3 characters";
         } else if (!/^[A-Za-z\s]+$/.test(value)) {
           message = "Name should not have digits";
         } else {
@@ -176,9 +173,8 @@ const SignupPage = () => {
           }}
           onClose={() => setOpen(false)}
         >
-          
           <Alert
-            severity="error" 
+            severity="error"
             action={
               <IconButton
                 size="small"
@@ -186,7 +182,7 @@ const SignupPage = () => {
                 color="inherit"
                 onClick={() => setOpen(false)}
               >
-                <CancelIcon  ></CancelIcon>
+                <CancelIcon></CancelIcon>
               </IconButton>
             }
           >
@@ -286,9 +282,7 @@ const SignupPage = () => {
                       </InputAdornment>
                     ),
                   }}
-                >
-                   
-                </MyTextField>
+                ></MyTextField>
                 <MyTextField
                   fullWidth
                   type="password"
