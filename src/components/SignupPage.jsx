@@ -172,7 +172,7 @@ const SignupPage = () => {
           autoHideDuration={3200}
           anchorOrigin={{
             vertical: "top",
-            horizontal: "center",
+            horizontal: "right",
           }}
           onClose={() => setOpen(false)}
         >
