@@ -63,7 +63,7 @@ const PollCreate = () => {
   const [startDate, setStartDate] = useState(today);
   const [title, setTitle] = useState("");
   const [endDate, setEndDate] = useState(null);
-  const [options, setOptions] = useState(["Option 1", "Option 2"]);
+  const [options, setOptions] = useState(["", ""]);
   const [isClicked, setIsClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -105,7 +105,8 @@ const PollCreate = () => {
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
   };
-  const submitPoll = async () => {
+
+  const submitPoll = () => {
     setIsLoading(true);
     const pollData = {
       title,
@@ -115,29 +116,36 @@ const PollCreate = () => {
       options,
     };
 
-    try {
-      const response = await fetch(createPollApi, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(pollData),
+    fetch(createPollApi, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization:
+          "Bearer " +
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2OTMwOTMsImlkIjo3LCJyb2xlIjoidXNlciIsImVtYWlsIjoibWFuaWtAZ21haWwuY29tIn0.mDjTxZnVHNlfnO3IAI2kxJYsEB_H8b-oidrbtwV4hOE",
+      },
+      body: JSON.stringify(pollData),
+    })
+      .then((response) => {
+        if (response.status === 200) {
+          setSeverity("success");
+          setQuestion("");
+          setIsClicked(false);
+          setOptions(["",""]);
+          setStartDate(today);
+          setEndDate(null);
+          setTitle("");
+        } else {
+          setSeverity("error");
+        }
+        return response.json().then((data) => {
+          setAlertMessage(data.message);
+        });
+      })
+      .finally(() => {
+        setAlertOpen(true);
+        setIsLoading(false);
       });
-
-      if (!response.status === 200) {
-        throw new Error("Error occured");
-      }
-
-      const jsonResponse = await response.json();
-      setSeverity("success");
-      setAlertMessage("Created a poll successfully");
-      setAlertOpen(true);
-    } catch (error) {
-      setSeverity("error");
-      setAlertMessage(error);
-      setAlertOpen(true);
-    }
-    setIsLoading(false);
   };
 
   const validateForm = () => {
@@ -179,8 +187,7 @@ const PollCreate = () => {
           severity={severity}
           sx={{ width: "100%" }}
         >
-          {JSON.stringify(alertMessage)}
-          {/* will be edited based on the backend api while integration  */}
+          {alertMessage}
         </Alert>
       </Snackbar>
       <Grid
@@ -294,7 +301,7 @@ const PollCreate = () => {
               />
             ))}
           </Box>
-          <Box display="flex" justifyContent="space-evenly" marginTop={2}>
+          <Box display="flex" justifyContent="end" marginTop={2} gap={2}>
             <Button
               variant="contained"
               color="error"

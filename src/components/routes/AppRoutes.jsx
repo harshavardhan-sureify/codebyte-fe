@@ -9,12 +9,11 @@ import Trigger from "../Trigger";
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/adduser" element={<AddUser/>}></Route>
-      <Route path="/" element={<LoginPage />} />
-
-      <Route path="/signup" element={<SignupPage />}></Route>
-      <Route path="/create" element={<PollCreate />}></Route>
-      <Route path="/trigger" element={<Trigger />}></Route>      
+      <Route exact path="/adduser" element={<AddUser />}></Route>
+      <Route exact path="/signup" element={<SignupPage />}></Route>
+      <Route exact path="/admin/create" element={<PollCreate />}></Route>
+      <Route exact path="/trigger" element={<Trigger />}></Route>
+      <Route exact path="/" element={<LoginPage />} />
     </Routes>
   );
 };
