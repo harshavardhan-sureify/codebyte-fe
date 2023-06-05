@@ -167,6 +167,7 @@ const SignupPage = () => {
         <Snackbar
           open={open}
           autoHideDuration={3200}
+          sx={{ paddingTop: "43px" }}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",
