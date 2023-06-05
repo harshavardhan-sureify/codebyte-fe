@@ -108,14 +108,14 @@ const LoginPage = () => {
         </Toolbar>
       </AppBar>
       <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-        <Grid item xs={6} md={6} lg={4}>
+        <Grid item xs={6} md={6} lg={4} mt={5}>
           <ImagePaper elevation={3} align={"center"}>
             <img src={profileImage} alt="" width="100px" height="100px" />
             <ImageText variant="h6">Hey,User</ImageText>
             <ImageText variant="h6">Welcome Back!</ImageText>
           </ImagePaper>
         </Grid>
-        <Grid item xs={6} md={6} lg={4}>
+        <Grid item xs={6} md={6} lg={4} mt={5}>
           <Paper
             elevation={3}
             sx={{ padding: "2px 15px", margin: "20px 0px", height: "100%" }}
