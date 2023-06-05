@@ -11,6 +11,7 @@ import Snackbar from "@mui/material/Snackbar";
 import { ErrorText, CreatePollContainer } from "./Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
+import axios from "axios";
 
 const Option = ({
   option,
@@ -111,36 +112,33 @@ const PollCreate = () => {
     const pollData = {
       title,
       question,
-      startDate: dayjs(startDate).format("DD/MM/YYYY"),
-      endDate: dayjs(endDate).format("DD/MM/YYYY"),
+      startDate: dayjs(startDate).format("YYYY-MM-DD"),
+      endDate: dayjs(endDate).format("YYYY-MM-DD"),
       options,
     };
-
-    fetch(createPollApi, {
-      method: "POST",
+    axios.post(createPollApi, pollData, {
       headers: {
         "Content-Type": "application/json",
         Authorization:
           "Bearer " +
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODU2OTMwOTMsImlkIjo3LCJyb2xlIjoidXNlciIsImVtYWlsIjoibWFuaWtAZ21haWwuY29tIn0.mDjTxZnVHNlfnO3IAI2kxJYsEB_H8b-oidrbtwV4hOE",
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODYwMzQ0MDcsImlkIjoxLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.x-LhxKf1QjVZ8NrZsOjSarmZBddDce-NkV1b8_twy-A",
       },
-      body: JSON.stringify(pollData),
     })
       .then((response) => {
         if (response.status === 200) {
           setSeverity("success");
           setQuestion("");
           setIsClicked(false);
-          setOptions(["",""]);
+          setOptions(["", ""]);
           setStartDate(today);
           setEndDate(null);
           setTitle("");
-        } else {
-          setSeverity("error");
+          setAlertMessage(response.data.message);
         }
-        return response.json().then((data) => {
-          setAlertMessage(data.message);
-        });
+      })
+      .catch(error=>{
+       setSeverity("error");
+       setAlertMessage(error.response.data.message);
       })
       .finally(() => {
         setAlertOpen(true);
@@ -180,7 +178,8 @@ const PollCreate = () => {
         open={alertOpen}
         autoHideDuration={3000}
         onClose={() => setAlertOpen(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+        sx={{ paddingTop: "43px" }}
       >
         <Alert
           onClose={() => setAlertOpen(false)}
@@ -213,6 +212,7 @@ const PollCreate = () => {
               sx={{ width: "100%" }}
               label="Poll Title"
               onChange={(e) => setTitle(e.target.value)}
+              value={title}
             />
             {errors.title && <ErrorText>Enter valid Title</ErrorText>}
             <Box
