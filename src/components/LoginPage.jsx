@@ -9,8 +9,9 @@ import {
   Paper,
   Toolbar,
   Typography,
+  Snackbar 
 } from "@mui/material";
-
+import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
 import React, { useState } from "react";
 import { theme } from "../themes/theme";
@@ -18,9 +19,10 @@ import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { MyTextField } from "./Styles";
-import { Link } from "react-router-dom";
+import { Link,useNavigate} from "react-router-dom";
 import { login } from "../constants";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import CancelIcon from "@mui/icons-material/Cancel";
 const intitialize = () => {
   return {
     email: "",
@@ -31,17 +33,33 @@ const LoginPage = () => {
   const [loginForm, setLoginForm] = useState(intitialize());
   const [errors, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState("");
+  const navigate=useNavigate();
   const [seePassword, setSeePassword] = useState(false);
+  const [open, setOpen] = useState(true);
+  const [responseStatus, setResponseStatus] = useState("");
   const sendDataToServer = async (data) => {
     try {
-      const res = await fetch(login, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
-      });
+      const postData = { ...data };
+      const res = await axios.post(login,postData)
       if (res.status===200) {
+        const data = res.data.data;
+
+        localStorage.setItem("userToken", data.token);
+        localStorage.setItem("role", data.role);
+        navigate("/dashboard");
       }
-    } catch (error) {}
+    } catch (err) {
+      if (err.response) {
+        const payload = err.response.data;
+
+        if (payload.status === 400 || payload.status === 404) {
+          setResponseStatus(payload.data.error);
+        }else {
+          setResponseStatus("Something went wrong");
+        }
+        setOpen(true);
+      }
+    }
   };
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
@@ -99,6 +117,35 @@ const LoginPage = () => {
         minHeight: "100vh",
       }}
     >
+        {responseStatus && (
+        <Snackbar
+          open={open}
+          autoHideDuration={3200}
+          sx={{ paddingTop: "43px" }}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={() => setOpen(false)}
+        >
+          <Alert
+            severity="error"
+            variant="filled"
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => setOpen(false)}
+              >
+                <CancelIcon></CancelIcon>
+              </IconButton>
+            }
+          >
+            {responseStatus}
+          </Alert>
+        </Snackbar>
+      )}
       <AppBar position="sticky">
         <Toolbar>
           <img src={logo} alt="" width="32px" heigth="32px" />
