@@ -157,165 +157,179 @@ const SignupPage = () => {
   };
 
   return (
-    <Grid
-      sx={{
-        backgroundColor: theme.palette.bColor.main,
-        minHeight: "100vh",
-      }}
-    >
-      {responseStatus && (
-        <Snackbar
-          open={open}
-          autoHideDuration={3200}
-          sx={{ paddingTop: "43px" }}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
+      <Grid
+          sx={{
+              minHeight: "100vh",
           }}
-          onClose={() => setOpen(false)}
-        >
-          <Alert
-            severity="error"
-            action={
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={() => setOpen(false)}
-              >
-                <CancelIcon></CancelIcon>
-              </IconButton>
-            }
-          >
-            {responseStatus}
-          </Alert>
-        </Snackbar>
-      )}
-      <AppBar position="sticky">
-        <Toolbar>
-          <img src={logo} alt="" width="32px" heigth="32px" />
-          <Typography variant="h5" sx={{ marginLeft: "5px" }}>
-            CodeByte
-          </Typography>
-        </Toolbar>
-      </AppBar>
-
-      <Grid container sx={{ display: "flex", justifyContent: "center" }}>
-        <Grid item xs={6} md={6} lg={4} mt={5}>
-          <ImagePaper elevation={3} align={"center"}>
-            <img src={profileImage} alt="" width="100px" height="100px" />
-            <ImageText variant="h6">Hey,User</ImageText>
-            <ImageText variant="h6">
-              Get started by creating an account
-            </ImageText>
-          </ImagePaper>
-        </Grid>
-        <Grid item xs={6} md={6} lg={4} mt={5}>
-          <Paper
-            elevation={3}
-            sx={{ padding: "2px 15px", margin: "20px 0px", height: "100%" }}
-            align={"center"}
-          >
-            {submitStatus && (
-              <Alert severity="error">
-                <strong>{submitStatus} </strong>
-              </Alert>
-            )}
-            <Avatar
-              sx={{
-                backgroundColor: theme.palette.success.main,
-                marginTop: "8px",
-              }}
-            ></Avatar>
-            <Typography variant="h5">Sign up</Typography>
-            <Typography variant="caption">
-              Create your CodeByte Account
-            </Typography>
-            <form onSubmit={handleSubmit}>
-              <Grid>
-                <MyTextField
-                  fullWidth
-                  label="Name"
-                  placeholder="Enter your Name"
-                  onChange={handleChange}
-                  name="name"
-                  value={signUpForm.name}
-                  error={!!error.name}
-                  helperText={error.name}
-                  size="small"
-                >
-                  {" "}
-                </MyTextField>
-
-                <MyTextField
-                  fullWidth
-                  label="Email"
-                  placeholder="Enter your Email"
-                  onChange={handleChange}
-                  name="email"
-                  value={signUpForm.email}
-                  error={!!error.email}
-                  helperText={error.email}
-                  size="small"
-                >
-                  {" "}
-                </MyTextField>
-
-                <MyTextField
-                  fullWidth
-                  type={seePassword ? "text" : "password"}
-                  label="Password"
-                  placeholder="Enter your password"
-                  onChange={handleChange}
-                  name="password"
-                  size="small"
-                  value={signUpForm.password}
-                  error={!!error.password}
-                  helperText={error.password}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => setSeePassword(!seePassword)}
-                        >
-                          {seePassword ? <Visibility /> : <VisibilityOff />}
-                        </IconButton>
-                      </InputAdornment>
-                    ),
+      >
+          {responseStatus && (
+              <Snackbar
+                  open={open}
+                  autoHideDuration={3200}
+                  sx={{ paddingTop: "43px" }}
+                  anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "right",
                   }}
-                ></MyTextField>
-                <MyTextField
-                  fullWidth
-                  type="password"
-                  label="Confirm Password"
-                  placeholder="Enter your Password"
-                  onChange={handleChange}
-                  name="cpassword"
-                  value={signUpForm.cpassword}
-                  error={!!error.cpassword}
-                  helperText={error.cpassword}
-                  size="small"
-                ></MyTextField>
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ padding: "11px 0px", marginBottom: "9px" }}
-                >
-                  Create account
-                </Button>
-                <Typography variant="p">
-                  Already have account?{" "}
-                  <Link style={{ textDecoration: "none" }} to="/">
-                    Login
-                  </Link>
-                </Typography>
+                  onClose={() => setOpen(false)}
+              >
+                  <Alert
+                      severity="error"
+                      action={
+                          <IconButton
+                              size="small"
+                              aria-label="close"
+                              color="inherit"
+                              onClick={() => setOpen(false)}
+                          >
+                              <CancelIcon></CancelIcon>
+                          </IconButton>
+                      }
+                  >
+                      {responseStatus}
+                  </Alert>
+              </Snackbar>
+          )}
+          <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+              <Grid item xs={6} md={6} lg={4} mt={5}>
+                  <ImagePaper elevation={3} align={"center"}>
+                      <img
+                          src={profileImage}
+                          alt=""
+                          width="100px"
+                          height="100px"
+                      />
+                      <ImageText variant="h6">Hey,User</ImageText>
+                      <ImageText variant="h6">
+                          Get started by creating an account
+                      </ImageText>
+                  </ImagePaper>
               </Grid>
-            </form>
-          </Paper>
-        </Grid>
+              <Grid item xs={6} md={6} lg={4} mt={5}>
+                  <Paper
+                      elevation={3}
+                      sx={{
+                          padding: "2px 15px",
+                          margin: "20px 0px",
+                          height: "100%",
+                      }}
+                      align={"center"}
+                  >
+                      {submitStatus && (
+                          <Alert severity="error">
+                              <strong>{submitStatus} </strong>
+                          </Alert>
+                      )}
+                      <Avatar
+                          sx={{
+                              backgroundColor: theme.palette.success.main,
+                              marginTop: "8px",
+                          }}
+                      ></Avatar>
+                      <Typography variant="h5">Sign up</Typography>
+                      <Typography variant="caption">
+                          Create your CodeByte Account
+                      </Typography>
+                      <form onSubmit={handleSubmit}>
+                          <Grid>
+                              <MyTextField
+                                  fullWidth
+                                  label="Name"
+                                  placeholder="Enter your Name"
+                                  onChange={handleChange}
+                                  name="name"
+                                  value={signUpForm.name}
+                                  error={!!error.name}
+                                  helperText={error.name}
+                                  size="small"
+                              >
+                                  {" "}
+                              </MyTextField>
+
+                              <MyTextField
+                                  fullWidth
+                                  label="Email"
+                                  placeholder="Enter your Email"
+                                  onChange={handleChange}
+                                  name="email"
+                                  value={signUpForm.email}
+                                  error={!!error.email}
+                                  helperText={error.email}
+                                  size="small"
+                              >
+                                  {" "}
+                              </MyTextField>
+
+                              <MyTextField
+                                  fullWidth
+                                  type={seePassword ? "text" : "password"}
+                                  label="Password"
+                                  placeholder="Enter your password"
+                                  onChange={handleChange}
+                                  name="password"
+                                  size="small"
+                                  value={signUpForm.password}
+                                  error={!!error.password}
+                                  helperText={error.password}
+                                  InputProps={{
+                                      endAdornment: (
+                                          <InputAdornment position="end">
+                                              <IconButton
+                                                  onClick={() =>
+                                                      setSeePassword(
+                                                          !seePassword
+                                                      )
+                                                  }
+                                              >
+                                                  {seePassword ? (
+                                                      <Visibility />
+                                                  ) : (
+                                                      <VisibilityOff />
+                                                  )}
+                                              </IconButton>
+                                          </InputAdornment>
+                                      ),
+                                  }}
+                              ></MyTextField>
+                              <MyTextField
+                                  fullWidth
+                                  type="password"
+                                  label="Confirm Password"
+                                  placeholder="Enter your Password"
+                                  onChange={handleChange}
+                                  name="cpassword"
+                                  value={signUpForm.cpassword}
+                                  error={!!error.cpassword}
+                                  helperText={error.cpassword}
+                                  size="small"
+                              ></MyTextField>
+                              <Button
+                                  type="submit"
+                                  fullWidth
+                                  variant="contained"
+                                  color="secondary"
+                                  sx={{
+                                      padding: "11px 0px",
+                                      marginBottom: "9px",
+                                  }}
+                              >
+                                  Create account
+                              </Button>
+                              <Typography variant="p">
+                                  Already have account?{" "}
+                                  <Link
+                                      style={{ textDecoration: "none" }}
+                                      to="/"
+                                  >
+                                      Login
+                                  </Link>
+                              </Typography>
+                          </Grid>
+                      </form>
+                  </Paper>
+              </Grid>
+          </Grid>
       </Grid>
-    </Grid>
   );
 };
 
