@@ -7,6 +7,7 @@ import {
     TableRow,
     TableCell,
     TableBody,
+    Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
@@ -152,10 +153,14 @@ const AdminDashBoard = () => {
         return (
             <Table>
                 <TableHead>
-                    <TableRow sx={{ background: "grey", color: "white" }}>
-                        <TableCell color="white">Username</TableCell>
-                        <TableCell>Poll Title</TableCell>
-                        <TableCell>Option</TableCell>
+                    <TableRow>
+                        <TableCell color="white" sx={{ fontSize: "18px" }}>
+                            Username
+                        </TableCell>
+                        <TableCell sx={{ fontSize: "18px" }}>
+                            Poll Title
+                        </TableCell>
+                        <TableCell sx={{ fontSize: "18px" }}>Option</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -299,6 +304,17 @@ const AdminDashBoard = () => {
                         elevation={4}
                         sx={{ height: "420px", overflow: "auto" }}
                     >
+                        <Box
+                            sx={{
+                                height: "60px",
+                                px: 2,
+                                display: "flex",
+                                alignItems: "center",
+                                background: "grey",
+                            }}
+                        >
+                            <Typography>Recent Answers</Typography>
+                        </Box>
                         <RecentTable />
                     </Card>
                 </Grid>
