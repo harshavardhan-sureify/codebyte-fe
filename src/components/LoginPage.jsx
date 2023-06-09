@@ -51,22 +51,38 @@ const LoginPage = () => {
     } catch (err) {
       if (err.response) {
         const payload = err.response.data;
-
-        if (payload.status === 400 || payload.status === 404) {
-          setResponseStatus(payload.data.error);
-        }else {
-          setResponseStatus("Something went wrong");
+        if(payload.status===400){
+          // setSubmitStatus("");
+          if('error' in payload.data){
+            setErrors({...errors,"password":payload.data.error})
+          }else{
+            setErrors({...errors,...payload.data})
+          }
         }
-        setOpen(true);
+        else if(payload.status===404){
+          // setErrors("")
+          setSubmitStatus("Invalid details");
+        
+        }
+        else{
+          // setSubmitStatus("");
+          setResponseStatus("Something went wrong");
+          setOpen(true);
+        }
       }
     }
   };
   const handleChange = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     validations(e.target.name, e.target.value);
+    setSubmitStatus("");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(errors['password']==='Incorrect Password '){
+      errors['password']="" 
+    }
+    // console.log(errors)
     if (Object.keys(errors).length !== 2) {
       if (Object.keys(errors).length === 0) {
         setSubmitStatus("Please enter the details");
