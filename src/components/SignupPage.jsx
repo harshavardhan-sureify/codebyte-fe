@@ -17,13 +17,14 @@ import {
   Typography,
 } from "@mui/material";
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { MyTextField } from "./Styles";
 import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 
 import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../context/UserContext";
 let message = "";
 
 const initialize = () => {
@@ -43,6 +44,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const [responseStatus, setResponseStatus] = useState("");
+  const { setUser } = useContext(UserContext);
 
   const sendSignUpDataToServer = async (signUpdata) => {
     try {
@@ -52,9 +54,8 @@ const SignupPage = () => {
 
       if (res.status === 200) {
         const data = res.data.data;
-
-        localStorage.setItem("userToken", data.token);
-        localStorage.setItem("role", data.role);
+        localStorage.setItem("user", JSON.stringify(data));
+        setUser(data);
         navigate("/dashboard");
       }
     } catch (err) {
