@@ -37,6 +37,7 @@ const LoginPage = () => {
   const [seePassword, setSeePassword] = useState(false);
   const [open, setOpen] = useState(true);
   const [responseStatus, setResponseStatus] = useState("");
+  const [notFound, setNotFound] = useState("");
   const sendDataToServer = async (data) => {
     try {
       const postData = { ...data };
@@ -52,7 +53,6 @@ const LoginPage = () => {
       if (err.response) {
         const payload = err.response.data;
         if(payload.status===400){
-          // setSubmitStatus("");
           if('error' in payload.data){
             setErrors({...errors,"password":payload.data.error})
           }else{
@@ -60,12 +60,10 @@ const LoginPage = () => {
           }
         }
         else if(payload.status===404){
-          // setErrors("")
-          setSubmitStatus("Invalid details");
+         setNotFound("Invalid details");
         
         }
         else{
-          // setSubmitStatus("");
           setResponseStatus("Something went wrong");
           setOpen(true);
         }
@@ -76,13 +74,13 @@ const LoginPage = () => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
     validations(e.target.name, e.target.value);
     setSubmitStatus("");
+    setNotFound("");
   };
   const handleSubmit = (e) => {
     e.preventDefault();
     if(errors['password']==='Incorrect Password '){
       errors['password']="" 
     }
-    // console.log(errors)
     if (Object.keys(errors).length !== 2) {
       if (Object.keys(errors).length === 0) {
         setSubmitStatus("Please enter the details");
@@ -202,6 +200,12 @@ const LoginPage = () => {
             <Typography variant="caption">
               Login into your account and start answering the polls
             </Typography>
+            {notFound &&
+            
+            <Typography variant="subtitle1" color="error" component="div">
+              {notFound}
+            </Typography>
+            }
             <form onSubmit={handleSubmit}>
               <MyTextField
                 fullWidth
