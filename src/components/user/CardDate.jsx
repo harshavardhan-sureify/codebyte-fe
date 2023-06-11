@@ -3,8 +3,6 @@ import { getMonth } from "../utils";
 
 export const CardDate = ({ date, flag }) => {
     let dateArray = date.split("-");
-
-    console.log(dateArray);
     return (
         <StyledCardDate
             style={{ borderTop: `5px solid ${flag ? "green" : "red"}` }}

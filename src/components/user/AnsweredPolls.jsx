@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ANSWERED_POLLS_URL } from "../../constants";
+import { ANSWERED_POLLS_URL,AUTH_TOKEN } from "../../constants";
 import { ViewPolls } from "./ViewPolls";
 
 export const AnsweredPolls = () => {
@@ -10,8 +10,7 @@ export const AnsweredPolls = () => {
         fetchAnsweredPolls();
     }, []);
     const fetchAnsweredPolls = async () => {
-        const token = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODYzMzQyNjEsImlkIjoxLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.-Q50mUQZfaXymaUETcrsZkeRCV2QIgyO_Qy0Ydl6VD4`;
-
+        const token=AUTH_TOKEN
         const config = {
             headers: { Authorization: `Bearer ${token}` },
         };

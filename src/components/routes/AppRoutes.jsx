@@ -11,30 +11,29 @@ import { AnsweredPolls } from "../user/AnsweredPolls";
 import { ViewSinglePoll } from "../user/ViewSinglePoll";
 import NavBar from "../NavBar";
 import { PageNotFound } from "../user/PageNotFound";
+import { UserDemo } from "../user/UserDemo";
 const AppRoutes = () => {
     return (
         <>
             <NavBar />
             <Routes>
+                <Route path="/demo" element={<UserDemo />}></Route>
                 <Route path="/adduser" element={<AddUser />}></Route>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />}></Route>
                 <Route path="/user" element={<LandingPage />}>
-                    <Route index element={<PageNotFound/>} />
+                    <Route index element={<PageNotFound />} />
                     <Route path="dashboard" element={<ActivePolls />} />
-                    <Route
-                        path="activepolls/:id"
-                        element={<ViewSinglePoll />}
-                    />
+                    <Route path="dashboard/:id" element={<ViewSinglePoll />} />
                     <Route path="answeredpolls" element={<AnsweredPolls />} />
                     <Route
                         path="answeredpolls/:id"
                         element={<ViewSinglePoll />}
                     />
-                    <Route path="*" element={<PageNotFound />} />
                 </Route>
                 <Route path="/create" element={<PollCreate />}></Route>
                 <Route path="/trigger" element={<Trigger />}></Route>
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </>
     );
