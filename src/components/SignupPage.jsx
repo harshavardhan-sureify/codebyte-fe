@@ -56,7 +56,7 @@ const SignupPage = () => {
         const data = res.data.data;
         localStorage.setItem("user", JSON.stringify(data));
         setUser(data);
-        navigate("/dashboard");
+        navigate(`/${data.role}/dashboard`);
       }
     } catch (err) {
       if (err.response) {

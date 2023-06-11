@@ -9,13 +9,15 @@ import {
     TableBody,
     Box,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { adminDashboardApi } from "../../constants";
+import UserContext from "../../context/UserContext";
 
 const AdminDashBoard = () => {
+    const {user} = useContext(UserContext);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
     const [tableData, setTableData] = useState([]);
@@ -86,17 +88,18 @@ const AdminDashBoard = () => {
                 axisRight={null}
                 axisBottom={{
                     tickSize: 5,
-                    tickPadding: 5,
-                    tickRotation: 0,
-                    legend: "polls",
+                    tickPadding: 7,
+                    tickRotation: 8,
+                    legend: "Polls",
                     legendPosition: "middle",
-                    legendOffset: 32,
+                    legendOffset: 40,
+                    justify: true,
                 }}
                 axisLeft={{
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    legend: "no of users",
+                    legend: "No of users",
                     legendPosition: "middle",
                     legendOffset: -40,
                 }}
@@ -111,10 +114,10 @@ const AdminDashBoard = () => {
                         dataFrom: "keys",
                         anchor: "bottom-right",
                         direction: "column",
-                        justify: false,
+                        justify: true,
                         translateX: 120,
                         translateY: 0,
-                        itemsSpacing: 2,
+                        itemsSpacing: 6,
                         itemWidth: 50,
                         itemHeight: 20,
                         itemDirection: "bottom-to-top",
@@ -164,8 +167,8 @@ const AdminDashBoard = () => {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {tableData.map((row) => (
-                        <TableRow>
+                    {tableData.map((row, ind) => (
+                        <TableRow key={row.pollTitle + ind}>
                             <TableCell>{row.userName}</TableCell>
                             <TableCell>{row.pollTitle}</TableCell>
                             <TableCell>{row.selectedOption}</TableCell>
@@ -179,8 +182,7 @@ const AdminDashBoard = () => {
         axios
             .get(adminDashboardApi, {
                 headers: {
-                    Authorization:
-                        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODYzMDQ5NjEsImlkIjoxLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.hdzfx9Kb3BV5NpaqTv6dYFRBIy-TgcxKIw26huDNoOQ",
+                    Authorization: user.token,
                 },
             })
             .then((data) => {
@@ -230,7 +232,7 @@ const AdminDashBoard = () => {
                                 alignItems="flex-start"
                                 p={2}
                             >
-                                <Typography variant="h5">
+                                <Typography variant="h6">
                                     Total Active Users
                                 </Typography>
                                 <Typography color={"grey"}>
@@ -262,7 +264,7 @@ const AdminDashBoard = () => {
                                 alignItems="flex-start"
                                 p={2}
                             >
-                                <Typography variant="h5">
+                                <Typography variant="h6">
                                     Total Active Polls
                                 </Typography>
                                 <Typography color={"grey"}>
@@ -289,7 +291,7 @@ const AdminDashBoard = () => {
                                 alignItems="flex-start"
                                 p={2}
                             >
-                                <Typography variant="h5">Future</Typography>
+                                <Typography variant="h6">Future</Typography>
                             </Grid>
                         </Grid>
                     </Card>
