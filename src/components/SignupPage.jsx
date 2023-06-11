@@ -81,11 +81,13 @@ const SignupPage = () => {
   const handleChange = (e) => {
     setSignUpForm({ ...signUpForm, [e.target.name]: e.target.value });
     validations(e.target.name, e.target.value);
+    setSubmitStatus("");
+    
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    //console.log(error);
     if (Object.keys(error).length !== 4) {
       if (Object.keys(error).length === 0) {
         setSubmitStatus("Please fill the form ");
