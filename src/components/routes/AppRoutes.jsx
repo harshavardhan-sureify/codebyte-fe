@@ -11,13 +11,11 @@ import { AnsweredPolls } from "../user/AnsweredPolls";
 import { ViewSinglePoll } from "../user/ViewSinglePoll";
 import NavBar from "../NavBar";
 import { PageNotFound } from "../user/PageNotFound";
-import { UserDemo } from "../user/UserDemo";
 const AppRoutes = () => {
     return (
         <>
             <NavBar />
             <Routes>
-                <Route path="/demo" element={<UserDemo />}></Route>
                 <Route path="/adduser" element={<AddUser />}></Route>
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />}></Route>
