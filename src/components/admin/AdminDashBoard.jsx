@@ -9,15 +9,16 @@ import {
     TableBody,
     Box,
 } from "@mui/material";
-import React, { useContext, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { adminDashboardApi } from "../../constants";
-import UserContext from "../../context/UserContext";
+import { useSelector } from "react-redux";
+import { auth } from "../features/User.reducer";
 
 const AdminDashBoard = () => {
-    const {user} = useContext(UserContext);
+    const user = useSelector(auth);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
     const [tableData, setTableData] = useState([]);
@@ -197,7 +198,7 @@ const AdminDashBoard = () => {
                 });
                 setBarData(dd);
             });
-    }, []);
+    }, [user.token]);
     return (
         <div
             style={{

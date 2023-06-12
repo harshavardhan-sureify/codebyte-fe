@@ -13,17 +13,18 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { theme } from "../themes/theme";
 import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { MyTextField } from "./Styles";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "../constants";
+import { loginApi } from "../constants";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
-import UserContext from "../context/UserContext";
+import { useDispatch } from "react-redux";
+import { login } from "./features/User.reducer";
 const intitialize = () => {
     return {
         email: "",
@@ -31,7 +32,7 @@ const intitialize = () => {
     };
 };
 const LoginPage = () => {
-    const { setUser } = useContext(UserContext);
+    const dispatch = useDispatch();
     const [loginForm, setLoginForm] = useState(intitialize());
     const [errors, setErrors] = useState({});
     const [submitStatus, setSubmitStatus] = useState("");
@@ -40,34 +41,38 @@ const LoginPage = () => {
     const [open, setOpen] = useState(true);
     const [responseStatus, setResponseStatus] = useState("");
     const [notFound, setNotFound] = useState("");
-    const sendDataToServer = async (data) => {
-        try {
-            const postData = { ...data };
-            const res = await axios.post(login, postData);
-            if (res.status === 200) {
+    const sendDataToServer = (data) => {
+        const postData = { ...data };
+
+        axios
+            .post(loginApi, postData)
+            .then((res) => {
                 const data = res.data.data;
-                localStorage.setItem("user", JSON.stringify(data));
-                setUser(data);
+                dispatch(login(data));
                 navigate(`${data.role}/dashboard`);
-            }
-        } catch (err) {
-            if (err.response) {
-                const payload = err.response.data;
-                if (payload.status === 400) {
-                    if ("error" in payload.data) {
-                        setErrors({ ...errors, password: payload.data.error });
+            })
+            .catch((err) => {
+                if (err.response) {
+                    const payload = err.response.data;
+                    if (payload.status === 400) {
+                        if ("error" in payload.data) {
+                            setErrors({
+                                ...errors,
+                                password: payload.data.error,
+                            });
+                        } else {
+                            setErrors({ ...errors, ...payload.data });
+                        }
+                    } else if (payload.status === 404) {
+                        setNotFound("Invalid details");
                     } else {
-                        setErrors({ ...errors, ...payload.data });
+                        setResponseStatus("Something went wrong");
+                        setOpen(true);
                     }
-                } else if (payload.status === 404) {
-                    setNotFound("Invalid details");
-                } else {
-                    setResponseStatus("Something went wrong");
-                    setOpen(true);
                 }
-            }
-        }
+            });
     };
+
     const handleChange = (e) => {
         setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
         validations(e.target.name, e.target.value);

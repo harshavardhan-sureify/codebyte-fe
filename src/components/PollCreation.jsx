@@ -128,7 +128,6 @@ const PollCreate = () => {
         throw new Error("Error occured");
       }
 
-      const jsonResponse = await response.json();
       setSeverity("success");
       setAlertMessage("Created a poll successfully");
       setAlertOpen(true);
