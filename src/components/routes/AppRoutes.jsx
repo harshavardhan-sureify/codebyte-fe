@@ -20,21 +20,18 @@ const AppRoutes = () => {
                 <Route path="/" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />}></Route>
                 <Route path="/user" element={<LandingPage />}>
-                    <Route index element={<PageNotFound/>} />
+                    <Route index element={<PageNotFound />} />
                     <Route path="dashboard" element={<ActivePolls />} />
-                    <Route
-                        path="activepolls/:id"
-                        element={<ViewSinglePoll />}
-                    />
+                    <Route path="dashboard/:id" element={<ViewSinglePoll />} />
                     <Route path="answeredpolls" element={<AnsweredPolls />} />
                     <Route
                         path="answeredpolls/:id"
                         element={<ViewSinglePoll />}
                     />
-                    <Route path="*" element={<PageNotFound />} />
                 </Route>
                 <Route path="/create" element={<PollCreate />}></Route>
                 <Route path="/trigger" element={<Trigger />}></Route>
+                <Route path="*" element={<PageNotFound />} />
             </Routes>
         </>
     );

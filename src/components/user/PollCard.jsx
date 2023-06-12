@@ -9,8 +9,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { StyledCard, StyledPollButton } from "../Styles";
 import { countSum } from "../utils";
-import { CardDate } from "./CardDate";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { StyledDuration } from "./StyledDuration";
 
 export const Poll = ({ activeFlag, poll }) => {
     const navigate = useNavigate();
@@ -34,21 +33,13 @@ export const Poll = ({ activeFlag, poll }) => {
                 <CardContent
                     sx={{ display: "flex", flexDirection: "column", gap: 2 }}
                 >
-                    <div
-                        style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            alignItems:"center",
-                            gap: 4,
-                        }}
+                    <StyledDuration start_date={poll.start_date} end_date={poll.end_date} />
+                    <Typography
+                        variant="h6"
+                        fontWeight="bold"
+                        textTransform="uppercase"
+                        component="div"
                     >
-                        <CardDate date={poll.start_date} flag={true} />
-                        <div>
-                            <ArrowForwardIcon/>
-                        </div>
-                        <CardDate date={poll.end_date} />
-                    </div>
-                    <Typography  variant="h6" fontWeight="bold" textTransform="uppercase" component="div">
                         {poll.title}
                     </Typography>
                 </CardContent>
