@@ -1,22 +1,43 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-import AddUser from "../AddUser";
+import AddUser from "../admin/AddUser";
 import SignupPage from "../SignupPage";
-import PollCreate from "../PollCreation";
+import PollCreate from "../admin/PollCreation";
+import Trigger from "../admin/Trigger";
 import LoginPage from "../LoginPage";
-import Trigger from "../Trigger";
-
+import { LandingPage } from "../user/LandingPage";
+import { ActivePolls } from "../user/ActivePolls";
+import { AnsweredPolls } from "../user/AnsweredPolls";
+import { ViewSinglePoll } from "../user/ViewSinglePoll";
+import NavBar from "../NavBar";
+import { PageNotFound } from "../user/PageNotFound";
 const AppRoutes = () => {
-  return (
-    <Routes>
-      <Route path="/adduser" element={<AddUser/>}></Route>
-      <Route path="/" element={<LoginPage />} />
-
-      <Route path="/signup" element={<SignupPage />}></Route>
-      <Route path="/create" element={<PollCreate />}></Route>
-      <Route path="/trigger" element={<Trigger />}></Route>      
-    </Routes>
-  );
+    return (
+        <>
+            <NavBar />
+            <Routes>
+                <Route path="/adduser" element={<AddUser />}></Route>
+                <Route path="/" element={<LoginPage />} />
+                <Route path="/signup" element={<SignupPage />}></Route>
+                <Route path="/user" element={<LandingPage />}>
+                    <Route index element={<PageNotFound/>} />
+                    <Route path="dashboard" element={<ActivePolls />} />
+                    <Route
+                        path="activepolls/:id"
+                        element={<ViewSinglePoll />}
+                    />
+                    <Route path="answeredpolls" element={<AnsweredPolls />} />
+                    <Route
+                        path="answeredpolls/:id"
+                        element={<ViewSinglePoll />}
+                    />
+                    <Route path="*" element={<PageNotFound />} />
+                </Route>
+                <Route path="/create" element={<PollCreate />}></Route>
+                <Route path="/trigger" element={<Trigger />}></Route>
+            </Routes>
+        </>
+    );
 };
 
 export default AppRoutes;
