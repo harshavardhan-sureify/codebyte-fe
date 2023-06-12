@@ -9,14 +9,13 @@ import {
     TableBody,
     Box,
 } from "@mui/material";
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { adminDashboardApi } from "../../constants";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
-
 const AdminDashBoard = () => {
     const user = useSelector(auth);
     const [data, setData] = useState([]);

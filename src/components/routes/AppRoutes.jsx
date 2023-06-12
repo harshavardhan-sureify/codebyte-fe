@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignupPage from "../SignupPage";
 import PollCreate from "../PollCreation";
