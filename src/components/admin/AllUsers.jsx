@@ -3,10 +3,14 @@ import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
 import { allUsers } from "../../constants";
+import PersonIcon from "@mui/icons-material/Person";
 import {
+    Avatar,
     Box,
     Button,
     Grid,
+    Modal,
+    Paper,
     Table,
     TableBody,
     TableCell,
@@ -14,9 +18,10 @@ import {
     TablePagination,
     TableRow,
     TextField,
+    Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
-import Trigger from "../Trigger";
+import Trigger from "../admin/Trigger";
 import { formatDate } from "./../utils";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
@@ -26,16 +31,19 @@ const StyledTableCell = styled(TableCell)`
 const AllUsers = () => {
     const user = useSelector(auth);
     const [userData, setUserData] = useState([]);
+    const [isOpen, setIsOpen] = useState(false);
     const [searchText, setsearchText] = useState("");
     const [filteredData, setFilteredData] = useState([]);
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
+    const [deleteUser, setDeleteUser] = useState({});
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
     const handleDeleteModal = (user) => {
-        
+        setDeleteUser(user);
+        setIsOpen(true);
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -73,7 +81,6 @@ const AllUsers = () => {
             <Grid
                 container
                 sx={{
-                    p: 2,
                     justifyContent: "space-evenly",
                     alignItems: "center",
                 }}
@@ -89,7 +96,7 @@ const AllUsers = () => {
                     <Trigger />
                 </Grid>
             </Grid>
-            <Box p={2}>
+            <Box pt={2}>
                 <Table>
                     <TableHead>
                         <TableRow>
@@ -123,7 +130,7 @@ const AllUsers = () => {
                                     <Button
                                         variant="contained"
                                         color="error"
-                                        onClick={handleDeleteModal(user)}
+                                        onClick={() => handleDeleteModal(user)}
                                     >
                                         Delete
                                     </Button>
@@ -141,6 +148,45 @@ const AllUsers = () => {
                     onPageChange={handleChangePage}
                 />
             </Box>
+            <Modal
+                open={isOpen}
+                onClose={() => {
+                    setIsOpen(false);
+                }}
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                }}
+            >
+                <Paper
+                    sx={{
+                        // height: "350px",
+                        width: "300px",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        flexDirection: "column",
+                        p: 2,
+                    }}
+                >
+                    <Box pb={2}>
+                        <Avatar>
+                            <PersonIcon />
+                        </Avatar>
+                    </Box>
+                    <Box sx={{ typography: "subtitle2" }}>
+                        <Typography variant="subtitle2">
+                            Are You sure you want to delete the user{" "}
+                            {deleteUser.name}?
+                        </Typography>
+                    </Box>
+                    <Grid container pt={2} justifyContent="flex-end" gap={2}>
+                        <Grid item><Button onClick={() => setIsOpen(false)}>Cancel</Button></Grid>
+                        <Grid item><Button color="error" variant="contained" onClick={()=>console.log("delete",deleteUser)}>Delete</Button></Grid>
+                    </Grid>
+                </Paper>
+            </Modal>
         </Box>
     );
 };
