@@ -1,7 +1,8 @@
 import {
     Alert,
-    AppBar,
     Avatar,
+    Snackbar,
+    AppBar,
     Button,
     Grid,
     IconButton,
@@ -9,18 +10,6 @@ import {
     Paper,
     Toolbar,
     Typography,
-    Snackbar,
-    Alert,
-    AppBar,
-    Avatar,
-    Button,
-    Grid,
-    IconButton,
-    InputAdornment,
-    Paper,
-    Toolbar,
-    Typography,
-    Snackbar,
 } from "@mui/material";
 import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
@@ -182,7 +171,7 @@ const LoginPage = () => {
                     </Alert>
                 </Snackbar>
             )}
-           
+
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>

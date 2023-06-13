@@ -4,6 +4,6 @@ import { isLoggedIn } from "../features/User.reducer";
 
 const ProtectedRoute = () => {
     const authenticated = useSelector(isLoggedIn);
-    return authenticated ? <Outlet /> : <Navigate to="/" replace />;
+    return authenticated ? <Outlet /> : <Navigate to="/login" replace />;
 };
 export default ProtectedRoute;

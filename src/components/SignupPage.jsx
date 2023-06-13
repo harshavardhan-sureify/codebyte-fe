@@ -323,7 +323,7 @@ const SignupPage = () => {
                                     Already have account?{" "}
                                     <Link
                                         style={{ textDecoration: "none" }}
-                                        to="/"
+                                        to="/login"
                                     >
                                         Login
                                     </Link>
