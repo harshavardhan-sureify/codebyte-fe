@@ -2,7 +2,7 @@ import React from 'react'
 import { CardDate } from './CardDate';
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 
-export const StyledDuration = ({start_date,end_date}) => {
+export const StyledDuration = ({startDate,endDate}) => {
   return (
       <div
           style={{
@@ -12,11 +12,11 @@ export const StyledDuration = ({start_date,end_date}) => {
               gap: 4,
           }}
       >
-          <CardDate date={start_date} flag={true} />
+          <CardDate date={startDate} flag={true} />
           <div>
               <ArrowForwardIcon />
           </div>
-          <CardDate date={end_date} />
+          <CardDate date={endDate} />
       </div>
   );
 }

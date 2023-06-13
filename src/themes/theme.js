@@ -19,7 +19,7 @@ export const theme = createTheme({
             main: "#D9534f",
         },
         bColor: {
-            main: "#f7f5ff",
+            main: "#C0C0C0",
         },
     },
 });

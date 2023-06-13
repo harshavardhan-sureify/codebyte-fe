@@ -33,7 +33,7 @@ export const Poll = ({ activeFlag, poll }) => {
                 <CardContent
                     sx={{ display: "flex", flexDirection: "column", gap: 2 }}
                 >
-                    <StyledDuration start_date={poll.start_date} end_date={poll.end_date} />
+                    <StyledDuration startDate={poll.start_date} endDate={poll.end_date} />
                     <Typography
                         variant="h6"
                         fontWeight="bold"

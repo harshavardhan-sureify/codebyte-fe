@@ -2,20 +2,17 @@ import {
     Alert,
     Avatar,
     Snackbar,
-    AppBar,
     Button,
     Grid,
     IconButton,
     InputAdornment,
     Paper,
-    Toolbar,
     Typography,
 } from "@mui/material";
 import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
 import React, { useState } from "react";
 import { theme } from "../themes/theme";
-import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { MyTextField } from "./Styles";
@@ -30,10 +27,7 @@ const intitialize = () => {
         email: "",
         password: "",
     };
-    return {
-        email: "",
-        password: "",
-    };
+   
 };
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -47,7 +41,6 @@ const LoginPage = () => {
     const [notFound, setNotFound] = useState("");
     const sendDataToServer = (data) => {
         const postData = { ...data };
-
         axios
             .post(loginApi, postData)
             .then((res) => {
@@ -200,7 +193,7 @@ const LoginPage = () => {
                         )}
                         <Avatar
                             sx={{
-                                backgroundColor: theme.palette.success.main,
+                                backgroundColor: theme.palette.secondary.main,
                                 marginTop: "7px",
                             }}
                         >
@@ -260,6 +253,7 @@ const LoginPage = () => {
                                 }}
                             ></MyTextField>
                             <Button
+                                color="secondary"
                                 type="submit"
                                 fullWidth
                                 variant="contained"

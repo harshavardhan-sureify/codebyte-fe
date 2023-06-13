@@ -5,7 +5,6 @@ import { theme } from "../themes/theme";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {
     Alert,
-    AppBar,
     Avatar,
     Button,
     Grid,
@@ -13,13 +12,11 @@ import {
     InputAdornment,
     Paper,
     Snackbar,
-    Toolbar,
     Typography,
 } from "@mui/material";
 
 import React, { useState } from "react";
 import { MyTextField } from "./Styles";
-import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { useDispatch } from "react-redux";
@@ -227,7 +224,7 @@ const SignupPage = () => {
                         )}
                         <Avatar
                             sx={{
-                                backgroundColor: theme.palette.success.main,
+                                backgroundColor: theme.palette.secondary.main,
                                 marginTop: "8px",
                             }}
                         ></Avatar>
@@ -312,6 +309,7 @@ const SignupPage = () => {
                                     type="submit"
                                     fullWidth
                                     variant="contained"
+                                    color="secondary"
                                     sx={{
                                         padding: "11px 0px",
                                         marginBottom: "9px",

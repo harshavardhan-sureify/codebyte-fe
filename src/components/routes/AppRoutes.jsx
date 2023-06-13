@@ -12,7 +12,6 @@ import NavBar from "../NavBar";
 import { PageNotFound } from "../user/PageNotFound";
 import { ADMIN_ROLE, USER_ROLE } from "../../constants";
 import AdminDashBoard from "../admin/AdminDashBoard";
-import { AppBar, Toolbar, Typography } from "@mui/material";
 import ProtectedRoute from "./ProtectedRoute";
 import { auth, isLoggedIn } from "../features/User.reducer";
 import { useSelector } from "react-redux";
@@ -21,7 +20,6 @@ import AllUsers from "./../admin/AllUsers"
 
 const AppRoutes = () => {
      const user = useSelector(auth);
-     const islogIn = useSelector(isLoggedIn);
     return (
         <>
             <NavBar />
