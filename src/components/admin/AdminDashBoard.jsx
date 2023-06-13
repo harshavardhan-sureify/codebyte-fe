@@ -291,7 +291,7 @@ const AdminDashBoard = () => {
                                 alignItems="flex-start"
                                 p={2}
                             >
-                                <Typography variant="h6">Future</Typography>
+                                <Typography variant="h6">Total Attended polls</Typography>
                             </Grid>
                         </Grid>
                     </Card>

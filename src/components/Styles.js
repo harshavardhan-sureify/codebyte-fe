@@ -81,8 +81,9 @@ export const StyledPollButton = styled(Button)(({ theme }) => ({
 export const StyledSideBar = styled(Box)(({ theme }) => ({
     width: "15%",
     alignItems: "center",
-    backgroundColor: "grey",
+    backgroundColor: theme.palette.secondary.main,
     height: "90vh",
+    paddingTop:"3px"
 }));
 
 export const StyledOutletContainer = styled(Box)({
