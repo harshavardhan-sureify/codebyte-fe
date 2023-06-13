@@ -33,7 +33,7 @@ export const LandingPage = () => {
         <Box sx={{ display: "flex" }}>
             <StyledSideBar>
                 {routes.map((route) => (
-                    <NavLink to={route.route} style={activeStyles}>
+                    <NavLink to={route.route} style={activeStyles} key = {`navlink${route.name}`}>
                         {route.name}
                     </NavLink>
                 ))}

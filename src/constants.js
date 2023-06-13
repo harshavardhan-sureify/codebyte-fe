@@ -7,7 +7,7 @@ const addUser = PHP_BASE_URL + "adduser";
 const ACTIVE_POLLS_URL = PHP_BASE_URL + "activepolls";
 const ANSWERED_POLLS_URL = PHP_BASE_URL + "answeredpolls";
 const loginApi = GO_BASE_URL + "login";
-const adminDashboardApi = GO_BASE_URL + "admin/dashboard";
+const adminDashboardApi = GO_BASE_URL+"admin/dashboard";
 const allUsers = PHP_BASE_URL + "viewusers";
 export const ADMIN_ROUTES = [
     {

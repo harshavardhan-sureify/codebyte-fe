@@ -17,6 +17,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import { auth, isLoggedIn } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
+import AllUsers from "./../admin/AllUsers"
 
 const AppRoutes = () => {
      const user = useSelector(auth);
@@ -31,23 +32,20 @@ const AppRoutes = () => {
                 </Route>
                 <Route element={<ProtectedRoute />}>
                     {user.role === ADMIN_ROLE && (
-                        <Route path="/admin" element={<LandingPage/>}>
+                        <Route path="/admin" element={<LandingPage />}>
                             <Route
                                 path="dashboard"
                                 element={<AdminDashBoard />}
                             />
+                            <Route path="create" element={<PollCreate />} />
+                            <Route path="trigger" element={<Trigger />} />
                             <Route
-                                path="create"
-                                element={<PollCreate />}
-                            />
-                            <Route
-                                path="trigger"
-                                element={<Trigger />}
+                                path="allusers"
+                                element={<AllUsers />}
                             />
                         </Route>
                     )}
                     {user.role === USER_ROLE && (
-                      
                         <Route path="/user" element={<LandingPage />}>
                             {/* <Route index element={<PageNotFound />} /> */}
                             <Route path="dashboard" element={<ActivePolls />} />

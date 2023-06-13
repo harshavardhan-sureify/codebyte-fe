@@ -209,7 +209,7 @@ const AdminDashBoard = () => {
                 spacing={3}
                 sx={{
                     background: "#f7f5ff",
-                    padding: 2,
+                    p:2
                 }}
             >
                 <Grid item xs={12} sm={6} lg={4} md={4}>

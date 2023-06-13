@@ -7,7 +7,7 @@ export const ViewPolls = ({ activeFlag, pollsData }) => {
             <Grid container >
                 {pollsData.length > 0 &&
                     pollsData.map((poll) => (
-                        <Poll activeFlag={activeFlag} poll={poll} />
+                        <Poll activeFlag={activeFlag} poll={poll} key={poll.poll_id} />
                     ))}
             </Grid>
     );
