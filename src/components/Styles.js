@@ -77,7 +77,7 @@ export const StyledPollButton = styled(Button)(({ theme }) => ({
     backgroundColor: theme.palette.secondary.main,
     color: "white",
     "&: hover": {
-        backgroundColor: theme.palette.primary.main,
+        backgroundColor: theme.palette.success.main,
     },
 }));
 
@@ -127,4 +127,13 @@ export const StyledBackIcon = styled(ArrowLeftIcon)({
     "&: hover": {
         cursor: "pointer",
     },
+});
+
+export const LoadingContainer = styled(Box)({
+    display: "flex",
+    flexDirection: "column",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "20px",
 });

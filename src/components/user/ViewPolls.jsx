@@ -1,19 +1,27 @@
+import { EmptyDataContainer } from "./EmptyDataContainer";
 import { Poll } from "./PollCard";
-import { Grid, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
 
 export const ViewPolls = ({ activeFlag, pollsData }) => {
+    pollsData.sort((a, b) => {
+        if (a.start_date > b.start_date) return -1;
+        else if (a.start_date < b.start_date) return 1;
+        return 0;
+    });
+
     return (
         <Grid container>
             {pollsData.length > 0 ? (
                 pollsData.map((poll) => (
-                    <Poll activeFlag={activeFlag} poll={poll} />
+                    <Poll
+                        activeFlag={activeFlag}
+                        poll={poll}
+                    />
                 ))
+            ) : activeFlag ? (
+                <EmptyDataContainer isActive={activeFlag} />
             ) : (
-                <Typography variant="h4">
-                    {activeFlag
-                        ? "Currently there are no active polls available for you!!!"
-                        : "Oops ! You haven't answered any poll yet!"}
-                </Typography>
+                <EmptyDataContainer />
             )}
         </Grid>
     );

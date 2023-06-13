@@ -1,14 +1,18 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { ANSWERED_POLLS_URL} from "../../constants";
+import { ANSWERED_POLLS_URL } from "../../constants";
 import { ViewPolls } from "./ViewPolls";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { LoadingContainer } from "../Styles";
+import { CircularProgress, Typography } from "@mui/material";
 
 export const AnsweredPolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
+    const [loading, setLoading] = useState(true);
+
     const activeFlag = false;
     const navigate = useNavigate();
 
@@ -21,6 +25,7 @@ export const AnsweredPolls = () => {
             const response = await axios.get(ANSWERED_POLLS_URL, config);
             if (response.status === 200) {
                 setPollsData(response.data.data);
+                setLoading(false);
             }
         } catch (err) {
             localStorage.clear();
@@ -30,5 +35,13 @@ export const AnsweredPolls = () => {
     useEffect(() => {
         fetchAnsweredPolls();
     }, []);
+    if (loading) {
+        return (
+            <LoadingContainer>
+                <CircularProgress />
+                <Typography variant="subtitle">Loading</Typography>
+            </LoadingContainer>
+        );
+    }
     return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
 };

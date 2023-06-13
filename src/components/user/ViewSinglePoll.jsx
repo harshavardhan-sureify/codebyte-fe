@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     Card,
@@ -7,6 +8,7 @@ import {
     FormLabel,
     Radio,
     RadioGroup,
+    Snackbar,
     Stack,
     Typography,
 } from "@mui/material";
@@ -15,35 +17,98 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../../themes/theme";
 import { StyledBackIcon } from "../Styles";
 import { StyledDuration } from "./StyledDuration";
+import axios from "axios";
+import { SAVE_POLL_URL } from "../../constants";
+import { useSelector } from "react-redux";
+import { auth } from "../features/User.reducer";
 
 export const ViewSinglePoll = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const poll = location.state.pollProps;
+    const [open, setOpen] = React.useState(false);
     const isActivePoll = location.state.pollStatus;
     const options = JSON.parse(poll.options).options;
     const [currSelectedValue, setSelectedValue] = useState("");
+    const [toasterObj, setToasterObj] = useState({});
     const prevSelectedValue = options[poll.option_id];
+    const user = useSelector(auth);
+
     const handleSelectionChange = (e) => {
         if (isActivePoll) setSelectedValue(e.target.value);
     };
     const handleBackNavigation = () => {
         navigate(-1);
     };
-    const submitPoll = (e) => {
-        e.preventDefault()
+    const submitPoll = async (e) => {
+        e.preventDefault();
         const data = {
             poll_id: poll.poll_id,
-            option_id:options.findIndex((option)=>option===currSelectedValue)
+            option_id: options.findIndex(
+                (option) => option === currSelectedValue
+            ),
+        };
+        try {
+            const token = user.token;
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const res = await axios.post(SAVE_POLL_URL, data, config);
+            if (res.status === 200) {
+                setOpen(true);
+                setToasterObj({
+                    severity: "success",
+                    message: "poll submitted successfully",
+                });
+                setTimeout(() => {
+                    navigate(-1);
+                }, 1000);
+            }
+        } catch (err) {
+            if (err.response) {
+                const payload = err.response.data;
+                if (payload.status === 401) {
+                    localStorage.clear();
+                    navigate("/login");
+                } else {
+                    setOpen(true);
+                    setToasterObj({
+                        severity: "error",
+                        message: "unable to submit poll",
+                    });
+                    setTimeout(() => {
+                        navigate(-1);
+                    }, 2000);
+                }
+            }
         }
-        console.log(data)
-    }
+    };
+    const handleClose = (event, reason) => {
+        if (reason === "clickaway") {
+            return;
+        }
+        setOpen(false);
+    };
+
     return (
-        <Box sx={{display:"flex",justifyContent:"center"}}>
-            <Card
-                p
-                sx={{ width: "400px", p: "20px", position: "relative" }}
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <Snackbar
+                sx={{ mt: "40px" }}
+                open={open}
+                autoHideDuration={3000}
+                onClose={handleClose}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
             >
+                <Alert
+                    variant="filled"
+                    onClose={handleClose}
+                    severity={toasterObj.severity}
+                    sx={{ width: "100%", color: "white" }}
+                >
+                    {toasterObj.message}
+                </Alert>
+            </Snackbar>
+            <Card p sx={{ width: "400px", p: "20px", position: "relative" }}>
                 <Stack spacing={4} sx={{ alignItems: "center" }}>
                     <Typography variant="h4">{poll.title}</Typography>
                     <StyledDuration
@@ -81,7 +146,8 @@ export const ViewSinglePoll = () => {
                                                         option)
                                                         ? theme.palette.primary
                                                               .light
-                                                        : theme.palette.bColor.main,
+                                                        : theme.palette.bColor
+                                                              .main,
                                                 border:
                                                     (currSelectedValue ===
                                                         option) |
@@ -111,14 +177,16 @@ export const ViewSinglePoll = () => {
                                 <StyledBackIcon
                                     onClick={handleBackNavigation}
                                 />
-                               {isActivePoll && <Button
-                                    type="submit"
-                                    color="secondary"
-                                    variant="contained"
-                                    size="small"
-                                >
-                                    submit
-                                </Button>}
+                                {isActivePoll && (
+                                    <Button
+                                        type="submit"
+                                        color="secondary"
+                                        variant="contained"
+                                        size="small"
+                                    >
+                                        submit
+                                    </Button>
+                                )}
                             </Box>
                         </form>
                     </Box>
