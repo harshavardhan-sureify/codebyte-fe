@@ -10,6 +10,17 @@ import {
     Toolbar,
     Typography,
     Snackbar,
+    Alert,
+    AppBar,
+    Avatar,
+    Button,
+    Grid,
+    IconButton,
+    InputAdornment,
+    Paper,
+    Toolbar,
+    Typography,
+    Snackbar,
 } from "@mui/material";
 import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
@@ -26,6 +37,10 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import { useDispatch } from "react-redux";
 import { login } from "./features/User.reducer";
 const intitialize = () => {
+    return {
+        email: "",
+        password: "",
+    };
     return {
         email: "",
         password: "",
@@ -167,14 +182,7 @@ const LoginPage = () => {
                     </Alert>
                 </Snackbar>
             )}
-            <AppBar position="sticky">
-                <Toolbar>
-                    <img src={logo} alt="" width="32px" heigth="32px" />
-                    <Typography variant="h5" sx={{ marginLeft: "5px" }}>
-                        CodeByte
-                    </Typography>
-                </Toolbar>
-            </AppBar>
+           
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>
