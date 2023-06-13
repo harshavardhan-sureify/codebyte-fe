@@ -11,7 +11,6 @@ import Snackbar from "@mui/material/Snackbar";
 import { ErrorText, CreatePollContainer } from "./Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
-import axios from "axios";
 
 const Option = ({
   option,
@@ -64,7 +63,7 @@ const PollCreate = () => {
   const [startDate, setStartDate] = useState(today);
   const [title, setTitle] = useState("");
   const [endDate, setEndDate] = useState(null);
-  const [options, setOptions] = useState(["", ""]);
+  const [options, setOptions] = useState(["Option 1", "Option 2"]);
   const [isClicked, setIsClicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
@@ -106,44 +105,38 @@ const PollCreate = () => {
   const handleQuestionChange = (event) => {
     setQuestion(event.target.value);
   };
-
-  const submitPoll = () => {
+  const submitPoll = async () => {
     setIsLoading(true);
     const pollData = {
       title,
       question,
-      startDate: dayjs(startDate).format("YYYY-MM-DD"),
-      endDate: dayjs(endDate).format("YYYY-MM-DD"),
+      startDate: dayjs(startDate).format("DD/MM/YYYY"),
+      endDate: dayjs(endDate).format("DD/MM/YYYY"),
       options,
     };
-    axios.post(createPollApi, pollData, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization:
-          "Bearer " +
-          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2ODYwMzQ0MDcsImlkIjoxLCJyb2xlIjoiYWRtaW4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSJ9.x-LhxKf1QjVZ8NrZsOjSarmZBddDce-NkV1b8_twy-A",
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) {
-          setSeverity("success");
-          setQuestion("");
-          setIsClicked(false);
-          setOptions(["", ""]);
-          setStartDate(today);
-          setEndDate(null);
-          setTitle("");
-          setAlertMessage(response.data.message);
-        }
-      })
-      .catch(error=>{
-       setSeverity("error");
-       setAlertMessage(error.response.data.message);
-      })
-      .finally(() => {
-        setAlertOpen(true);
-        setIsLoading(false);
+
+    try {
+      const response = await fetch(createPollApi, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(pollData),
       });
+
+      if (!response.status === 200) {
+        throw new Error("Error occured");
+      }
+
+      setSeverity("success");
+      setAlertMessage("Created a poll successfully");
+      setAlertOpen(true);
+    } catch (error) {
+      setSeverity("error");
+      setAlertMessage(error);
+      setAlertOpen(true);
+    }
+    setIsLoading(false);
   };
 
   const validateForm = () => {
@@ -178,15 +171,15 @@ const PollCreate = () => {
         open={alertOpen}
         autoHideDuration={3000}
         onClose={() => setAlertOpen(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "right" }}
-        sx={{ paddingTop: "43px" }}
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
       >
         <Alert
           onClose={() => setAlertOpen(false)}
           severity={severity}
           sx={{ width: "100%" }}
         >
-          {alertMessage}
+          {JSON.stringify(alertMessage)}
+          {/* will be edited based on the backend api while integration  */}
         </Alert>
       </Snackbar>
       <Grid
@@ -212,7 +205,6 @@ const PollCreate = () => {
               sx={{ width: "100%" }}
               label="Poll Title"
               onChange={(e) => setTitle(e.target.value)}
-              value={title}
             />
             {errors.title && <ErrorText>Enter valid Title</ErrorText>}
             <Box
@@ -301,7 +293,7 @@ const PollCreate = () => {
               />
             ))}
           </Box>
-          <Box display="flex" justifyContent="end" marginTop={2} gap={2}>
+          <Box display="flex" justifyContent="space-evenly" marginTop={2}>
             <Button
               variant="contained"
               color="error"
