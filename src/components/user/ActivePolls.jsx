@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import { ViewPolls } from "./ViewPolls";
 import { ACTIVE_POLLS_URL, AUTH_TOKEN } from "../../constants";
 import axios from "axios";
+import { auth } from "../features/User.reducer";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export const ActivePolls = () => {
+    const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const activeFlag = true;
-    const navigate=useNavigate()
-    
+    const navigate = useNavigate();
+
     const fetchActivePolls = async () => {
         try {
-            const token = localStorage.getItem("userToken");
+            const token = user.token;
             const config = {
                 headers: { Authorization: `Bearer ${token}` },
             };
@@ -20,13 +23,12 @@ export const ActivePolls = () => {
                 setPollsData(response.data.data);
             }
         } catch (err) {
-            localStorage.clear()
-            navigate("/login")
+            localStorage.clear();
+            navigate("/login");
         }
     };
     useEffect(() => {
         fetchActivePolls();
     }, []);
-
     return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
 };

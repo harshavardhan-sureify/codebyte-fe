@@ -1,6 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-import AddUser from "../admin/AddUser";
+import { Routes, Route, Navigate } from "react-router-dom";
 import SignupPage from "../SignupPage";
 import PollCreate from "../admin/PollCreation";
 import Trigger from "../admin/Trigger";
@@ -11,27 +10,54 @@ import { AnsweredPolls } from "../user/AnsweredPolls";
 import { ViewSinglePoll } from "../user/ViewSinglePoll";
 import NavBar from "../NavBar";
 import { PageNotFound } from "../user/PageNotFound";
+import { ADMIN_ROLE, USER_ROLE } from "../../constants";
+import AdminDashBoard from "../admin/AdminDashBoard";
+import ProtectedRoute from "./ProtectedRoute";
+import { auth } from "../features/User.reducer";
+import { useSelector } from "react-redux";
+import PublicRoute from "./PublicRoute";
+
 const AppRoutes = () => {
+     const user = useSelector(auth);
     return (
         <>
             <NavBar />
             <Routes>
-                <Route path="/adduser" element={<AddUser />}></Route>
-                <Route path="/login" element={<LoginPage />} />
-                <Route path="/signup" element={<SignupPage />}></Route>
-                <Route path="/user" element={<LandingPage />}>
-                    <Route index element={<PageNotFound />} />
-                    <Route path="dashboard" element={<ActivePolls />} />
-                    <Route path="dashboard/:id" element={<ViewSinglePoll />} />
-                    <Route path="answeredpolls" element={<AnsweredPolls />} />
-                    <Route
-                        path="answeredpolls/:id"
-                        element={<ViewSinglePoll />}
-                    />
+                <Route element={<PublicRoute />}>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/signup" element={<SignupPage />} />
                 </Route>
-                <Route path="/create" element={<PollCreate />}></Route>
-                <Route path="/trigger" element={<Trigger />}></Route>
-                <Route path="*" element={<PageNotFound />} />
+                <Route element={<ProtectedRoute />}>
+                    {user.role === ADMIN_ROLE && (
+                        <Route path="/admin" element={<LandingPage />}>
+                            <Route
+                                path="dashboard"
+                                element={<AdminDashBoard />}
+                            />
+                            <Route path="create" element={<PollCreate />} />
+                            <Route path="trigger" element={<Trigger />} />
+                        </Route>
+                    )}
+                    {user.role === USER_ROLE && (
+                        <Route path="/user" element={<LandingPage />}>
+                            {/* <Route index element={<PageNotFound />} /> */}
+                            <Route path="dashboard" element={<ActivePolls />} />
+                            <Route
+                                path="dashboard/:id"
+                                element={<ViewSinglePoll />}
+                            />
+                            <Route
+                                path="answeredpolls"
+                                element={<AnsweredPolls />}
+                            />
+                            <Route
+                                path="answeredpolls/:id"
+                                element={<ViewSinglePoll />}
+                            />
+                        </Route>
+                    )}
+                </Route>
+                <Route path="*" element={<Navigate to="/login" replace />} />
             </Routes>
         </>
     );

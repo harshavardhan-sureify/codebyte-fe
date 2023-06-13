@@ -5,46 +5,42 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import logo from "../assets/images/logo.png";
+import { isLoggedIn, logout } from "./features/User.reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export default function NavBar() {
-    const [auth, setAuth] = React.useState(true);
-    const [anchorEl, setAnchorEl] = React.useState(null);
-
-    const handleChange = (event) => {
-        setAuth(event.target.checked);
-    };
+    const dispatch = useDispatch();
+    const isLogIn = useSelector(isLoggedIn);
+    const navigate = useNavigate();
+    const [anchorEl, setAnchorEl] = React.useState(false);
 
     const handleMenu = (event) => {
-        setAnchorEl(event.currentTarget);
+        setAnchorEl(!anchorEl);
     };
 
     const handleClose = () => {
         setAnchorEl(null);
     };
 
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/login");
+    };
     return (
         <Box sx={{ flexGrow: 1 }}>
-            <FormGroup>
-                <FormControlLabel
-                    control={
-                        <Switch
-                            checked={auth}
-                            onChange={handleChange}
-                            aria-label="login switch"
-                        />
-                    }
-                    label={auth ? "Logout" : "Login"}
-                />
-            </FormGroup>
             <AppBar position="static" color="secondary">
                 <Toolbar>
-                    <img src={logo} alt="" width="32px" heigth="32px" style={{marginRight:"5px"}} />
+                    <img
+                        src={logo}
+                        alt=""
+                        width="32px"
+                        heigth="32px"
+                        style={{ marginRight: "5px" }}
+                    />
                     <Typography
                         variant="h4"
                         color={"white"}
@@ -54,7 +50,7 @@ export default function NavBar() {
                     >
                         codebyte
                     </Typography>
-                    {auth && (
+                    {isLogIn && (
                         <div>
                             <IconButton
                                 size="large"
@@ -80,12 +76,18 @@ export default function NavBar() {
                                 }}
                                 open={Boolean(anchorEl)}
                                 onClose={handleClose}
+                                sx={{
+                                    marginTop: "35px",
+                                }}
                             >
                                 <MenuItem onClick={handleClose}>
                                     Profile
                                 </MenuItem>
-                                <MenuItem onClick={handleClose}>
-                                    My account
+                                <MenuItem
+                                    onClick={handleLogout}
+                                    sx={{ color: "danger" }}
+                                >
+                                    Logout
                                 </MenuItem>
                             </Menu>
                         </div>
