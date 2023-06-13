@@ -194,14 +194,6 @@ const SignupPage = () => {
                     </Alert>
                 </Snackbar>
             )}
-            <AppBar position="sticky">
-                <Toolbar>
-                    <img src={logo} alt="" width="32px" heigth="32px" />
-                    <Typography variant="h5" sx={{ marginLeft: "5px" }}>
-                        CodeByte
-                    </Typography>
-                </Toolbar>
-            </AppBar>
 
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
@@ -331,7 +323,7 @@ const SignupPage = () => {
                                     Already have account?{" "}
                                     <Link
                                         style={{ textDecoration: "none" }}
-                                        to="/"
+                                        to="/login"
                                     >
                                         Login
                                     </Link>

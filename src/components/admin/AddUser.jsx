@@ -2,7 +2,7 @@ import { Person } from "@mui/icons-material";
 import { TextField, Paper, Avatar, Typography, Button, Alert,Box } from "@mui/material";
 import React, { useState} from "react";
 
-import { adduserapi } from "../constant";
+import { addUser} from "../../constants";
 const initialize = () => {
     return {
         name: "",
@@ -38,7 +38,7 @@ const AddUser = () => {
 
     const postData = async (data) => {
         try {
-            const res = await fetch(adduserapi, {
+            const res = await fetch(addUser, {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data),
                 method: "POST"
