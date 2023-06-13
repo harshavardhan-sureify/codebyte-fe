@@ -17,7 +17,7 @@ const AppRoutes = () => {
             <NavBar />
             <Routes>
                 <Route path="/adduser" element={<AddUser />}></Route>
-                <Route path="/" element={<LoginPage />} />
+                <Route path="/login" element={<LoginPage />} />
                 <Route path="/signup" element={<SignupPage />}></Route>
                 <Route path="/user" element={<LandingPage />}>
                     <Route index element={<PageNotFound />} />

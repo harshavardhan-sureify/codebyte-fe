@@ -1,13 +1,11 @@
 import {
     Alert,
-    AppBar,
     Avatar,
     Button,
     Grid,
     IconButton,
     InputAdornment,
     Paper,
-    Toolbar,
     Typography,
     Snackbar,
 } from "@mui/material";
@@ -15,7 +13,6 @@ import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
 import React, { useState } from "react";
 import { theme } from "../themes/theme";
-import logo from "../assets/images/logo.png";
 import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { MyTextField } from "./Styles";
@@ -47,7 +44,12 @@ const LoginPage = () => {
 
                 localStorage.setItem("userToken", data.token);
                 localStorage.setItem("role", data.role);
-                navigate("/dashboard");
+                if (data.role === "user") {
+                    navigate("/user/dashboard",{replace:true});
+                    
+                } else {
+                    navigate("/admin/dashboard", { replace: true });
+                }
             }
         } catch (err) {
             if (err.response) {
@@ -189,7 +191,7 @@ const LoginPage = () => {
                         )}
                         <Avatar
                             sx={{
-                                backgroundColor: theme.palette.success.main,
+                                backgroundColor: theme.palette.secondary.main,
                                 marginTop: "7px",
                             }}
                         >
@@ -249,6 +251,7 @@ const LoginPage = () => {
                                 }}
                             ></MyTextField>
                             <Button
+                                color="secondary"
                                 type="submit"
                                 fullWidth
                                 variant="contained"

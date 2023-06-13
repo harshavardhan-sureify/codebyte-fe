@@ -11,6 +11,9 @@ import {
     tableCellClasses,
 } from "@mui/material";
 import { theme } from "../themes/theme";
+import { Cancel } from "@mui/icons-material";
+import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
+
 export const MyTextField = styled(TextField)({
     margin: "8px 0px",
 });
@@ -100,4 +103,27 @@ export const StyledCardDate = styled(Box)({
     height: "60px",
     borderRadius: "5px",
     border: "1px solid grey",
+});
+
+export const StyledCancelIcon = styled(Cancel)({
+    position: "absolute",
+    top: 5,
+    right: 5,
+    color: "red",
+    borderRadius: "100%",
+    "&: hover": {
+        cursor: "pointer",
+        border: "1px solid",
+    },
+});
+
+export const StyledBackIcon = styled(ArrowLeftIcon)({
+    position: "absolute",
+    top: 14,
+    left: 5,
+    fontSize:"50px",
+    borderRadius: "100%",
+    "&: hover": {
+        cursor: "pointer",
+    },
 });

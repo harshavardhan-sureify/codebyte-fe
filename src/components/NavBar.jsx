@@ -30,7 +30,7 @@ export default function NavBar() {
 
     return (
         <Box sx={{ flexGrow: 1 }}>
-            {/* <FormGroup>
+            <FormGroup>
                 <FormControlLabel
                     control={
                         <Switch
@@ -41,7 +41,7 @@ export default function NavBar() {
                     }
                     label={auth ? "Logout" : "Login"}
                 />
-            </FormGroup> */}
+            </FormGroup>
             <AppBar position="static" color="secondary">
                 <Toolbar>
                     <img src={logo} alt="" width="32px" heigth="32px" style={{marginRight:"5px"}} />
