@@ -12,13 +12,16 @@ import NavBar from "../NavBar";
 import { PageNotFound } from "../user/PageNotFound";
 import { ADMIN_ROLE, USER_ROLE } from "../../constants";
 import AdminDashBoard from "../admin/AdminDashBoard";
+import { AppBar, Toolbar, Typography } from "@mui/material";
 import ProtectedRoute from "./ProtectedRoute";
-import { auth } from "../features/User.reducer";
+import { auth, isLoggedIn } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
+import AllUsers from "./../admin/AllUsers"
 
 const AppRoutes = () => {
      const user = useSelector(auth);
+     const islogIn = useSelector(isLoggedIn);
     return (
         <>
             <NavBar />
@@ -36,6 +39,10 @@ const AppRoutes = () => {
                             />
                             <Route path="create" element={<PollCreate />} />
                             <Route path="trigger" element={<Trigger />} />
+                            <Route
+                                path="allusers"
+                                element={<AllUsers />}
+                            />
                         </Route>
                     )}
                     {user.role === USER_ROLE && (

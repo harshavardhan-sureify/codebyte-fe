@@ -27,6 +27,10 @@ const intitialize = () => {
         email: "",
         password: "",
     };
+    return {
+        email: "",
+        password: "",
+    };
 };
 const LoginPage = () => {
     const dispatch = useDispatch();
