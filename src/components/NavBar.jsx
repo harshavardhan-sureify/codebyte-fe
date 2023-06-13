@@ -5,21 +5,36 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import AccountCircle from "@mui/icons-material/AccountCircle";
-import Switch from "@mui/material/Switch";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import FormGroup from "@mui/material/FormGroup";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import logo from "../assets/images/logo.png";
-import { isLoggedIn, logout } from "./features/User.reducer";
-import { useSelector,useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { auth, isLoggedIn, logout } from "./features/User.reducer";
+import { useSelector, useDispatch } from "react-redux";
+import { NavLink, useNavigate } from "react-router-dom";
+import MenuIcon from "@mui/icons-material/Menu";
+import {
+    Button,
+    Drawer,
+    List,
+   
+} from "@mui/material";
+import { USER_ROLE } from "../constants";
+import { USER_ROUTES } from "../constants";
+import { ADMIN_ROUTES } from "../constants";
+import { useTheme } from "@emotion/react";
 
 export default function NavBar() {
     const dispatch = useDispatch();
     const isLogIn = useSelector(isLoggedIn);
+    const { role } = useSelector(auth);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(false);
+    const [routes, setRoutes] = React.useState([]);
+    React.useEffect(() => {
+        if (role === USER_ROLE) {
+            setRoutes(USER_ROUTES);
+        } else setRoutes(ADMIN_ROUTES);
+    }, []);
 
     const handleMenu = (event) => {
         setAnchorEl(!anchorEl);
@@ -27,6 +42,58 @@ export default function NavBar() {
 
     const handleClose = () => {
         setAnchorEl(null);
+    };
+    const [state, setState] = React.useState({
+        left: false,
+    });
+
+     const theme = useTheme();
+     const activeStyles = ({ isActive }) => {
+         return {
+             display: "block",
+             color: "white",
+             fontWeight: isActive ? 700 : 450,
+             backgroundColor: isActive ? theme.palette.primary.light : "",
+             textDecoration: "none",
+             width: "100%",
+             padding: "5% 0",
+             textTransform: "uppercase",
+             textAlign: "center",
+         };
+     };
+
+    const list = (anchor) => {
+        return (
+            <Box
+                sx={{ width: 200,height:"100vh",background:theme.palette.secondary.main }}
+                role="presentation"
+                onClick={toggleDrawer(anchor, false)}
+                onKeyDown={toggleDrawer(anchor, false)}
+            >
+                <List>
+                    {routes.map((route) => (
+                        <NavLink
+                            to={route.route}
+                            style={activeStyles}
+                            key={`navlink${route.name}`}
+                        >
+                            {route.name}
+                        </NavLink>
+                    ))}
+                </List>
+            </Box>
+        );
+    };
+
+    const toggleDrawer = (anchor, open) => (event) => {
+        if (
+            event.type === "keydown" &&
+            (event.key === "Tab" || event.key === "Shift")
+        ) {
+            return;
+        }
+
+        setState({ ...state, [anchor]: open });
     };
 
     const handleLogout = () => {
@@ -37,6 +104,32 @@ export default function NavBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color="secondary">
                 <Toolbar>
+                    <Button
+                        onClick={toggleDrawer("left", true)}
+                        sx={{
+                            display: {
+                                xs: "block",
+                                sm: "block",
+                                md: "none",
+                                lg: "none",
+                            },
+                        }}
+                    >
+                        <MenuIcon
+                            sx={{
+                                mr: 2,
+
+                                color: "white",
+                            }}
+                        />
+                    </Button>
+                    <Drawer
+                        anchor="left"
+                        open={state["left"]}
+                        onClose={toggleDrawer("left", false)}
+                    >
+                        {list("left")}
+                    </Drawer>
                     <img
                         src={logo}
                         alt=""

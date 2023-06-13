@@ -20,8 +20,8 @@ export const LandingPage = () => {
         return {
             display: "block",
             color: "white",
-            fontWeight: isActive ? 900 : 450,
-            backgroundColor: isActive ? theme.palette.primary.main : "",
+            fontWeight: isActive ? 700 : 450,
+            backgroundColor: isActive ? theme.palette.primary.light : "",
             textDecoration: "none",
             width: "100%",
             padding: "5% 0",
@@ -31,7 +31,7 @@ export const LandingPage = () => {
     };
     return (
         <Box sx={{ display: "flex" }}>
-            <StyledSideBar>
+            <StyledSideBar sx={{display:{sm:"none",xs:"none",md:"block",lg:"block"}}}>
                 {routes.map((route) => (
                     <NavLink to={route.route} style={activeStyles} key = {`navlink${route.name}`}>
                         {route.name}
