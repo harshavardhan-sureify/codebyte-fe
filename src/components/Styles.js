@@ -96,8 +96,8 @@ export const StyledCardDate = styled(Box)({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    width: "60px",
-    height: "60px",
+    width: "70px",
+    height: "68px",
     borderRadius: "5px",
     border: "1px solid grey",
 });
