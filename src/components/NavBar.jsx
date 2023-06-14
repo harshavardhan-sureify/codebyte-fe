@@ -12,12 +12,7 @@ import { auth, isLoggedIn, logout } from "./features/User.reducer";
 import { useSelector, useDispatch } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-    Button,
-    Drawer,
-    List,
-   
-} from "@mui/material";
+import { Button, Drawer, List } from "@mui/material";
 import { USER_ROLE } from "../constants";
 import { USER_ROUTES } from "../constants";
 import { ADMIN_ROUTES } from "../constants";
@@ -26,46 +21,42 @@ import { useTheme } from "@emotion/react";
 export default function NavBar() {
     const dispatch = useDispatch();
     const isLogIn = useSelector(isLoggedIn);
-    const { role,name } = useSelector(auth);
+    const { role, name } = useSelector(auth);
     const navigate = useNavigate();
-    const [anchorEl, setAnchorEl] = React.useState(false);
     const [routes, setRoutes] = React.useState([]);
     React.useEffect(() => {
         if (role === USER_ROLE) {
             setRoutes(USER_ROUTES);
         } else setRoutes(ADMIN_ROUTES);
-    }, []);
+    }, [role, name]);
 
-    const handleMenu = (event) => {
-        setAnchorEl(!anchorEl);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
     const [state, setState] = React.useState({
         left: false,
     });
 
-     const theme = useTheme();
-     const activeStyles = ({ isActive }) => {
-         return {
-             display: "block",
-             color: "white",
-             fontWeight: isActive ? 700 : 450,
-             backgroundColor: isActive ? theme.palette.primary.light : "",
-             textDecoration: "none",
-             width: "100%",
-             padding: "5% 0",
-             textTransform: "uppercase",
-             textAlign: "center",
-         };
-     };
+    const theme = useTheme();
+    const activeStyles = ({ isActive }) => {
+        return {
+            display: "block",
+            color: "white",
+            fontWeight: isActive ? 700 : 450,
+            backgroundColor: isActive ? theme.palette.primary.light : "",
+            textDecoration: "none",
+            width: "100%",
+            padding: "5% 0",
+            textTransform: "uppercase",
+            textAlign: "center",
+        };
+    };
 
     const list = (anchor) => {
         return (
             <Box
-                sx={{ width: 200,height:"100vh",background:theme.palette.secondary.main }}
+                sx={{
+                    width: 200,
+                    height: "100vh",
+                    background: theme.palette.secondary.main,
+                }}
                 role="presentation"
                 onClick={toggleDrawer(anchor, false)}
                 onKeyDown={toggleDrawer(anchor, false)}
@@ -154,7 +145,13 @@ export default function NavBar() {
                             }}
                         >
                             <Box sx={{ display: "flex", gap: 2 }}>
-                                <Typography sx={{ display: "flex", gap: 1,alignItems:"center" }}>
+                                <Typography
+                                    sx={{
+                                        display: "flex",
+                                        gap: 1,
+                                        alignItems: "center",
+                                    }}
+                                >
                                     <AccountCircle />
                                     {name}
                                 </Typography>

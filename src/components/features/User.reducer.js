@@ -13,6 +13,7 @@ const userSlice = createSlice({
         login(state, action) {
             state.token = action.payload.token;
             state.role = action.payload.role;
+            state.name = action.payload.name;
             localStorage.setItem("token", action.payload.token);
             localStorage.setItem("role", action.payload.role);
             localStorage.setItem("name", action.payload.name);
@@ -24,6 +25,7 @@ const userSlice = createSlice({
             localStorage.removeItem("name");
             state.token = "";
             state.role = "";
+            state.name = "";
             return state;
         },
     },
