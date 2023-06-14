@@ -27,6 +27,10 @@ export const ADMIN_ROUTES = [
         name: "All users",
         route: "/admin/allusers",
     },
+    {
+        name: "profile",
+        route: "/admin/profile",
+    },
 ];
 export const USER_ROUTES = [
     {
@@ -36,6 +40,10 @@ export const USER_ROUTES = [
     {
         name: "Answered polls",
         route: "/user/answeredpolls",
+    },
+    {
+        name: "profile",
+        route: "/user/profile",
     },
 ];
 export const USER_ROLE = "user";

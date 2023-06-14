@@ -165,7 +165,7 @@ const LoginPage = () => {
                 </Snackbar>
             )}
 
-            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid container sx={{ display: "flex", justifyContent: "center"}}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>
                         <img
@@ -174,7 +174,7 @@ const LoginPage = () => {
                             width="100px"
                             height="100px"
                         />
-                        <ImageText variant="h6">Hey,User</ImageText>
+                        {/* <ImageText variant="h6">Hey,User</ImageText> */}
                         <ImageText variant="h6">Welcome Back!</ImageText>
                     </ImagePaper>
                 </Grid>
@@ -265,14 +265,14 @@ const LoginPage = () => {
                             >
                                 Login
                             </Button>
-                            <Typography variant="p">
+                            {/* <Typography variant="p">
                                 <Link
                                     to="/forgotpassword"
                                     style={{ textDecoration: "none" }}
                                 >
                                     Forgot password?
                                 </Link>
-                            </Typography>
+                            </Typography> */}
                             <Typography variant="body2">
                                 Dont have an account?{" "}
                                 <Link

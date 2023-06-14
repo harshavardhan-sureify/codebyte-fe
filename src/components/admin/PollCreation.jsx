@@ -1,4 +1,4 @@
-import { Box, Grid, TextField, Typography, Fab, Button } from "@mui/material";
+import { Box, Grid, TextField, Typography, Fab, Button, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -14,6 +14,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
+import { useNavigate } from "react-router-dom";
 
 const Option = ({
     option,
@@ -40,15 +41,15 @@ const Option = ({
                 onChange={(e) => handleOptionChange(e.target.value, index)}
             />
             {canDelete && (
-                <Fab
+                <IconButton
                     color="error"
                     aria-label="delete"
                     size="small"
-                    sx={{ width: "36px", height: "2px", borderRadius: "50%" }}
+                    sx={{ height: "2px", borderRadius: "50%" }}
                     onClick={() => handleDeleteOption(index)}
                 >
-                    <ClearIcon sx={{ width: "12px" }} />
-                </Fab>
+                    <ClearIcon />
+                </IconButton>
             )}
         </Box>
         {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
@@ -61,6 +62,7 @@ const Option = ({
 const PollCreate = () => {
     const { token } = useSelector(auth);
     const [question, setQuestion] = useState("");
+    const navigate = useNavigate();
     var minMax = require("dayjs/plugin/minMax");
     dayjs.extend(minMax);
     const today = dayjs(new Date());
@@ -198,13 +200,9 @@ const PollCreate = () => {
                 spacing={0}
                 direction="column"
                 alignItems="center"
-                justifyContent="center"
-                sx={{ minHeight: "100vh" }}
+                sx={{ minHeight: "100vh" ,mt:4}}
             >
-                <CreatePollContainer
-                    sx={{ width: "40%", minWidth: "350px", padding: 2 }}
-                    elevation={3}
-                >
+                <CreatePollContainer elevation={3}>
                     <Grid
                         container
                         justifyContent="flex-start"
@@ -292,7 +290,7 @@ const PollCreate = () => {
                         </Typography>
                         <Tooltip title="Add new option">
                             <Fab
-                                color="primary"
+                                color="secondary"
                                 aria-label="add"
                                 onClick={handleNewOption}
                                 size="small"
@@ -330,7 +328,7 @@ const PollCreate = () => {
                             variant="contained"
                             color="error"
                             onClick={() => {
-                                console.log("going back");
+                                navigate(-1);
                             }}
                         >
                             Cancel
@@ -341,6 +339,7 @@ const PollCreate = () => {
                                 setIsClicked(true);
                                 if (validateForm()) submitPoll();
                             }}
+                            color="secondary"
                         >
                             Submit
                         </Button>

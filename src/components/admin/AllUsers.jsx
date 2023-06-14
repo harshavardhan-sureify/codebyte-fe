@@ -81,7 +81,7 @@ const AllUsers = () => {
             <Grid
                 container
                 sx={{
-                    justifyContent: "space-evenly",
+                    justifyContent: "space-between",
                     alignItems: "center",
                 }}
             >
@@ -90,6 +90,7 @@ const AllUsers = () => {
                         label="Search"
                         value={searchText}
                         onChange={(e) => setsearchText(e.target.value)}
+                        size="small"
                     />
                 </Grid>
                 <Grid item>
@@ -141,7 +142,7 @@ const AllUsers = () => {
                 </Table>
                 <TablePagination
                     component="div"
-                    rowsPerPage={10}
+                    rowsPerPage={rowsPerPage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
                     count={filteredData.length}
                     page={page}
@@ -161,7 +162,6 @@ const AllUsers = () => {
             >
                 <Paper
                     sx={{
-                        // height: "350px",
                         width: "300px",
                         display: "flex",
                         justifyContent: "center",
@@ -182,8 +182,22 @@ const AllUsers = () => {
                         </Typography>
                     </Box>
                     <Grid container pt={2} justifyContent="flex-end" gap={2}>
-                        <Grid item><Button onClick={() => setIsOpen(false)}>Cancel</Button></Grid>
-                        <Grid item><Button color="error" variant="contained" onClick={()=>console.log("delete",deleteUser)}>Delete</Button></Grid>
+                        <Grid item>
+                            <Button onClick={() => setIsOpen(false)}>
+                                Cancel
+                            </Button>
+                        </Grid>
+                        <Grid item>
+                            <Button
+                                color="error"
+                                variant="contained"
+                                onClick={() =>
+                                    console.log("delete", deleteUser)
+                                }
+                            >
+                                Delete
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Paper>
             </Modal>
