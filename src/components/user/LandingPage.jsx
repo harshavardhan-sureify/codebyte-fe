@@ -13,7 +13,7 @@ export const LandingPage = () => {
         if (role === USER_ROLE) {
             setRoutes(USER_ROUTES);
         } else setRoutes(ADMIN_ROUTES);
-    }, []);
+    }, [role]);
 
     const theme = useTheme();
     const activeStyles = ({ isActive }) => {
