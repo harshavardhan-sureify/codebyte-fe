@@ -18,7 +18,7 @@ import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers"
 import AllPolls from "../admin/AllPolls";
-import {AdminActivePolls} from "../admin/AdminActivePolls"
+import {AdminActivePolls} from "./../admin/AdminActivePolls"
 
 const AppRoutes = () => {
      const user = useSelector(auth);
