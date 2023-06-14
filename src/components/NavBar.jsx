@@ -26,7 +26,7 @@ import { useTheme } from "@emotion/react";
 export default function NavBar() {
     const dispatch = useDispatch();
     const isLogIn = useSelector(isLoggedIn);
-    const { role } = useSelector(auth);
+    const { role,name } = useSelector(auth);
     const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState(false);
     const [routes, setRoutes] = React.useState([]);
@@ -147,46 +147,27 @@ export default function NavBar() {
                         codebyte
                     </Typography>
                     {isLogIn && (
-                        <div>
-                            <IconButton
-                                size="large"
-                                aria-label="account of current user"
-                                aria-controls="menu-appbar"
-                                aria-haspopup="true"
-                                onClick={handleMenu}
-                                color="inherit"
+                        <Box
+                            sx={{
+                                display: "flex",
+                                gap: 2,
+                            }}
+                        >
+                            <Box sx={{ display: "flex", gap: 2 }}>
+                                <Typography sx={{ display: "flex", gap: 1,alignItems:"center" }}>
+                                    <AccountCircle />
+                                    {name}
+                                </Typography>
+                            </Box>
+
+                            <Button
+                                variant="contained"
+                                color="error"
+                                onClick={() => handleLogout()}
                             >
-                                <AccountCircle />
-                            </IconButton>
-                            <Menu
-                                id="menu-appbar"
-                                anchorEl={anchorEl}
-                                anchorOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                keepMounted
-                                transformOrigin={{
-                                    vertical: "top",
-                                    horizontal: "right",
-                                }}
-                                open={Boolean(anchorEl)}
-                                onClose={handleClose}
-                                sx={{
-                                    marginTop: "35px",
-                                }}
-                            >
-                                <MenuItem onClick={handleClose}>
-                                    Profile
-                                </MenuItem>
-                                <MenuItem
-                                    onClick={handleLogout}
-                                    sx={{ color: "danger" }}
-                                >
-                                    Logout
-                                </MenuItem>
-                            </Menu>
-                        </div>
+                                Logout
+                            </Button>
+                        </Box>
                     )}
                 </Toolbar>
             </AppBar>

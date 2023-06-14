@@ -128,7 +128,10 @@ const AdminDashBoard = () => {
                                 on: "hover",
                                 style: {
                                     itemOpacity: 1,
+                                    itemBackground:"white",
+                                    itemTextColor:'white'
                                 },
+
                             },
                         ],
                     },
@@ -208,15 +211,14 @@ const AdminDashBoard = () => {
                 container
                 spacing={3}
                 sx={{
-                    background: "#f7f5ff",
                     p:2
                 }}
             >
                 <Grid item xs={12} sm={6} lg={4} md={4}>
                     {/* total active users */}
                     <Card elevation={4}>
-                        <Grid container columns={10}>
-                            <Grid item sm={3} md={3} lg={3}>
+                        <Grid container columns={12} >
+                            <Grid item sm={4} md={6} lg={4}>
                                 <ProgressCircle
                                     progress={Math.round(
                                         (data?.activeUsers / data?.allUsers) *
@@ -226,9 +228,9 @@ const AdminDashBoard = () => {
                             </Grid>
                             <Grid
                                 item
-                                sm={7}
-                                md={7}
-                                lg={7}
+                                sm={8}
+                                md={6}
+                                lg={8}
                                 alignItems="flex-start"
                                 p={2}
                             >
@@ -248,7 +250,7 @@ const AdminDashBoard = () => {
                 <Grid item xs={12} sm={6} lg={4} md={4}>
                     <Card elevation={4}>
                         <Grid container columns={10}>
-                            <Grid item sm={3} md={3} lg={3}>
+                            <Grid item sm={3} md={5} lg={3}>
                                 <ProgressCircle
                                     progress={Math.round(
                                         (data?.activePolls / data?.allPolls) *
@@ -259,7 +261,7 @@ const AdminDashBoard = () => {
                             <Grid
                                 item
                                 sm={7}
-                                md={7}
+                                md={5}
                                 lg={7}
                                 alignItems="flex-start"
                                 p={2}
@@ -280,13 +282,13 @@ const AdminDashBoard = () => {
                 <Grid item xs={12} sm={6} lg={4} md={4}>
                     <Card elevation={4}>
                         <Grid container columns={10}>
-                            <Grid item sm={3} md={3} lg={3}>
+                            <Grid item sm={3} md={5} lg={3}>
                                 <ProgressCircle />
                             </Grid>
                             <Grid
                                 item
                                 sm={7}
-                                md={7}
+                                md={5}
                                 lg={7}
                                 alignItems="flex-start"
                                 p={2}

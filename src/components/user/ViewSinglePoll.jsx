@@ -21,8 +21,10 @@ import axios from "axios";
 import { SAVE_POLL_URL } from "../../constants";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
+import { ADMIN_ROLE } from "../../constants";
 
 export const ViewSinglePoll = () => {
+    const { role } = useSelector(auth);
     const location = useLocation();
     const navigate = useNavigate();
     const poll = location.state.pollProps;
@@ -42,6 +44,14 @@ export const ViewSinglePoll = () => {
     };
     const submitPoll = async (e) => {
         e.preventDefault();
+        if (currSelectedValue === "") {
+            setToasterObj({
+                message: "Please select a option",
+                severity: "error",
+            });
+            setOpen(true);
+            return;
+        }
         const data = {
             poll_id: poll.poll_id,
             option_id: options.findIndex(
@@ -91,7 +101,7 @@ export const ViewSinglePoll = () => {
     };
 
     return (
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: "50px" }}>
             <Snackbar
                 sx={{ mt: "40px" }}
                 open={open}
@@ -100,17 +110,22 @@ export const ViewSinglePoll = () => {
                 anchorOrigin={{ vertical: "top", horizontal: "right" }}
             >
                 <Alert
-                    variant="filled"
                     onClose={handleClose}
                     severity={toasterObj.severity}
-                    sx={{ width: "100%", color: "white" }}
+                    sx={{ width: "100%" }}
                 >
                     {toasterObj.message}
                 </Alert>
             </Snackbar>
             <Card p sx={{ width: "400px", p: "20px", position: "relative" }}>
                 <Stack spacing={4} sx={{ alignItems: "center" }}>
-                    <Typography variant="h4">{poll.title}</Typography>
+                    <Typography
+                        variant="h4"
+                        sx={{ paddingLeft: "7px" }}
+                        textAlign="center"
+                    >
+                        {poll.title}
+                    </Typography>
                     <StyledDuration
                         startDate={poll.start_date}
                         endDate={poll.end_date}
@@ -135,6 +150,7 @@ export const ViewSinglePoll = () => {
                                             : prevSelectedValue
                                     }
                                     onChange={handleSelectionChange}
+                                    
                                 >
                                     {options.map((option) => (
                                         <FormControlLabel
@@ -163,6 +179,7 @@ export const ViewSinglePoll = () => {
                                             value={option}
                                             control={<Radio />}
                                             label={option}
+                                            disabled={role===ADMIN_ROLE}
                                         />
                                     ))}
                                 </RadioGroup>

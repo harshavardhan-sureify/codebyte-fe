@@ -160,7 +160,7 @@ const SignupPage = () => {
         <Grid
             sx={{
                 backgroundColor: theme.palette.bColor.main,
-                minHeight: "100vh",
+                minHeight: "91vh",
             }}
         >
             {responseStatus && (
@@ -192,7 +192,7 @@ const SignupPage = () => {
                 </Snackbar>
             )}
 
-            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
+            <Grid container sx={{ display: "flex", justifyContent: "center", maxHeight:"400px" }}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>
                         <img
@@ -201,7 +201,7 @@ const SignupPage = () => {
                             width="100px"
                             height="100px"
                         />
-                        <ImageText variant="h6">Hey,User</ImageText>
+                        {/* <ImageText variant="h6"></ImageText> */}
                         <ImageText variant="h6">
                             Get started by creating an account
                         </ImageText>

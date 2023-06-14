@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddUser from "./AddUser";
+import AddIcon from "@mui/icons-material/Add";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -59,11 +60,16 @@ export default function Trigger() {
     return (
         <div>
             <Button
-                variant="outlined"
+                variant="contained"
+                color="success"
                 onClick={handleClickOpen}
-                sx={{ px: 4, py: 2 }}
+                sx={
+                    {mr:4}
+                }
             >
                Add User
+               <AddIcon fontSize="small"/>
+
             </Button>
             <BootstrapDialog
                 onClose={handleClose}

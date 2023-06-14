@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     token: localStorage.getItem("token") ?? "",
     role: localStorage.getItem("role") ?? "",
+    name: localStorage.getItem("name") ?? "",
 };
 
 const userSlice = createSlice({
@@ -14,11 +15,13 @@ const userSlice = createSlice({
             state.role = action.payload.role;
             localStorage.setItem("token", action.payload.token);
             localStorage.setItem("role", action.payload.role);
+            localStorage.setItem("name", action.payload.name);
             return state;
         },
         logout(state, action) {
             localStorage.removeItem("token");
             localStorage.removeItem("role");
+            localStorage.removeItem("name");
             state.token = "";
             state.role = "";
             return state;

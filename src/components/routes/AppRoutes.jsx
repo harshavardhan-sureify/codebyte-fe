@@ -13,10 +13,12 @@ import { PageNotFound } from "../user/PageNotFound";
 import { ADMIN_ROLE, USER_ROLE } from "../../constants";
 import AdminDashBoard from "../admin/AdminDashBoard";
 import ProtectedRoute from "./ProtectedRoute";
-import { auth, isLoggedIn } from "../features/User.reducer";
+import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers"
+import AllPolls from "../admin/AllPolls";
+import {AdminActivePolls} from "../admin/AdminActivePolls"
 
 const AppRoutes = () => {
      const user = useSelector(auth);
@@ -37,9 +39,15 @@ const AppRoutes = () => {
                             />
                             <Route path="create" element={<PollCreate />} />
                             <Route path="trigger" element={<Trigger />} />
+                            <Route path="allusers" element={<AllUsers />} />
+                            <Route path="allpolls" element={<AllPolls />} />
                             <Route
-                                path="allusers"
-                                element={<AllUsers />}
+                                path="activepolls"
+                                element={<AdminActivePolls />}
+                            />
+                            <Route
+                                path="activepolls/:id"
+                                element={<ViewSinglePoll />}
                             />
                         </Route>
                     )}

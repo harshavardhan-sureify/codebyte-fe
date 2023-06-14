@@ -92,8 +92,8 @@ export const StyledSideBar = styled(Box)(({ theme }) => ({
 export const StyledOutletContainer = styled(Box)({
     flex: 1,
     overflow: "auto",
-    padding: "2vh ",
-    maxHeight: "86vh",
+    padding: "1vh ",
+    maxHeight: "90vh",
 });
 
 export const StyledCardDate = styled(Box)({
@@ -121,7 +121,7 @@ export const StyledCancelIcon = styled(Cancel)({
 export const StyledBackIcon = styled(ArrowLeftIcon)({
     position: "absolute",
     top: 14,
-    left: 5,
+    left: 1,
     fontSize:"50px",
     borderRadius: "100%",
     "&: hover": {
