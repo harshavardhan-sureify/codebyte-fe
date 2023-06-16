@@ -3,7 +3,7 @@ const PHP_BASE_URL = "http://localhost/api/v1/";
 
 const createPollApi = PHP_BASE_URL + "createpoll";
 const signUp = GO_BASE_URL + "signup";
-const addUser = PHP_BASE_URL + "adduser";
+const addUser = GO_BASE_URL + "admin/adduser";
 const ACTIVE_POLLS_URL = PHP_BASE_URL + "activepolls";
 const ANSWERED_POLLS_URL = PHP_BASE_URL + "answeredpolls";
 const loginApi = GO_BASE_URL + "login";
@@ -31,6 +31,7 @@ export const ADMIN_ROUTES = [
         name: "profile",
         route: "/admin/profile",
     },
+    
 ];
 export const USER_ROUTES = [
     {
