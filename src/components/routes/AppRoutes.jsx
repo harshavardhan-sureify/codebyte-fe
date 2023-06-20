@@ -19,6 +19,7 @@ import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers"
 import AllPolls from "../admin/AllPolls";
 import {AdminActivePolls} from "./../admin/AdminActivePolls"
+import UpdateProfile from "../user/UpdateProfile";
 
 const AppRoutes = () => {
      const user = useSelector(auth);
@@ -67,6 +68,7 @@ const AppRoutes = () => {
                                 path="answeredpolls/:id"
                                 element={<ViewSinglePoll />}
                             />
+                            <Route path="profile" element={<UpdateProfile />}/>
                         </Route>
                     )}
                 </Route>
