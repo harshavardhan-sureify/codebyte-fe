@@ -25,7 +25,7 @@ const regex = {
 };
 
 const AddUser = () => {
-  const { token } = useSelector(auth);
+  const user = useSelector(auth);
   const [addUserForm, setAddUserForm] = useState(initialize());
   const [error, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState("");
@@ -49,28 +49,30 @@ const AddUser = () => {
     }
     return "";
   };
-
-  const postData = async (data) => {
-    axios
-      .post(addUser, data, {
+  const postData = async (dataObj) => {
+    try {
+      const token = user.token;
+      const config = {
         headers: {
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
-      })
-      .then((res) => {
+      };
+      const res = await axios.post(addUser, dataObj, config);
+      if (res.status === 200) {
         setMsg(res.data.data.message);
         setMsgcolor("green");
         setAddUserForm(initialize());
         setErrors({});
-        setTimeout(()=>{setMsg("")},2000)
-      })
-      .catch((err) => {
-        setMsgcolor("error");
-        setMsg(err.response.data.data.error);
-      })
-      .finally(() => {
-        setButton(false);
-      });
+        setTimeout(() => {
+          setMsg("");
+        }, 2000);
+      }
+    } catch (err) {
+      setMsgcolor("error");
+      setMsg(err.response.data.data.error);
+    } finally {
+      setButton(false);
+    }
   };
 
   const handleChange = (e) => {
