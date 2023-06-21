@@ -9,6 +9,7 @@ const ANSWERED_POLLS_URL = PHP_BASE_URL + "answeredpolls";
 const loginApi = GO_BASE_URL + "login";
 const adminDashboardApi = GO_BASE_URL+"admin/dashboard";
 const allUsers = PHP_BASE_URL + "viewusers";
+const userDelete = GO_BASE_URL+"admin/delete"
 export const SAVE_POLL_URL = PHP_BASE_URL + "savepoll";
 export const ADMIN_ROUTES = [
     {
@@ -60,4 +61,5 @@ export {
     addUser,
     ACTIVE_POLLS_URL,
     ANSWERED_POLLS_URL,
+    userDelete
 };

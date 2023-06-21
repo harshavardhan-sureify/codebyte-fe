@@ -2,15 +2,17 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
-import { allUsers } from "../../constants";
+import { allUsers, userDelete } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import {
+    Alert,
     Avatar,
     Box,
     Button,
     Grid,
     Modal,
     Paper,
+    Snackbar,
     Table,
     TableBody,
     TableCell,
@@ -26,7 +28,6 @@ import { formatDate } from "./../utils";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
-    color: ${(props) => (props.active ? "green" : "black")};
 `;
 const AllUsers = () => {
     const user = useSelector(auth);
@@ -37,6 +38,9 @@ const AllUsers = () => {
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [deleteUser, setDeleteUser] = useState({});
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [severity, setSeverity] = useState("");
+    const [alertMessage, setAlertMessage] = useState("");
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
@@ -48,7 +52,28 @@ const AllUsers = () => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-    useEffect(() => {
+
+    const submitUserDelete = () => {
+        setIsOpen(false);
+        axios
+            .delete(`${userDelete}\\${deleteUser.user_id}`, {
+                headers: { Authorization: user.token },
+            })
+            .then((res) => {
+                setSeverity("success");
+                setAlertMessage(res.data.data.message);
+            })
+            .catch((error) => {
+                setSeverity("error");
+                setAlertMessage(error.response.data.data.message);
+            })
+            .finally(() => {
+                setAlertOpen(true);
+                fetchAllUsers();
+            });
+    };
+
+    const fetchAllUsers = () => {
         axios
             .get(allUsers, {
                 headers: { Authorization: "Bearer " + user.token },
@@ -60,6 +85,10 @@ const AllUsers = () => {
             .catch((err) => {
                 console.log(err);
             });
+    };
+
+    useEffect(() => {
+        fetchAllUsers();
     }, []);
     useEffect(() => {
         setFilteredData(
@@ -78,6 +107,21 @@ const AllUsers = () => {
     const currentPageData = filteredData.slice(startIndex, endIndex);
     return (
         <Box>
+            <Snackbar
+                open={alertOpen}
+                autoHideDuration={3000}
+                onClose={() => setAlertOpen(false)}
+                anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                sx={{ paddingTop: "43px" }}
+            >
+                <Alert
+                    onClose={() => setAlertOpen(false)}
+                    severity={severity}
+                    sx={{ width: "100%" }}
+                >
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
             <Grid
                 container
                 sx={{
@@ -118,7 +162,12 @@ const AllUsers = () => {
                                 <StyledTableCell>{user.name}</StyledTableCell>
                                 <StyledTableCell>{user.email}</StyledTableCell>
                                 <StyledTableCell
-                                    active={user.is_active === "1"}
+                                    sx={{
+                                        color:
+                                            user.is_active === "1"
+                                                ? "green"
+                                                : "red",
+                                    }}
                                 >
                                     {user.is_active === "1"
                                         ? "Active"
@@ -132,6 +181,7 @@ const AllUsers = () => {
                                         variant="contained"
                                         color="error"
                                         onClick={() => handleDeleteModal(user)}
+                                        disabled={!(user.is_active === "1")}
                                     >
                                         Delete
                                     </Button>
@@ -191,9 +241,7 @@ const AllUsers = () => {
                             <Button
                                 color="error"
                                 variant="contained"
-                                onClick={() =>
-                                    console.log("delete", deleteUser)
-                                }
+                                onClick={() => submitUserDelete()}
                             >
                                 Delete
                             </Button>
