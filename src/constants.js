@@ -7,45 +7,48 @@ const addUser = PHP_BASE_URL + "adduser";
 const ACTIVE_POLLS_URL = PHP_BASE_URL + "activepolls";
 const ANSWERED_POLLS_URL = PHP_BASE_URL + "answeredpolls";
 const loginApi = GO_BASE_URL + "login";
-const adminDashboardApi = GO_BASE_URL+"admin/dashboard";
+const adminDashboardApi = GO_BASE_URL + "admin/dashboard";
 const allUsers = PHP_BASE_URL + "viewusers";
+const userInfo = GO_BASE_URL + "user/userinfo";
 const userDelete = GO_BASE_URL+"admin/delete"
 export const SAVE_POLL_URL = PHP_BASE_URL + "savepoll";
+const confirmuser = GO_BASE_URL + "user/confirmuser";
+const updateUserProfile = GO_BASE_URL + "user/updateprofile";
 export const ADMIN_ROUTES = [
-    {
-        name: "dashboard",
-        route: "/admin/dashboard",
-    },
-    {
-        name: "Active polls",
-        route: "/admin/activepolls",
-    },
-    {
-        name: "All polls",
-        route: "/admin/allpolls",
-    },
-    {
-        name: "All users",
-        route: "/admin/allusers",
-    },
-    {
-        name: "profile",
-        route: "/admin/profile",
-    },
+  {
+    name: "dashboard",
+    route: "/admin/dashboard",
+  },
+  {
+    name: "Active polls",
+    route: "/admin/activepolls",
+  },
+  {
+    name: "All polls",
+    route: "/admin/allpolls",
+  },
+  {
+    name: "All users",
+    route: "/admin/allusers",
+  },
+  {
+    name: "profile",
+    route: "/admin/profile",
+  },
 ];
 export const USER_ROUTES = [
-    {
-        name: "dashboard",
-        route: "/user/dashboard",
-    },
-    {
-        name: "Answered polls",
-        route: "/user/answeredpolls",
-    },
-    {
-        name: "profile",
-        route: "/user/profile",
-    },
+  {
+    name: "dashboard",
+    route: "/user/dashboard",
+  },
+  {
+    name: "Answered polls",
+    route: "/user/answeredpolls",
+  },
+  {
+    name: "profile",
+    route: "/user/profile",
+  },
 ];
 export const USER_ROLE = "user";
 export const ADMIN_ROLE = "admin";
@@ -61,5 +64,8 @@ export {
     addUser,
     ACTIVE_POLLS_URL,
     ANSWERED_POLLS_URL,
-    userDelete
+    confirmuser,
+    userInfo,
+    updateUserProfile,
+    userDelete,
 };
