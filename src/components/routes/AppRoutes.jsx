@@ -9,7 +9,6 @@ import { ActivePolls } from "../user/ActivePolls";
 import { AnsweredPolls } from "../user/AnsweredPolls";
 import { ViewSinglePoll } from "../user/ViewSinglePoll";
 import NavBar from "../NavBar";
-import { PageNotFound } from "../user/PageNotFound";
 import { ADMIN_ROLE, USER_ROLE } from "../../constants";
 import AdminDashBoard from "../admin/AdminDashBoard";
 import ProtectedRoute from "./ProtectedRoute";
@@ -19,6 +18,7 @@ import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers"
 import AllPolls from "../admin/AllPolls";
 import {AdminActivePolls} from "./../admin/AdminActivePolls"
+import ForgetPassword from "../forgot password/ForgetPassword";
 
 const AppRoutes = () => {
      const user = useSelector(auth);
@@ -29,6 +29,7 @@ const AppRoutes = () => {
                 <Route element={<PublicRoute />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route path="/forgotpassword" element={<ForgetPassword/>} />
                 </Route>
                 <Route element={<ProtectedRoute />}>
                     {user.role === ADMIN_ROLE && (
