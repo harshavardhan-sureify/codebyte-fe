@@ -4,13 +4,9 @@ import LockIcon from "@mui/icons-material/Lock";
 import { useState } from "react";
 import axios from "axios";
 
-const init = () => {
-  return {
-    email: "",
-  };
-};
+
 const EmailPage = (props) => {
-  const [data, setData] = useState(init());
+  const [data, setData] = useState({email:""});
   const [errors, setErrors] = useState("");
   const [button, setButton] = useState(false);
   const [message, setMessage] = useState("");
