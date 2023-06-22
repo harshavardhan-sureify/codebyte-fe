@@ -2,7 +2,7 @@ import React from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import SignupPage from "../SignupPage";
 import PollCreate from "../admin/PollCreation";
-import Trigger from "../admin/Trigger";
+import AddUserButton from "../admin/AddUserButton";
 import LoginPage from "../LoginPage";
 import { LandingPage } from "../user/LandingPage";
 import { ActivePolls } from "../user/ActivePolls";
@@ -38,7 +38,7 @@ const AppRoutes = () => {
                                 element={<AdminDashBoard />}
                             />
                             <Route path="create" element={<PollCreate />} />
-                            <Route path="trigger" element={<Trigger />} />
+                            <Route path="adduser" element={<AddUserButton />} />
                             <Route path="allusers" element={<AllUsers />} />
                             <Route path="allpolls" element={<AllPolls />} />
                             <Route

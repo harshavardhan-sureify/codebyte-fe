@@ -7,12 +7,15 @@ import {
   Button,
   Alert,
   Box,
+  Snackbar,
+  IconButton
 } from "@mui/material";
 import React, { useState } from "react";
 import { addUser } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
+import CancelIcon from "@mui/icons-material/Cancel";
 const initialize = () => {
   return {
     name: "",
@@ -24,15 +27,13 @@ const regex = {
   email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
 };
 
-const AddUser = () => {
+const AddUser = ({toast}) => {
   const user = useSelector(auth);
   const [addUserForm, setAddUserForm] = useState(initialize());
   const [error, setErrors] = useState({});
   const [submitStatus, setSubmitStatus] = useState("");
-  const [msgcolor, setMsgcolor] = useState("");
   const [msg, setMsg] = useState("");
   const [button, setButton] = useState(false);
-
   const errors = {
     name: "Name must consist of at least 3 characters",
     email: "Please enter a valid email address",
@@ -60,16 +61,15 @@ const AddUser = () => {
       const res = await axios.post(addUser, dataObj, config);
       if (res.status === 200) {
         setMsg(res.data.data.message);
-        setMsgcolor("green");
-        setAddUserForm(initialize());
-        setErrors({});
-        setTimeout(() => {
-          setMsg("");
-        }, 2000);
+        toast();
       }
     } catch (err) {
-      setMsgcolor("error");
-      setMsg(err.response.data.data.error);
+      if(err.response.data.status===500){
+        setMsg("Internal server error");
+      }
+      else{
+        setMsg(err.response.data.data.error);
+      }
     } finally {
       setButton(false);
     }
@@ -78,7 +78,6 @@ const AddUser = () => {
   const handleChange = (e) => {
     setAddUserForm({ ...addUserForm, [e.target.name]: e.target.value });
     validations(e.target.value, e.target.name);
-    setMsgcolor("");
     setMsg("");
     setSubmitStatus("");
   };
@@ -97,12 +96,12 @@ const AddUser = () => {
         setSubmitStatus("Please fill the form ");
         return;
       }
-      setSubmitStatus("Please fill the form Properly");
+      setSubmitStatus("Enter valid details");
       return;
     } else {
       for (let i in error) {
         if (error[i].length !== 0) {
-          setSubmitStatus("Please fill the form properly");
+          setSubmitStatus("Enter valid details");
           return;
         }
       }
@@ -137,6 +136,35 @@ const AddUser = () => {
           <strong>{submitStatus} </strong>
         </Alert>
       )}
+      {(msg==="Internal server error")&& (
+                <Snackbar
+                    open={msg}
+                    autoHideDuration={3200}
+                    sx={{ paddingTop: "43px" }}
+                    anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                    }}
+                    onClose={() => setMsg("")}
+                >
+                    <Alert
+                        severity="error"
+                        variant="filled"
+                        action={
+                            <IconButton
+                                size="small"
+                                aria-label="close"
+                                color="inherit"
+                                onClick={() => setMsg("")}
+                            >
+                                <CancelIcon></CancelIcon>
+                            </IconButton>
+                        }
+                    >
+                        {msg}
+                    </Alert>
+                </Snackbar>
+            )}
       <form onSubmit={handleSubmit} method="POST">
         <Avatar
           sx={{
@@ -150,11 +178,11 @@ const AddUser = () => {
         <Typography sx={{ mt: 1, textAlign: "center", mb: 1 }}>
           Add User
         </Typography>
-        {msg && (
+        {msg &&(msg!=="Internal server error")&& (
           <Typography
             variant="subtitle1"
             component="div"
-            color={msgcolor}
+            color="error"
             sx={{ textAlign: "center" }}
           >
             {msg}
@@ -172,6 +200,7 @@ const AddUser = () => {
           error={!!error.name}
           helperText={error.name}
           size="small"
+          disabled={button}
         />
         <TextField
           sx={{ mt: 1, mb: 1 }}
@@ -183,6 +212,7 @@ const AddUser = () => {
           value={addUserForm.email}
           error={!!error.email}
           helperText={error.email}
+          disabled={button}
           size="small"
         />
         <Box
