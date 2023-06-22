@@ -73,13 +73,13 @@ export default function AddUserButton() {
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
                         vertical: "top",
-                        horizontal: "center",
+                        horizontal: "right",
                     }}
                     onClose={() => setMsg("")}
                 >
                     <Alert
                         severity="success"
-                        variant="filled"
+                        variant="standard"
                         action={
                             <IconButton
                                 size="small"
