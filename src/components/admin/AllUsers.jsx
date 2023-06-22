@@ -83,8 +83,10 @@ const AllUsers = () => {
                 setFilteredData(data.data.data.users);
             })
             .catch((err) => {
-                console.log(err);
-            });
+                 setSeverity("error");
+                 setAlertMessage("Internal Server Error");
+                 setIsOpen(true);
+            })
     };
 
     useEffect(() => {
