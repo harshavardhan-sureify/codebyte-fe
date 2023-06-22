@@ -17,7 +17,7 @@ import {
 import CancelIcon from "@mui/icons-material/Cancel";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { confirmuser, userInfo, updateProfile } from "../../constants";
+import { confirmuser, userInfo, updateUserProfile } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { login } from "../features/User.reducer";
@@ -92,7 +92,7 @@ const Profile = () => {
   };
   const updateUserDetails = async (data) => {
     try {
-      const res = await axios.put(updateProfile, data, {
+      const res = await axios.put(updateUserProfile, data, {
         headers: {
           Authorization: `Bearer ${user.token}`,
         },
