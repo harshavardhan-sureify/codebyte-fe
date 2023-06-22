@@ -18,7 +18,7 @@ import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
 import AllPolls from "../admin/AllPolls";
 import { AdminActivePolls } from "./../admin/AdminActivePolls";
-import UpdateProfile from "../user/UpdateProfile";
+import Profile from "../user/Profile";
 
 const AppRoutes = () => {
   const user = useSelector(auth);
@@ -40,17 +40,17 @@ const AppRoutes = () => {
               <Route path="allpolls" element={<AllPolls />} />
               <Route path="activepolls" element={<AdminActivePolls />} />
               <Route path="activepolls/:id" element={<ViewSinglePoll />} />
-              <Route path="profile" element={<UpdateProfile />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           )}
           {user.role === USER_ROLE && (
             <Route path="/user" element={<LandingPage />}>
-              {/* <Route index element={<PageNotFound />} /> */}
+              
               <Route path="dashboard" element={<ActivePolls />} />
               <Route path="dashboard/:id" element={<ViewSinglePoll />} />
               <Route path="answeredpolls" element={<AnsweredPolls />} />
               <Route path="answeredpolls/:id" element={<ViewSinglePoll />} />
-              <Route path="profile" element={<UpdateProfile />} />
+              <Route path="profile" element={<Profile />} />
             </Route>
           )}
         </Route>

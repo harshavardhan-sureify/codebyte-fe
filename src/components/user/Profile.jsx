@@ -22,26 +22,27 @@ import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { login } from "../features/User.reducer";
 
-const UpdateProfile = () => {
+const Profile = () => {
   const [open, setOpen] = useState(false);
   const [enabled, setEnabled] = useState(false);
   const [password, setPassword] = useState("");
   const user = useSelector(auth);
   const [errors, setErrors] = useState({});
-
+  const [toaster, setToaster] = useState("");
   const dispatch = useDispatch();
   const [userData, setuserData] = useState({
     name: "",
     email: "",
     password: "",
   });
-  const [toaster, setToaster] = useState("");
+  const [submitResponse, setSubmitResponse] = useState("");
   const handleOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
     setPassword("");
+    setSubmitResponse("");
   };
   const handleChange = (event) => {
     setuserData({ ...userData, [event.target.name]: event.target.value });
@@ -89,7 +90,7 @@ const UpdateProfile = () => {
 
     setErrors({ ...errors, [clickedField]: message });
   };
-  const updateUser = async (data) => {
+  const updateUserDetails = async (data) => {
     try {
       const res = await axios.put(updateProfile, data, {
         headers: {
@@ -97,9 +98,9 @@ const UpdateProfile = () => {
         },
       });
       if (res.status === 200) {
-        setToaster("Successfully updated");
+        setToaster(res.data.data.message);
         handleCancel();
-        setErrors({});
+
         dispatch(
           login({ name: userData.name, role: user.role, token: user.token })
         );
@@ -107,40 +108,42 @@ const UpdateProfile = () => {
     } catch (error) {
       if (error.response.data.status === 400) {
         const payload = error.response.data.data.error;
-        if (typeof (payload) === "string" || payload instanceof String) {
-          setToaster(payload);
+        if (typeof payload === "string" || payload instanceof String) {
+          setSubmitResponse(payload);
         } else {
           let msg = "";
           for (let i in payload) {
             msg += payload[i] + "\n";
           }
-          setToaster(msg);
+          setSubmitResponse(msg);
         }
       } else {
-        setToaster("Something went wrong");
+        setToaster(error.response.data.data.error);
       }
     }
   };
   const handleSubmit = () => {
     const n = Object.keys(errors).length;
     if (n === 0) {
-      setToaster("Please make your changes ");
+      setSubmitResponse("Please make your changes ");
       return;
     }
     const data = {};
     for (let i in errors) {
       if (errors[i].length !== 0) {
-        setToaster("Please fill the details properly");
+        setSubmitResponse("Please fill the details properly");
         return;
       } else {
         data[i] = userData[i];
       }
     }
-    updateUser(data);
+    updateUserDetails(data);
   };
   const handleCancel = () => {
     setEnabled(false);
-    fetchData();
+    fetchUserDetails();
+    setErrors({});
+    setSubmitResponse("");
   };
 
   const handlePasswordSubmit = async () => {
@@ -157,16 +160,17 @@ const UpdateProfile = () => {
       }
     } catch (error) {
       if (error.response.data.status === 400) {
-        setToaster("Wrong password");
+        setSubmitResponse(error.response.data.data.message);
       } else {
-        setToaster("Something went Wrong");
+        setToaster(error.response.data.data.error);
       }
+      setPassword("");
     }
   };
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
   };
-  const fetchData = async () => {
+  const fetchUserDetails = async () => {
     try {
       const res = await axios.get(userInfo, {
         headers: {
@@ -174,14 +178,14 @@ const UpdateProfile = () => {
         },
       });
       if (res.status === 200) {
-        setuserData({ ...res.data.data.user, password: "3210@Abcd" });
+        setuserData({ ...res.data.data.user, password: "********" });
       }
     } catch (error) {
-      setToaster(error.response.data.error);
+      setSubmitResponse(error.response.data.error);
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchUserDetails();
   }, []);
 
   return (
@@ -197,8 +201,25 @@ const UpdateProfile = () => {
         <Grid item xs={6} lg={12}>
           <Card sx={{ width: "100%", padding: "21px" }} elevation={3}>
             <Stack direction="column" gap={3}>
+              {submitResponse && enabled && (
+                <Alert severity="error">{submitResponse}</Alert>
+              )}
+
               <Typography variant="h6">Profile Info</Typography>
               <Dialog open={open} onClose={handleClose}>
+                {open && submitResponse && (
+                  <Alert
+                    severity="error"
+                    sx={{
+                      marginTop: "4px",
+                      marginLeft: "4px",
+                      marginRight: "5px",
+                    }}
+                  >
+                    {submitResponse}
+                  </Alert>
+                )}
+
                 <DialogTitle>Confirm Its you!!</DialogTitle>
                 <DialogContent>
                   <DialogContentText>Enter your password</DialogContentText>
@@ -300,16 +321,18 @@ const UpdateProfile = () => {
       {toaster && (
         <Snackbar
           open={!!toaster}
-          autoHideDuration={3200}
+          autoHideDuration={1000}
           sx={{ paddingTop: "43px" }}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",
           }}
-          onClose={() => setToaster("")}
+          onClose={() => setSubmitResponse("")}
         >
           <Alert
-            severity={toaster === "Successfully updated" ? "success" : "error"}
+            severity={
+              toaster === "Updated details successfully" ? "success" : "error"
+            }
             action={
               <IconButton
                 size="small"
@@ -329,4 +352,4 @@ const UpdateProfile = () => {
   );
 };
 
-export default UpdateProfile;
+export default Profile;

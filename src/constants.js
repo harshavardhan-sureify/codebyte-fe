@@ -12,7 +12,7 @@ const allUsers = PHP_BASE_URL + "viewusers";
 const userInfo = GO_BASE_URL + "user/userinfo";
 export const SAVE_POLL_URL = PHP_BASE_URL + "savepoll";
 const confirmuser = GO_BASE_URL + "user/confirmuser";
-const updateProfile = GO_BASE_URL + "user/updateprofile";
+const updateUserProfile = GO_BASE_URL + "user/updateprofile";
 export const ADMIN_ROUTES = [
   {
     name: "dashboard",
@@ -65,5 +65,5 @@ export {
   ANSWERED_POLLS_URL,
   confirmuser,
   userInfo,
-  updateProfile,
+  updateUserProfile,
 };
