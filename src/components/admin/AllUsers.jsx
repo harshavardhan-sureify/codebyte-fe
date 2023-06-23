@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
-import { allUsers, userDelete } from "../../constants";
+import { allUsers, deleteUserApi } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import {
     Alert,
@@ -56,7 +56,7 @@ const AllUsers = () => {
     const submitUserDelete = () => {
         setIsOpen(false);
         axios
-            .delete(`${userDelete}\\${deleteUser.user_id}`, {
+            .delete(`${deleteUserApi}\\${deleteUser.user_id}`, {
                 headers: { Authorization: user.token },
             })
             .then((res) => {
@@ -83,10 +83,10 @@ const AllUsers = () => {
                 setFilteredData(data.data.data.users);
             })
             .catch((err) => {
-                 setSeverity("error");
-                 setAlertMessage("Internal Server Error");
-                 setIsOpen(true);
-            })
+                setSeverity("error");
+                setAlertMessage("Internal Server Error");
+                setIsOpen(true);
+            });
     };
 
     useEffect(() => {
