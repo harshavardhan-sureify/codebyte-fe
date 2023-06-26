@@ -23,7 +23,7 @@ import {
     Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
-import Trigger from "../admin/Trigger";
+import AddUserButton from "./AddUserButton";
 import { formatDate } from "./../utils";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
@@ -140,7 +140,7 @@ const AllUsers = () => {
                     />
                 </Grid>
                 <Grid item>
-                    <Trigger />
+                    <AddUserButton />
                 </Grid>
             </Grid>
             <Box pt={2}>
