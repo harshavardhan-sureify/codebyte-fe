@@ -1,18 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
 import { allUsers, deleteUserApi } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import {
-    Alert,
     Avatar,
     Box,
     Button,
     Grid,
     Modal,
     Paper,
-    Snackbar,
     Table,
     TableBody,
     TableCell,
@@ -25,12 +23,14 @@ import {
 import styled from "@emotion/styled";
 import Trigger from "../admin/Trigger";
 import { formatDate } from "./../utils";
+import { handleToaster } from "../features/Toaster.reducer";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
 `;
 const AllUsers = () => {
     const user = useSelector(auth);
+    const dispatch = useDispatch();
     const [userData, setUserData] = useState([]);
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setsearchText] = useState("");
@@ -38,9 +38,6 @@ const AllUsers = () => {
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [deleteUser, setDeleteUser] = useState({});
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [severity, setSeverity] = useState("");
-    const [alertMessage, setAlertMessage] = useState("");
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
@@ -55,20 +52,26 @@ const AllUsers = () => {
 
     const submitUserDelete = () => {
         setIsOpen(false);
+        let severity = "";
+        let message = "";
         axios
             .delete(`${deleteUserApi}\\${deleteUser.user_id}`, {
                 headers: { Authorization: user.token },
             })
             .then((res) => {
-                setSeverity("success");
-                setAlertMessage(res.data.data.message);
+                severity = "success";
+                message = res.data.data.message;
             })
             .catch((error) => {
-                setSeverity("error");
-                setAlertMessage(error.response.data.data.message);
+                severity = "error";
+                message = error.response.data.data.message;
             })
             .finally(() => {
-                setAlertOpen(true);
+                dispatch({
+                    message,
+                    severity,
+                    open:true
+                })
                 fetchAllUsers();
             });
     };
@@ -83,9 +86,11 @@ const AllUsers = () => {
                 setFilteredData(data.data.data.users);
             })
             .catch((err) => {
-                setSeverity("error");
-                setAlertMessage("Internal Server Error");
-                setIsOpen(true);
+                dispatch(handleToaster({
+                    message:"Internal Server Error",
+                    severity:"error",
+                    open:true
+                }))
             });
     };
 
@@ -109,21 +114,6 @@ const AllUsers = () => {
     const currentPageData = filteredData.slice(startIndex, endIndex);
     return (
         <Box>
-            <Snackbar
-                open={alertOpen}
-                autoHideDuration={3000}
-                onClose={() => setAlertOpen(false)}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                sx={{ paddingTop: "43px" }}
-            >
-                <Alert
-                    onClose={() => setAlertOpen(false)}
-                    severity={severity}
-                    sx={{ width: "100%" }}
-                >
-                    {alertMessage}
-                </Alert>
-            </Snackbar>
             <Grid
                 container
                 sx={{
