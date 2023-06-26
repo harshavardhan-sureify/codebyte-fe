@@ -1,4 +1,12 @@
-import { Box, Grid, TextField, Typography, Fab, Button, IconButton } from "@mui/material";
+import {
+    Box,
+    Grid,
+    TextField,
+    Typography,
+    Fab,
+    Button,
+    IconButton,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import { DatePicker } from "@mui/x-date-pickers";
@@ -7,14 +15,14 @@ import dayjs from "dayjs";
 import LinearProgress from "@mui/material/LinearProgress";
 import { createPollApi } from "../../constants";
 import Alert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 import { ErrorText, CreatePollContainer } from "./../Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { useNavigate } from "react-router-dom";
+import { handleToaster } from "../features/Toaster.reducer";
 
 const Option = ({
     option,
@@ -61,6 +69,7 @@ const Option = ({
 
 const PollCreate = () => {
     const { token } = useSelector(auth);
+    const dispatch = useDispatch();
     const [question, setQuestion] = useState("");
     const navigate = useNavigate();
     var minMax = require("dayjs/plugin/minMax");
@@ -72,9 +81,6 @@ const PollCreate = () => {
     const [options, setOptions] = useState(["", ""]);
     const [isClicked, setIsClicked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [severity, setSeverity] = useState("success");
-    const [alertMessage, setAlertMessage] = useState("");
     const [errors, setErrors] = useState({
         title: false,
         question: false,
@@ -114,6 +120,8 @@ const PollCreate = () => {
 
     const submitPoll = () => {
         setIsLoading(true);
+        let message = "";
+        let severity = "";
         const pollData = {
             title,
             question,
@@ -130,23 +138,29 @@ const PollCreate = () => {
             })
             .then((response) => {
                 if (response.status === 200) {
-                    setSeverity("success");
+                    severity = "success";
                     setQuestion("");
                     setIsClicked(false);
                     setOptions(["", ""]);
                     setStartDate(today);
                     setEndDate(null);
                     setTitle("");
-                    setAlertMessage(response.data.message);
+                    message = response.data.message;
                 }
             })
             .catch((error) => {
-                setSeverity("error");
-                setAlertMessage(error.response.data.message);
+                severity = "error";
+                message = error.response.data.message;
             })
             .finally(() => {
-                setAlertOpen(true);
                 setIsLoading(false);
+                dispatch(
+                    handleToaster({
+                        message,
+                        severity,
+                        open: true,
+                    })
+                );
             });
     };
 
@@ -180,27 +194,12 @@ const PollCreate = () => {
     return (
         <>
             {isLoading && <LinearProgress />}
-            <Snackbar
-                open={alertOpen}
-                autoHideDuration={3000}
-                onClose={() => setAlertOpen(false)}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                sx={{ paddingTop: "43px" }}
-            >
-                <Alert
-                    onClose={() => setAlertOpen(false)}
-                    severity={severity}
-                    sx={{ width: "100%" }}
-                >
-                    {alertMessage}
-                </Alert>
-            </Snackbar>
             <Grid
                 container
                 spacing={0}
                 direction="column"
                 alignItems="center"
-                sx={{ minHeight: "100vh" ,mt:4}}
+                sx={{ minHeight: "100vh", mt: 4 }}
             >
                 <CreatePollContainer elevation={3}>
                     <Grid

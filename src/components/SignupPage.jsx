@@ -11,7 +11,6 @@ import {
     IconButton,
     InputAdornment,
     Paper,
-    Snackbar,
     Typography,
 } from "@mui/material";
 
@@ -22,6 +21,7 @@ import { ImagePaper, ImageText } from "./Styles";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "./features/User.reducer";
+import { handleToaster } from "./features/Toaster.reducer";
 let message = "";
 
 const initialize = () => {
@@ -34,13 +34,11 @@ const initialize = () => {
 };
 const SignupPage = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const [signUpForm, setSignUpForm] = useState(initialize());
     const [error, setErrors] = useState({});
     const [submitStatus, setSubmitStatus] = useState("");
     const [seePassword, setSeePassword] = useState(false);
-    const navigate = useNavigate();
-    const [open, setOpen] = useState(true);
-    const [responseStatus, setResponseStatus] = useState("");
 
     const sendSignUpDataToServer = async (signUpdata) => {
         try {
@@ -51,25 +49,41 @@ const SignupPage = () => {
             if (res.status === 200) {
                 const data = res.data.data;
                 dispatch(login(data));
-                navigate(`/${data.role}/dashboard`);
+                dispatch(
+                    handleToaster({
+                        message: "Signed up successfully",
+                        severity: "success",
+                        open: true,
+                    })
+                );
+                setTimeout(() => {
+                    navigate(`/${data.role}/dashboard`);
+                }, 2000);
             }
         } catch (err) {
+            let message = "";
             if (err.response) {
                 const payload = err.response.data;
 
                 if (payload.status === 400 && payload.data.error) {
-                    setResponseStatus(payload.data.error);
+                    message = payload.data.error;
                 } else if (payload.status === 400) {
                     let msg = "";
                     for (let i in payload.data) {
                         msg += payload.data[i] + "\n";
 
-                        setResponseStatus(msg);
+                        message = msg;
                     }
                 } else {
-                    setResponseStatus("Something went wrong");
+                    message = "Something went wrong";
                 }
-                setOpen(true);
+                dispatch(
+                    handleToaster({
+                        message,
+                        severity: "error",
+                        open: true,
+                    })
+                );
             }
         }
     };
@@ -93,7 +107,6 @@ const SignupPage = () => {
             for (let i in error) {
                 if (error[i].length !== 0) {
                     setSubmitStatus("Please fill the form properly");
-
                     return;
                 }
             }
@@ -163,36 +176,14 @@ const SignupPage = () => {
                 minHeight: "91vh",
             }}
         >
-            {responseStatus && (
-                <Snackbar
-                    open={open}
-                    autoHideDuration={3200}
-                    sx={{ paddingTop: "43px" }}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    onClose={() => setOpen(false)}
-                >
-                    <Alert
-                        severity="error"
-                        action={
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => setOpen(false)}
-                            >
-                                <CancelIcon></CancelIcon>
-                            </IconButton>
-                        }
-                    >
-                        {responseStatus}
-                    </Alert>
-                </Snackbar>
-            )}
-
-            <Grid container sx={{ display: "flex", justifyContent: "center", maxHeight:"400px" }}>
+            <Grid
+                container
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    maxHeight: "400px",
+                }}
+            >
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>
                         <img

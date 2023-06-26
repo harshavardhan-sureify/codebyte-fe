@@ -8,8 +8,7 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddUser from "./AddUser";
 import AddIcon from "@mui/icons-material/Add";
-import { Alert, Snackbar } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { useDispatch } from "react-redux";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -50,8 +49,8 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function AddUserButton() {
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
-    const [msg,setMsg]=React.useState("")
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,40 +60,17 @@ export default function AddUserButton() {
     };
     const handleToaster=()=>{
         setOpen(false);
-        setMsg("user added successfully")
+        dispatch(
+            handleToaster({
+                message: "User added successfully",
+                severity:"success",
+                open:true
+            })
+        );
     }
 
     return (
         <div>
-            {msg&& (
-                <Snackbar
-                    open={msg}
-                    autoHideDuration={3200}
-                    sx={{ paddingTop: "43px" }}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    onClose={() => setMsg("")}
-                >
-                    <Alert
-                        severity="success"
-                        variant="standard"
-                        action={
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => setMsg("")}
-                            >
-                                <CancelIcon></CancelIcon>
-                            </IconButton>
-                        }
-                    >
-                        {msg}
-                    </Alert>
-                </Snackbar>
-            )}
             <Button
                 variant="contained"
                 color="success"
