@@ -2,8 +2,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Navigate, Outlet } from "react-router-dom";
 import { isLoggedIn, logout } from "../features/User.reducer";
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
-
+import { Box, Button, Card, Modal, Typography } from "@mui/material";
+import AccessTimeFilledIcon from "@mui/icons-material/AccessTimeFilled";
 const ProtectedRoute = () => {
     const dispatch = useDispatch();
     const [showPopup, setShowPopup] = useState(false);
@@ -31,9 +31,35 @@ const ProtectedRoute = () => {
     if (authenticated) {
         if (showPopup) {
             return (
-                <div>
-                    hello world<Button onClick={handleConfirm}>confirn</Button>
-                </div>
+                <Box>
+                    <Modal
+                        open={showPopup}
+                        onClose={handleConfirm}
+                        sx={{
+                            height: "100vh",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Card
+                            sx={{ background: "white", width: "350px", p: 2 }}
+                        >
+                            <AccessTimeFilledIcon color="secondary" />
+                            <Typography>
+                                Your Session expired please login again
+                            </Typography>
+                            <Button
+                                onClick={handleConfirm}
+                                variant="contained"
+                                color="secondary"
+                                sx={{ mt: 2 }}
+                            >
+                                go to login
+                            </Button>
+                        </Card>
+                    </Modal>
+                </Box>
             );
         }
         return <Outlet />;
