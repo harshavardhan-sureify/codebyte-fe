@@ -69,7 +69,7 @@ const EmailPage = ({ prop }) => {
       <TextField
         label="Email"
         name="email"
-        error={prop.errors}
+        error={!!prop.errors}
         helperText={prop.errors}
         value={prop.email}
         onChange={handleChange}
@@ -79,7 +79,7 @@ const EmailPage = ({ prop }) => {
         color="secondary"
         variant="contained"
         sx={{ mt: 2 }}
-        disabled={prop.open}
+        disabled={!!prop.open}
       >
         Continue
       </Button>

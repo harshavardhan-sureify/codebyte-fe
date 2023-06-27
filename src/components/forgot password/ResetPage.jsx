@@ -120,15 +120,15 @@ const ResetPage = ({ prop }) => {
         value={data.npassword}
         name="npassword"
         onChange={handleChange}
-        error={errors.npassword}
+        error={!!errors.npassword}
         helperText={errors.npassword}
         InputProps={{
           endAdornment: (
-            <IconButton>
+            <IconButton onClick={(e) => {
+              SetShowPassword(!showPassword);
+            }}>
               <InputAdornment
-                onClick={(e) => {
-                  SetShowPassword(!showPassword);
-                }}
+              position="end"
               >
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </InputAdornment>
@@ -145,7 +145,7 @@ const ResetPage = ({ prop }) => {
         name="cpassword"
         value={data.cpassword}
         onChange={handleChange}
-        error={errors.cpassword}
+        error={!!errors.cpassword}
         helperText={errors.cpassword}
         sx={{
           mt: 1,

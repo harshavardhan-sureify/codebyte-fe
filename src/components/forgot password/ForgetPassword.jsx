@@ -66,7 +66,7 @@ const ForgetPassword = () => {
     <>
     {toast&& (
                 <Snackbar
-                    open={toast}
+                    open={!!toast}
                     autoHideDuration={3200}
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
