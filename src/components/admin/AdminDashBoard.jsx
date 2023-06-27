@@ -99,10 +99,12 @@ const AdminDashBoard = () => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
+                    tickValues:[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15],
                     legend: "No of users",
                     legendPosition: "middle",
                     legendOffset: -40,
                 }}
+                gridYValues={[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
                 labelTextColor={{
@@ -128,10 +130,9 @@ const AdminDashBoard = () => {
                                 on: "hover",
                                 style: {
                                     itemOpacity: 1,
-                                    itemBackground:"white",
-                                    itemTextColor:'white'
+                                    itemBackground: "white",
+                                    itemTextColor: "white",
                                 },
-
                             },
                         ],
                     },
@@ -141,6 +142,19 @@ const AdminDashBoard = () => {
                 reverseAnimation={true}
                 motionStiffness={120}
                 motionDamping={10}
+                tooltip={(e) => {
+                    return (
+                        <Box
+                            sx={{
+                                padding:"6px 8px",
+                                backgroundColor: "#AEC964",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            {`${e.id} : ${e.value}`}
+                        </Box>
+                    );
+                }}
                 role="application"
                 ariaLabel="Nivo bar chart demo"
                 barAriaLabel={function (e) {
@@ -153,32 +167,6 @@ const AdminDashBoard = () => {
                     );
                 }}
             />
-        );
-    };
-    const RecentTable = () => {
-        return (
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell color="white" sx={{ fontSize: "18px" }}>
-                            Username
-                        </TableCell>
-                        <TableCell sx={{ fontSize: "18px" }}>
-                            Poll Title
-                        </TableCell>
-                        <TableCell sx={{ fontSize: "18px" }}>Option</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {tableData.map((row, ind) => (
-                        <TableRow key={row.pollTitle + ind}>
-                            <TableCell>{row.userName}</TableCell>
-                            <TableCell>{row.pollTitle}</TableCell>
-                            <TableCell>{row.selectedOption}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
         );
     };
     useEffect(() => {
@@ -211,13 +199,13 @@ const AdminDashBoard = () => {
                 container
                 spacing={3}
                 sx={{
-                    p:2
+                    p: 2,
                 }}
             >
                 <Grid item xs={12} sm={6} lg={4} md={4}>
                     {/* total active users */}
                     <Card elevation={4}>
-                        <Grid container columns={12} >
+                        <Grid container columns={12}>
                             <Grid item sm={4} md={6} lg={4}>
                                 <ProgressCircle
                                     progress={Math.round(
@@ -293,33 +281,16 @@ const AdminDashBoard = () => {
                                 alignItems="flex-start"
                                 p={2}
                             >
-                                <Typography variant="h6">Total Attended polls</Typography>
+                                <Typography variant="h6">
+                                    Total Attended polls
+                                </Typography>
                             </Grid>
                         </Grid>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={12} md={8} lg={8}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Card elevation={4} sx={{ height: "420px" }}>
                         <BarGraph />
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <Card
-                        elevation={4}
-                        sx={{ height: "420px", overflow: "auto" }}
-                    >
-                        <Box
-                            sx={{
-                                height: "60px",
-                                px: 2,
-                                display: "flex",
-                                alignItems: "center",
-                                background: "grey",
-                            }}
-                        >
-                            <Typography>Recent Answers</Typography>
-                        </Box>
-                        <RecentTable />
                     </Card>
                 </Grid>
             </Grid>
