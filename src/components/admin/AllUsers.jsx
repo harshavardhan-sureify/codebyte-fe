@@ -67,11 +67,11 @@ const AllUsers = () => {
                 message = error.response.data.data.message;
             })
             .finally(() => {
-                dispatch({
+                dispatch(handleToaster({
                     message,
                     severity,
                     open:true
-                })
+                }))
                 fetchAllUsers();
             });
     };

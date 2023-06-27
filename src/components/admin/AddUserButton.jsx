@@ -9,6 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddUser from "./AddUser";
 import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
+import { handleToaster } from "../features/Toaster.reducer";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -58,7 +59,7 @@ export default function AddUserButton() {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleToaster=()=>{
+    const handleToasters=()=>{
         setOpen(false);
         dispatch(
             handleToaster({
@@ -93,7 +94,7 @@ export default function AddUserButton() {
                     onClose={handleClose}
                     sx={{ borderRadius: 1 }}
                 ></BootstrapDialogTitle>
-                <AddUser toast={handleToaster}/>
+                <AddUser toast={handleToasters}/>
             </BootstrapDialog>
         </div>
     );

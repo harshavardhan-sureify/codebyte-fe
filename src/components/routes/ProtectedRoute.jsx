@@ -31,35 +31,48 @@ const ProtectedRoute = () => {
     if (authenticated) {
         if (showPopup) {
             return (
-                <Box>
-                    <Modal
-                        open={showPopup}
-                        onClose={handleConfirm}
-                        sx={{
-                            height: "100vh",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                        }}
-                    >
-                        <Card
-                            sx={{ background: "white", width: "350px", p: 2 }}
+                <>
+                    <Box>
+                        <Modal
+                            open={showPopup}
+                            onClose={handleConfirm}
+                            sx={{
+                                height: "100vh",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
                         >
-                            <AccessTimeFilledIcon color="secondary" />
-                            <Typography>
-                                Your Session expired please login again
-                            </Typography>
-                            <Button
-                                onClick={handleConfirm}
-                                variant="contained"
-                                color="secondary"
-                                sx={{ mt: 2 }}
+                            <Card
+                                sx={{
+                                    background: "white",
+                                    width: "350px",
+                                    p: 2,
+                                    display:"flex",
+                                    alignItems:"center",
+                                    justifyContent:"center",
+                                    flexDirection:"column"
+                                }}
                             >
-                                go to login
-                            </Button>
-                        </Card>
-                    </Modal>
-                </Box>
+                                <AccessTimeFilledIcon color="secondary" fontSize="large" sx={{mb:2}} />
+                                <Typography>
+                                    Your Session expired please login again
+                                </Typography>
+                                <Box sx={{display:"flex" ,alignItems:"flex-end",justifyContent:"flex-end"}}>
+                                    <Button
+                                        onClick={handleConfirm}
+                                        variant="contained"
+                                        color="secondary"
+                                        sx={{ mt: 2 }}
+                                    >
+                                        go to login
+                                    </Button>
+                                </Box>
+                            </Card>
+                        </Modal>
+                    </Box>
+                    <Outlet />
+                </>
             );
         }
         return <Outlet />;

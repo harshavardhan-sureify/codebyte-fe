@@ -51,6 +51,7 @@ const AddUser = ({ toast }) => {
     };
     const postData = async (dataObj) => {
         let message = "";
+        let severity = "";
         try {
             const token = user.token;
             const config = {
@@ -61,10 +62,12 @@ const AddUser = ({ toast }) => {
             const res = await axios.post(addUser, dataObj, config);
             if (res.status === 200) {
                 message = res.data.data.message;
+                severity = "success";
                 setMsg(res.data.data.message);
                 toast();
             }
         } catch (err) {
+            severity = "error";
             if (err.response.data.status === 500) {
                 setMsg("Internal server error");
                 message = "Internal Server Error";
@@ -76,7 +79,7 @@ const AddUser = ({ toast }) => {
             setButton(false);
             dispatch(
                 handleToaster({
-                    severity: "error",
+                    severity,
                     message,
                     open: true,
                 })
