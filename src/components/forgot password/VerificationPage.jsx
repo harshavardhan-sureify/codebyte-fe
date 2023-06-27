@@ -16,22 +16,19 @@ const VerificationPage = ({prop}) => {
       setOpen(true)
       const data1={otp:otp,token:prop.token}
       const res = await axios.post(validateOtp,data1);
-      console.log(res.status);
       if (res.status === 200) {
         prop.setToken(res.data.data.passToken)
         prop.page();
         prop.setToast("valid user")
       }
     } catch (err) {
-      console.log("hi")
-      console.log(err.response.data.status)
       if(err.response.data.status===500){
         prop.setToast("Internal server error")
       }else{
-        setErrors(err.response.data.data.error)
+        setErrors(err.response.data.data.data)
       }
     }finally{
-      setOpen(false)
+      setOpen(true)
       setOtp("")
     } 
   };

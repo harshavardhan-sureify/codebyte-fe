@@ -29,7 +29,6 @@ const ForgetPassword = () => {
       const res = await axios.post(forgotPasswordEmail,data);
       if (res.data.status === 200) {
         setToken(res.data.data.otpToken)
-        //console.log(token)
         if(page===0){
           handlePage()
         }

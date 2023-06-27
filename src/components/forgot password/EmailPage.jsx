@@ -1,7 +1,7 @@
 import { Paper, Avatar, TextField, Button, Typography } from "@mui/material";
 import { theme } from "../../themes/theme";
 import LockIcon from "@mui/icons-material/Lock";
-const EmailPage = ({prop}) => {
+const EmailPage = ({ prop }) => {
   const handleChange = (e) => {
     prop.setEmail(e.target.value);
     if (!e.target.value) {
@@ -17,15 +17,15 @@ const EmailPage = ({prop}) => {
     prop.setErrors("");
   };
   const handleClick = () => {
-    if (prop.email==="") {
+    if (prop.email === "") {
       prop.setErrors("This field is required");
       return;
     }
-    if (prop.errors!== "") {
+    if (prop.errors !== "") {
       return;
     }
     prop.setOpen(true);
-   prop.sendData()
+    prop.sendData();
   };
   return (
     <Paper
