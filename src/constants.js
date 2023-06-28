@@ -14,6 +14,7 @@ const deleteUserApi = GO_BASE_URL + "admin/delete";
 export const SAVE_POLL_URL = PHP_BASE_URL + "savepoll";
 const confirmuser = GO_BASE_URL + "user/confirmuser";
 const updateUserProfile = GO_BASE_URL + "user/updateprofile";
+const allPollsUrl = PHP_BASE_URL + "allpolls";
 export const ADMIN_ROUTES = [
     {
         name: "dashboard",
@@ -68,4 +69,5 @@ export {
     userInfo,
     updateUserProfile,
     deleteUserApi,
+    allPollsUrl
 };
