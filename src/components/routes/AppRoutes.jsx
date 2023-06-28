@@ -19,7 +19,7 @@ import AllUsers from "./../admin/AllUsers"
 import AllPolls from "../admin/AllPolls";
 import {AdminActivePolls} from "./../admin/AdminActivePolls"
 import ForgetPassword from "../forgot password/ForgetPassword";
-
+import Profile from "../user/Profile";
 const AppRoutes = () => {
      const user = useSelector(auth);
     return (
@@ -42,6 +42,8 @@ const AppRoutes = () => {
                             <Route path="adduser" element={<AddUserButton />} />
                             <Route path="allusers" element={<AllUsers />} />
                             <Route path="allpolls" element={<AllPolls />} />
+                            <Route path="profile" element={<Profile />} />
+            
                             <Route
                                 path="activepolls"
                                 element={<AdminActivePolls />}
@@ -68,6 +70,7 @@ const AppRoutes = () => {
                                 path="answeredpolls/:id"
                                 element={<ViewSinglePoll />}
                             />
+                             <Route path="profile" element={<Profile />} />            
                         </Route>
                     )}
                 </Route>

@@ -47,14 +47,6 @@ const BarGraph = (barData) => {
                   },
               },
           }}
-          defs={[
-              {
-                  id: "fiil",
-                  size: 4,
-                  padding: 1,
-                  color: "#38bcb2",
-              },
-          ]}
           fill={[
               {
                   match: {

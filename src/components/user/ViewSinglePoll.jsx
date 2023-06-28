@@ -117,7 +117,7 @@ export const ViewSinglePoll = () => {
                     {toasterObj.message}
                 </Alert>
             </Snackbar>
-            <Card p sx={{ width: "400px", p: "20px", position: "relative" }}>
+            <Card  sx={{ width: "400px", p: "20px", position: "relative" }}>
                 <Stack spacing={4} sx={{ alignItems: "center" }}>
                     <Typography
                         variant="h4"
@@ -180,6 +180,7 @@ export const ViewSinglePoll = () => {
                                             control={<Radio />}
                                             label={option}
                                             disabled={role===ADMIN_ROLE}
+                                            key={option}
                                         />
                                     ))}
                                 </RadioGroup>
