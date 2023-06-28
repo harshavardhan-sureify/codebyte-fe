@@ -14,7 +14,7 @@ const deleteUserApi = GO_BASE_URL + "admin/delete";
 export const SAVE_POLL_URL = PHP_BASE_URL + "savepoll";
 const confirmuser = GO_BASE_URL + "user/confirmuser";
 const updateUserProfile = GO_BASE_URL + "user/updateprofile";
-const forgotPasswordEmail = GO_BASE_URL + "user/forgotpassword";
+const forgotPassword = GO_BASE_URL + "user/forgotpassword";
 const validateOtp = GO_BASE_URL + "user/validateotp";
 const resetPassword = GO_BASE_URL + "user/changepassword";
 export const ADMIN_ROUTES = [
@@ -71,7 +71,7 @@ export {
   userInfo,
   updateUserProfile,
   deleteUserApi,
-  forgotPasswordEmail,
+  forgotPassword,
   validateOtp,
   resetPassword,
 };

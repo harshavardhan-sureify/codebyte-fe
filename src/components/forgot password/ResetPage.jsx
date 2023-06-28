@@ -27,8 +27,8 @@ const ResetPage = ({ prop }) => {
   const [showPassword, SetShowPassword] = useState(false);
   const [resetStatus, setResetStatus] = useState("");
   const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])/;
-  const errors=prop.errors 
-  const setErrors=prop.setErrors;
+  const errors = prop.errors;
+  const setErrors = prop.setErrors;
 
   const handleChange = (e) => {
     setResetStatus("");
@@ -43,7 +43,7 @@ const ResetPage = ({ prop }) => {
       const data = { password: password, passToken: prop.token };
       const res = await axios.post(resetPassword, data);
       if (res.data.status === 200) {
-        prop.setToast("password got reset")
+        prop.setToast("password got reset");
         navigate("/login");
       }
     } catch (err) {
@@ -124,12 +124,12 @@ const ResetPage = ({ prop }) => {
         helperText={errors.npassword}
         InputProps={{
           endAdornment: (
-            <IconButton onClick={(e) => {
-              SetShowPassword(!showPassword);
-            }}>
-              <InputAdornment
-              position="end"
-              >
+            <IconButton
+              onClick={(e) => {
+                SetShowPassword(!showPassword);
+              }}
+            >
+              <InputAdornment position="end">
                 {showPassword ? <Visibility /> : <VisibilityOff />}
               </InputAdornment>
             </IconButton>

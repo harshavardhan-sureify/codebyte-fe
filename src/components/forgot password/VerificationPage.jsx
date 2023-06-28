@@ -4,33 +4,33 @@ import { Avatar, Paper, Typography, Button } from "@mui/material";
 import axios from "axios";
 import LockIcon from "@mui/icons-material/Lock";
 import { theme } from "../../themes/theme";
-import {validateOtp} from "../../constants"
-const VerificationPage = ({prop}) => {
+import { validateOtp } from "../../constants";
+const VerificationPage = ({ prop }) => {
   const [otp, setOtp] = React.useState("");
   const [open, setOpen] = React.useState(true);
-  const errors=prop.errors 
-  const setErrors=prop.setErrors;
+  const errors = prop.errors;
+  const setErrors = prop.setErrors;
 
   const senddata = async () => {
     try {
-      setOpen(true)
-      const data1={otp:otp,token:prop.token}
-      const res = await axios.post(validateOtp,data1);
+      setOpen(true);
+      const data1 = { otp: otp, token: prop.token };
+      const res = await axios.post(validateOtp, data1);
       if (res.status === 200) {
-        prop.setToken(res.data.data.passToken)
+        prop.setToken(res.data.data.passToken);
         prop.page();
-        prop.setToast("valid user")
+        prop.setToast("valid user");
       }
     } catch (err) {
-      if(err.response.data.status===500){
-        prop.setToast("Internal server error")
-      }else{
-        setErrors(err.response.data.data.data)
+      if (err.response.data.status === 500) {
+        prop.setToast("Internal server error");
+      } else {
+        setErrors(err.response.data.data.data);
       }
-    }finally{
-      setOpen(true)
-      setOtp("")
-    } 
+    } finally {
+      setOpen(true);
+      setOtp("");
+    }
   };
 
   const handleChange = (newValue) => {
@@ -95,7 +95,15 @@ const VerificationPage = ({prop}) => {
       >
         Verify
       </Button>
-      <Button color="secondary" sx={{ mt: 1 }} disabled={prop.open} onClick={()=>{prop.setOpen(true);prop.sendData()}}>
+      <Button
+        color="secondary"
+        sx={{ mt: 1 }}
+        disabled={prop.open}
+        onClick={() => {
+          prop.setOpen(true);
+          prop.sendData();
+        }}
+      >
         Resend
       </Button>
     </Paper>
