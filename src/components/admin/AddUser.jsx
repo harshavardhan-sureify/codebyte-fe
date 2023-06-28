@@ -24,7 +24,7 @@ const initialize = () => {
 };
 const regex = {
   name: /^[^\s].{2,}$/,
-  email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 };
 
 const AddUser = ({toast}) => {
@@ -138,7 +138,7 @@ const AddUser = ({toast}) => {
       )}
       {(msg==="Internal server error")&& (
                 <Snackbar
-                    open={msg}
+                    open={!!msg}
                     autoHideDuration={3200}
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
@@ -149,7 +149,7 @@ const AddUser = ({toast}) => {
                 >
                     <Alert
                         severity="error"
-                        variant="filled"
+                        variant="standard"
                         action={
                             <IconButton
                                 size="small"
@@ -229,7 +229,6 @@ const AddUser = ({toast}) => {
             type="submit"
             variant="contained"
             disabled={button}
-            fullwidth
             sx={{
               height: 40,
             }}

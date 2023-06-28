@@ -16,6 +16,7 @@ export const ViewPolls = ({ activeFlag, pollsData }) => {
                     <Poll
                         activeFlag={activeFlag}
                         poll={poll}
+                        key={poll.poll_id}
                     />
                 ))
             ) : activeFlag ? (
