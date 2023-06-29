@@ -49,9 +49,10 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-export default function AddUserButton() {
+export default function AddUserButton({refetch}) {
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
+    const [msg,setMsg]=React.useState("")
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -61,6 +62,7 @@ export default function AddUserButton() {
     };
     const handleToasters=()=>{
         setOpen(false);
+        refetch();
         dispatch(
             handleToaster({
                 message: "User added successfully",

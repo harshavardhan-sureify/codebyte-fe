@@ -2,11 +2,6 @@ import {
     Card,
     Grid,
     Typography,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
     Box,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";

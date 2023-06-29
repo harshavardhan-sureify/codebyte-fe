@@ -45,6 +45,7 @@ const SignupPage = () => {
             const postData = { ...signUpdata };
             delete postData.cpassword;
             const res = await axios.post(signUp, postData);
+
             if (res.status === 200) {
                 const data = res.data.data;
                 dispatch(login(data));

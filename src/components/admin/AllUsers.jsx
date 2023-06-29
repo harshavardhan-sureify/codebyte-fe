@@ -26,7 +26,7 @@ import { formatDate } from "./../utils";
 import { handleToaster } from "../features/Toaster.reducer";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
-    background-color: ${(props) => (props.head ? "lightgrey" : "white")};
+    border:"hidden"
 `;
 const AllUsers = () => {
     const user = useSelector(auth);
@@ -35,7 +35,7 @@ const AllUsers = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setsearchText] = useState("");
     const [filteredData, setFilteredData] = useState([]);
-    const [page, setPage] = useState(2);
+    const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [deleteUser, setDeleteUser] = useState({});
     const handleChangeRowsPerPage = (event) => {
@@ -130,19 +130,19 @@ const AllUsers = () => {
                     />
                 </Grid>
                 <Grid item>
-                    <AddUserButton />
+                    <AddUserButton refetch = {fetchAllUsers}/>
                 </Grid>
             </Grid>
             <Box pt={2}>
                 <Table>
                     <TableHead>
-                        <TableRow>
-                            <StyledTableCell head>User Id</StyledTableCell>
-                            <StyledTableCell head>Username</StyledTableCell>
-                            <StyledTableCell head>Email</StyledTableCell>
-                            <StyledTableCell head>Status</StyledTableCell>
-                            <StyledTableCell head>Created At</StyledTableCell>
-                            <StyledTableCell head>Actions</StyledTableCell>
+                        <TableRow sx={{backgroundColor:"lightgrey"}}>
+                            <StyledTableCell>User Id</StyledTableCell>
+                            <StyledTableCell >Username</StyledTableCell>
+                            <StyledTableCell >Email</StyledTableCell>
+                            <StyledTableCell >Status</StyledTableCell>
+                            <StyledTableCell >Created At</StyledTableCell>
+                            <StyledTableCell >Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>

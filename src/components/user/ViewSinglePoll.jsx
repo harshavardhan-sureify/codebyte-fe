@@ -161,7 +161,8 @@ export const ViewSinglePoll = () => {
                                             value={option}
                                             control={<Radio />}
                                             label={option}
-                                            disabled={role === ADMIN_ROLE}
+                                            disabled={role===ADMIN_ROLE}
+                                            key={option}
                                         />
                                     ))}
                                 </RadioGroup>

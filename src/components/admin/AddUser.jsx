@@ -21,8 +21,8 @@ const initialize = () => {
     };
 };
 const regex = {
-    name: /^[^\s].{2,}$/,
-    email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+  name: /^[^\s].{2,}$/,
+  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 };
 
 const AddUser = ({ toast }) => {
@@ -94,34 +94,34 @@ const AddUser = ({ toast }) => {
         setSubmitStatus("");
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        var temp = {};
-        for (let x in addUserForm) {
-            temp[x] = validate(addUserForm[x], x);
-        }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    var temp = {};
+    for (let x in addUserForm) {
+      temp[x] = validate(addUserForm[x], x);
+    }
 
-        setErrors({ ...error, ...temp });
+    setErrors({ ...error, ...temp });
 
-        if (Object.keys(error).length !== 2) {
-            if (Object.keys(error).length === 0) {
-                setSubmitStatus("Please fill the form ");
-                return;
-            }
-            setSubmitStatus("Enter valid details");
-            return;
-        } else {
-            for (let i in error) {
-                if (error[i].length !== 0) {
-                    setSubmitStatus("Enter valid details");
-                    return;
-                }
-            }
+    if (Object.keys(error).length !== 2) {
+      if (Object.keys(error).length === 0) {
+        setSubmitStatus("Please fill the form ");
+        return;
+      }
+      setSubmitStatus("Enter valid details");
+      return;
+    } else {
+      for (let i in error) {
+        if (error[i].length !== 0) {
+          setSubmitStatus("Enter valid details");
+          return;
         }
-        setSubmitStatus("");
-        postData(addUserForm);
-        setButton(true);
-    };
+      }
+    }
+    setSubmitStatus("");
+    postData(addUserForm);
+    setButton(true);
+  };
 
     const validations = (value, name) => {
         const errorMessage = validate(value, name);
@@ -171,59 +171,58 @@ const AddUser = ({ toast }) => {
                     </Typography>
                 )}
 
-                <TextField
-                    sx={{ mt: 1, mb: 1, border: 0 }}
-                    label="Name"
-                    placeholder="Enter your Name"
-                    onChange={handleChange}
-                    name="name"
-                    fullWidth
-                    value={addUserForm.name}
-                    error={!!error.name}
-                    helperText={error.name}
-                    size="small"
-                    disabled={button}
-                />
-                <TextField
-                    sx={{ mt: 1, mb: 1 }}
-                    label="Email"
-                    fullWidth
-                    placeholder="Enter your Email"
-                    onChange={handleChange}
-                    name="email"
-                    value={addUserForm.email}
-                    error={!!error.email}
-                    helperText={error.email}
-                    disabled={button}
-                    size="small"
-                />
-                <Box
-                    sx={{
-                        display: "flex",
-                        flexDirection: "row",
-                        justifyContent: "end",
-                        mt: 1,
-                        gap: 1,
-                        px: 0,
-                    }}
-                >
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        disabled={button}
-                        fullwidth
-                        sx={{
-                            height: 40,
-                        }}
-                        size="small"
-                        color="secondary"
-                    >
-                        Add
-                    </Button>
-                </Box>
-            </form>
-        </Paper>
-    );
+        <TextField
+          sx={{ mt: 1, mb: 1, border: 0 }}
+          label="Name"
+          placeholder="Enter your Name"
+          onChange={handleChange}
+          name="name"
+          fullWidth
+          value={addUserForm.name}
+          error={error.name ? true : false}
+          helperText={error.name}
+          size="small"
+          disabled={button}
+        />
+        <TextField
+          sx={{ mt: 1, mb: 1 }}
+          label="Email"
+          fullWidth
+          placeholder="Enter your Email"
+          onChange={handleChange}
+          name="email"
+          value={addUserForm.email}
+          error={error.email ? true : false}
+          helperText={error.email}
+          disabled={button}
+          size="small"
+        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "end",
+            mt: 1,
+            gap: 1,
+            px: 0,
+          }}
+        >
+          <Button
+            type="submit"
+            variant="contained"
+            disabled={button}
+            sx={{
+              height: 40,
+            }}
+            size="small"
+            color="secondary"
+          >
+            Add
+          </Button>
+        </Box>
+      </form>
+    </Paper>
+  );
 };
 
 export default AddUser;
