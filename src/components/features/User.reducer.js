@@ -28,6 +28,7 @@ const userSlice = createSlice({
             localStorage.removeItem("role");
             localStorage.removeItem("name");
             localStorage.removeItem("expirationTime");
+            localStorage.clear();
             state.token = "";
             state.role = "";
             state.name = "";
