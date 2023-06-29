@@ -11,19 +11,20 @@ export const ViewPolls = ({ activeFlag, pollsData,type }) => {
      
 
     return (
-        <Grid container>
-            {pollsData.length > 0 ? (
-                pollsData.map((poll) => (
-                    <Poll
-                        activeFlag={activeFlag}
-                        poll={poll}
-                    />
-                ))
-            ) : activeFlag ? (
-                <EmptyDataContainer isActive={activeFlag} type={type} />
-            ) : (
-                        <EmptyDataContainer type={type} />
-            )}
-        </Grid>
+      <Grid container>
+        {pollsData.length > 0 ? (
+          pollsData.map((poll) => <Poll activeFlag={activeFlag} poll={poll} />)
+        ) : (
+          <EmptyDataContainer
+            message={
+              type === "allPolls"
+                ? "No Polls Found!!"
+                : activeFlag
+                ? "Currently there are no Active polls for you !!!"
+                : "You haven't answered any polls yet !!!"
+            }
+          />
+        )}
+      </Grid>
     );
 };

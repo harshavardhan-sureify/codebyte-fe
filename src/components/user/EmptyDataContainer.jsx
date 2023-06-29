@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import React from "react";
-export const EmptyDataContainer = ({ isActive, type }) => {
+export const EmptyDataContainer = ({ message }) => {
   return (
     <Box
       sx={{
@@ -18,17 +18,10 @@ export const EmptyDataContainer = ({ isActive, type }) => {
         alt="404"
         style={{ width: "150px", borderRadius: "10px" }}
       />
-      {type === "activePolls" ? (
-        <Typography variant="h4" fontWeight={500}>
-          {isActive
-            ? "Currently there are no Active polls for you !!!"
-            : "You haven't answered any polls yet !!!"}
-        </Typography>
-      ) : (
-        <Typography variant="h4" fontWeight={500}>
-          No Polls Found!!
-        </Typography>
-      )}
+
+      <Typography variant="h4" fontWeight={500}>
+        {message}
+      </Typography>
     </Box>
   );
 };
