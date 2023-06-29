@@ -138,7 +138,7 @@ const AddUser = ({toast}) => {
       )}
       {(msg==="Internal server error")&& (
                 <Snackbar
-                    open={!!msg}
+                    open={msg?true:false}
                     autoHideDuration={3200}
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
@@ -197,7 +197,7 @@ const AddUser = ({toast}) => {
           name="name"
           fullWidth
           value={addUserForm.name}
-          error={!!error.name}
+          error={error.name?true:false}
           helperText={error.name}
           size="small"
           disabled={button}
@@ -210,7 +210,7 @@ const AddUser = ({toast}) => {
           onChange={handleChange}
           name="email"
           value={addUserForm.email}
-          error={!!error.email}
+          error={error.email?true:false}
           helperText={error.email}
           disabled={button}
           size="small"

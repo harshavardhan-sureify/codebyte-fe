@@ -68,7 +68,7 @@ export default function AddUserButton({refetch}) {
         <div>
             {msg&& (
                 <Snackbar
-                    open={!!msg}
+                    open={msg?true:false}
                     autoHideDuration={3200}
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
