@@ -12,7 +12,7 @@ export const ViewPolls = ({ activeFlag, pollsData, type }) => {
   return (
     <Grid container>
       {pollsData.length > 0 ? (
-        pollsData.map((poll) => <Poll activeFlag={activeFlag} poll={poll} />)
+        pollsData.map((poll) => <Poll activeFlag={activeFlag} poll={poll} key={poll.poll_id}/>)
       ) : (
         <EmptyDataContainer message={"No Polls Found!!"} />
       )}

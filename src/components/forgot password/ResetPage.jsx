@@ -1,5 +1,4 @@
 import {
-  Alert,
   Avatar,
   Button,
   IconButton,
@@ -25,13 +24,11 @@ const ResetPage = ({ prop }) => {
   const navigate = useNavigate();
   const [data, setData] = useState(intitialize());
   const [showPassword, SetShowPassword] = useState(false);
-  const [resetStatus, setResetStatus] = useState("");
   const passwordRegex = /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])/;
   const errors = prop.errors;
   const setErrors = prop.setErrors;
 
   const handleChange = (e) => {
-    setResetStatus("");
     setData({ ...data, [e.target.name]: e.target.value });
     setErrors({
       ...errors,
@@ -51,16 +48,13 @@ const ResetPage = ({ prop }) => {
     }
   };
   const handleClick = (e) => {
-    if (Object.keys(errors).length === 0) {
-      setResetStatus("Please fill the form");
-      return;
-    } else if (Object.keys(errors).length < 2) {
-      setResetStatus("Please fill the form properly");
-      return;
+    let temp = {};
+    for (let i in data) {
+      temp[i] = validation(i, data[i]);
     }
-    for (let i in errors) {
-      if (errors[i] !== "") {
-        setResetStatus("Please fill the form properly");
+    setErrors({ ...errors, ...temp });
+    for (let i in temp) {
+      if (temp[i] !== "") {
         return;
       }
     }
@@ -68,7 +62,7 @@ const ResetPage = ({ prop }) => {
   };
   const validation = (name, value) => {
     if (!value) {
-      return "field is required";
+      return "Field is required";
     }
     if (name === "npassword" && value.length < 8) {
       return "Password length should be atleast 8";
@@ -77,7 +71,7 @@ const ResetPage = ({ prop }) => {
       return "Password must contain atleast one upper,one lower,one digit and one special character";
     }
     if (name === "cpassword" && value !== data["npassword"]) {
-      return "password doesn't match";
+      return "Password doesn't match";
     }
     return "";
   };
@@ -95,7 +89,6 @@ const ResetPage = ({ prop }) => {
         mt: 10,
       }}
     >
-      {resetStatus && <Alert severity="error">{resetStatus}</Alert>}
       <Avatar
         sx={{
           backgroundColor: theme.palette.secondary.main,
@@ -120,7 +113,7 @@ const ResetPage = ({ prop }) => {
         value={data.npassword}
         name="npassword"
         onChange={handleChange}
-        error={errors.npassword?true:false}
+        error={errors.npassword ? true : false}
         helperText={errors.npassword}
         InputProps={{
           endAdornment: (
@@ -145,7 +138,7 @@ const ResetPage = ({ prop }) => {
         name="cpassword"
         value={data.cpassword}
         onChange={handleChange}
-        error={errors.cpassword?true:false}
+        error={errors.cpassword ? true : false}
         helperText={errors.cpassword}
         sx={{
           mt: 1,
