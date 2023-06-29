@@ -16,15 +16,16 @@ import { auth } from "../features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
-import AllPolls from "../admin/AllPolls";
-import { AdminActivePolls } from "./../admin/AdminActivePolls";
-import ForgetPassword from "../forgot password/ForgetPassword";
+ 
+import { Polls } from "./../admin/Polls";
 import Profile from "../user/Profile";
+import ForgetPassword from "../forgot password/ForgetPassword";
 import { Alert, Snackbar } from "@mui/material";
 import {
     toaster,
     closeToaster,
 } from "../features/Toaster.reducer";
+import AllPolls from "../admin/AllPolls";
 
 const AppRoutes = () => {
     const user = useSelector(auth);
@@ -76,15 +77,23 @@ const AppRoutes = () => {
                             <Route path="create" element={<PollCreate />} />
                             <Route path="adduser" element={<AddUserButton />} />
                             <Route path="allusers" element={<AllUsers />} />
-                            <Route path="allpolls" element={<AllPolls />} />
+                            <Route
+                                path="allpolls"
+                                element={<Polls type={"allPolls"} />}
+                            />
                             <Route
                                 path="activepolls"
-                                element={<AdminActivePolls />}
+                                element={<Polls type={"activePolls"} />}
                             />
                             <Route
                                 path="activepolls/:id"
                                 element={<ViewSinglePoll />}
                             />
+                            <Route
+                                path="allpolls/:id"
+                                element={<ViewSinglePoll />}
+                            />
+
                             <Route path="profile" element={<Profile />} />
                         </Route>
                     )}
