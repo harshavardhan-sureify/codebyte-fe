@@ -85,7 +85,6 @@ const AllUsers = () => {
             .catch((err) => {
                 setSeverity("error");
                 setAlertMessage("Internal Server Error");
-                setIsOpen(true);
             });
     };
 

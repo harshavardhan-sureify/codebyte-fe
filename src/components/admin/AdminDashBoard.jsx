@@ -14,13 +14,14 @@ import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { adminDashboardApi } from "../../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
+import { theme } from "../../themes/theme";
 const AdminDashBoard = () => {
+    const dispatch = useDispatch();
     const user = useSelector(auth);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
-    const [tableData, setTableData] = useState([]);
     const BarGraph = () => {
         return (
             <ResponsiveBar
@@ -32,7 +33,7 @@ const AdminDashBoard = () => {
                 valueScale={{ type: "linear" }}
                 indexScale={{ type: "band", round: true }}
                 valueFormat=" <-"
-                colors={{ scheme: "category10" }}
+                colors={["#0E3758"]}
                 indexBy="option"
                 theme={{
                     axis: {
@@ -68,14 +69,6 @@ const AdminDashBoard = () => {
                         },
                     },
                 }}
-                defs={[
-                    {
-                        id: "fiil",
-                        size: 4,
-                        padding: 1,
-                        color: "#38bcb2",
-                    },
-                ]}
                 fill={[
                     {
                         match: {
@@ -105,10 +98,7 @@ const AdminDashBoard = () => {
                 }}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
-                labelTextColor={{
-                    from: "color",
-                    modifiers: [["darker", 1.6]],
-                }}
+                labelTextColor="white"
                 legends={[
                     {
                         dataFrom: "keys",
@@ -128,10 +118,9 @@ const AdminDashBoard = () => {
                                 on: "hover",
                                 style: {
                                     itemOpacity: 1,
-                                    itemBackground:"white",
-                                    itemTextColor:'white'
+                                    itemBackground: "white",
+                                    itemTextColor: "white",
                                 },
-
                             },
                         ],
                     },
@@ -141,6 +130,19 @@ const AdminDashBoard = () => {
                 reverseAnimation={true}
                 motionStiffness={120}
                 motionDamping={10}
+                tooltip={(e) => {
+                    return (
+                        <Box
+                            sx={{
+                                padding: "6px 8px",
+                                backgroundColor: "#AEC964",
+                                borderRadius: "8px",
+                            }}
+                        >
+                            {`${e.id} : ${e.value}`}
+                        </Box>
+                    );
+                }}
                 role="application"
                 ariaLabel="Nivo bar chart demo"
                 barAriaLabel={function (e) {
@@ -155,32 +157,6 @@ const AdminDashBoard = () => {
             />
         );
     };
-    const RecentTable = () => {
-        return (
-            <Table>
-                <TableHead>
-                    <TableRow>
-                        <TableCell color="white" sx={{ fontSize: "18px" }}>
-                            Username
-                        </TableCell>
-                        <TableCell sx={{ fontSize: "18px" }}>
-                            Poll Title
-                        </TableCell>
-                        <TableCell sx={{ fontSize: "18px" }}>Option</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {tableData.map((row, ind) => (
-                        <TableRow key={row.pollTitle + ind}>
-                            <TableCell>{row.userName}</TableCell>
-                            <TableCell>{row.pollTitle}</TableCell>
-                            <TableCell>{row.selectedOption}</TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-            </Table>
-        );
-    };
     useEffect(() => {
         axios
             .get(adminDashboardApi, {
@@ -189,7 +165,6 @@ const AdminDashBoard = () => {
                 },
             })
             .then((data) => {
-                setTableData(data.data.data.recentAnswers);
                 setData(data.data.data);
                 const dd = [];
                 data.data.data.recentPolls.forEach((poll, ind) => {
@@ -199,6 +174,12 @@ const AdminDashBoard = () => {
                     dd.push(obj);
                 });
                 setBarData(dd);
+            }).catch((err) =>{
+                // dispatch(handleToaster({
+                //     message:err.response.data.data.message,
+                //     severity:'error',
+                //     open:true
+                // }))
             });
     }, [user.token]);
     return (
@@ -211,13 +192,13 @@ const AdminDashBoard = () => {
                 container
                 spacing={3}
                 sx={{
-                    p:2
+                    p: 2,
                 }}
             >
                 <Grid item xs={12} sm={6} lg={4} md={4}>
                     {/* total active users */}
                     <Card elevation={4}>
-                        <Grid container columns={12} >
+                        <Grid container columns={12}>
                             <Grid item sm={4} md={6} lg={4}>
                                 <ProgressCircle
                                     progress={Math.round(
@@ -293,33 +274,16 @@ const AdminDashBoard = () => {
                                 alignItems="flex-start"
                                 p={2}
                             >
-                                <Typography variant="h6">Total Attended polls</Typography>
+                                <Typography variant="h6">
+                                    Total Attended polls
+                                </Typography>
                             </Grid>
                         </Grid>
                     </Card>
                 </Grid>
-                <Grid item xs={12} sm={12} md={8} lg={8}>
+                <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Card elevation={4} sx={{ height: "420px" }}>
                         <BarGraph />
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={12} md={4} lg={4}>
-                    <Card
-                        elevation={4}
-                        sx={{ height: "420px", overflow: "auto" }}
-                    >
-                        <Box
-                            sx={{
-                                height: "60px",
-                                px: 2,
-                                display: "flex",
-                                alignItems: "center",
-                                background: "grey",
-                            }}
-                        >
-                            <Typography>Recent Answers</Typography>
-                        </Box>
-                        <RecentTable />
                     </Card>
                 </Grid>
             </Grid>

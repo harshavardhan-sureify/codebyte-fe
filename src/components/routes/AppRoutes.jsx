@@ -19,7 +19,7 @@ import AllUsers from "./../admin/AllUsers";
  
 import { Polls } from "./../admin/Polls";
 import Profile from "../user/Profile";
-
+import ForgetPassword from "../forgot password/ForgetPassword";
 const AppRoutes = () => {
   const user = useSelector(auth);
   return (
@@ -29,6 +29,7 @@ const AppRoutes = () => {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgotpassword" element={<ForgetPassword />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           {user.role === ADMIN_ROLE && (
