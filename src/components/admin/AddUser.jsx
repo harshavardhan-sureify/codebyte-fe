@@ -8,7 +8,7 @@ import {
   Alert,
   Box,
   Snackbar,
-  IconButton
+  IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
 import { addUser } from "../../constants";
@@ -27,11 +27,10 @@ const regex = {
   email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
 };
 
-const AddUser = ({toast}) => {
+const AddUser = ({ toast }) => {
   const user = useSelector(auth);
   const [addUserForm, setAddUserForm] = useState(initialize());
   const [error, setErrors] = useState({});
-  const [submitStatus, setSubmitStatus] = useState("");
   const [msg, setMsg] = useState("");
   const [button, setButton] = useState(false);
   const errors = {
@@ -60,14 +59,12 @@ const AddUser = ({toast}) => {
       };
       const res = await axios.post(addUser, dataObj, config);
       if (res.status === 200) {
-        setMsg(res.data.data.message);
         toast();
       }
     } catch (err) {
-      if(err.response.data.status===500){
+      if (err.response.data.status === 500) {
         setMsg("Internal server error");
-      }
-      else{
+      } else {
         setMsg(err.response.data.data.error);
       }
     } finally {
@@ -79,7 +76,6 @@ const AddUser = ({toast}) => {
     setAddUserForm({ ...addUserForm, [e.target.name]: e.target.value });
     validations(e.target.value, e.target.name);
     setMsg("");
-    setSubmitStatus("");
   };
 
   const handleSubmit = (e) => {
@@ -88,25 +84,12 @@ const AddUser = ({toast}) => {
     for (let x in addUserForm) {
       temp[x] = validate(addUserForm[x], x);
     }
-
     setErrors({ ...error, ...temp });
-
-    if (Object.keys(error).length !== 2) {
-      if (Object.keys(error).length === 0) {
-        setSubmitStatus("Please fill the form ");
+    for (let i in temp) {
+      if (temp[i].length !== 0) {
         return;
       }
-      setSubmitStatus("Enter valid details");
-      return;
-    } else {
-      for (let i in error) {
-        if (error[i].length !== 0) {
-          setSubmitStatus("Enter valid details");
-          return;
-        }
-      }
     }
-    setSubmitStatus("");
     postData(addUserForm);
     setButton(true);
   };
@@ -131,40 +114,35 @@ const AddUser = ({toast}) => {
       }}
       size="small"
     >
-      {submitStatus && (
-        <Alert severity="error" sx={{ mb: 0.5 }}>
-          <strong>{submitStatus} </strong>
-        </Alert>
+      {msg === "Internal server error" && (
+        <Snackbar
+          open={msg ? true : false}
+          autoHideDuration={3200}
+          sx={{ paddingTop: "43px" }}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          onClose={() => setMsg("")}
+        >
+          <Alert
+            severity="error"
+            variant="standard"
+            action={
+              <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={() => setMsg("")}
+              >
+                <CancelIcon></CancelIcon>
+              </IconButton>
+            }
+          >
+            {msg}
+          </Alert>
+        </Snackbar>
       )}
-      {(msg==="Internal server error")&& (
-                <Snackbar
-                    open={msg?true:false}
-                    autoHideDuration={3200}
-                    sx={{ paddingTop: "43px" }}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    onClose={() => setMsg("")}
-                >
-                    <Alert
-                        severity="error"
-                        variant="standard"
-                        action={
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => setMsg("")}
-                            >
-                                <CancelIcon></CancelIcon>
-                            </IconButton>
-                        }
-                    >
-                        {msg}
-                    </Alert>
-                </Snackbar>
-            )}
       <form onSubmit={handleSubmit} method="POST">
         <Avatar
           sx={{
@@ -178,7 +156,7 @@ const AddUser = ({toast}) => {
         <Typography sx={{ mt: 1, textAlign: "center", mb: 1 }}>
           Add User
         </Typography>
-        {msg &&(msg!=="Internal server error")&& (
+        {msg && msg !== "Internal server error" && (
           <Typography
             variant="subtitle1"
             component="div"
@@ -197,7 +175,7 @@ const AddUser = ({toast}) => {
           name="name"
           fullWidth
           value={addUserForm.name}
-          error={error.name?true:false}
+          error={error.name ? true : false}
           helperText={error.name}
           size="small"
           disabled={button}
@@ -210,7 +188,7 @@ const AddUser = ({toast}) => {
           onChange={handleChange}
           name="email"
           value={addUserForm.email}
-          error={error.email?true:false}
+          error={error.email ? true : false}
           helperText={error.email}
           disabled={button}
           size="small"
