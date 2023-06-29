@@ -120,7 +120,7 @@ const ResetPage = ({ prop }) => {
         value={data.npassword}
         name="npassword"
         onChange={handleChange}
-        error={!!errors.npassword}
+        error={errors.npassword?true:false}
         helperText={errors.npassword}
         InputProps={{
           endAdornment: (
@@ -145,7 +145,7 @@ const ResetPage = ({ prop }) => {
         name="cpassword"
         value={data.cpassword}
         onChange={handleChange}
-        error={!!errors.cpassword}
+        error={errors.cpassword?true:false}
         helperText={errors.cpassword}
         sx={{
           mt: 1,
