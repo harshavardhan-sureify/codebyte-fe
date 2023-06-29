@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ViewPolls } from "./ViewPolls";
-import { ACTIVE_POLLS_URL } from "../../constants";
+import { ACTIVE_POLLS_URL, AUTH_TOKEN } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";

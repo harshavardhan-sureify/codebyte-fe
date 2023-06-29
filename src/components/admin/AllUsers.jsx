@@ -9,6 +9,7 @@ import {
     Avatar,
     Box,
     Button,
+    CircularProgress,
     Grid,
     Modal,
     Paper,
@@ -25,6 +26,7 @@ import {
 import styled from "@emotion/styled";
 import AddUserButton from "./AddUserButton";
 import { formatDate } from "./../utils";
+import { LoadingContainer } from "../Styles";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
@@ -41,6 +43,7 @@ const AllUsers = () => {
     const [alertOpen, setAlertOpen] = useState(false);
     const [severity, setSeverity] = useState("");
     const [alertMessage, setAlertMessage] = useState("");
+    const [loading, setLoading] = useState(true);
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
@@ -81,6 +84,7 @@ const AllUsers = () => {
             .then((data) => {
                 setUserData(data.data.data.users);
                 setFilteredData(data.data.data.users);
+                setLoading(false);
             })
             .catch((err) => {
                 setSeverity("error");
@@ -106,6 +110,14 @@ const AllUsers = () => {
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     const currentPageData = filteredData.slice(startIndex, endIndex);
+    if (loading) {
+        return (
+            <LoadingContainer>
+                <CircularProgress />
+                <Typography variant="subtitle">Loading</Typography>
+            </LoadingContainer>
+        );
+    }
     return (
         <Box>
             <Snackbar
