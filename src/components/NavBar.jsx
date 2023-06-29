@@ -92,25 +92,27 @@ export default function NavBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color="secondary">
                 <Toolbar>
-                    <Button
-                        onClick={toggleDrawer("left", true)}
-                        sx={{
-                            display: {
-                                xs: "block",
-                                sm: "block",
-                                md: "none",
-                                lg: "none",
-                            },
-                        }}
-                    >
-                        <MenuIcon
+                    {isLogIn && (
+                        <Button
+                            onClick={toggleDrawer("left", true)}
                             sx={{
-                                mr: 2,
-
-                                color: "white",
+                                display: {
+                                    xs: "block",
+                                    sm: "block",
+                                    md: "none",
+                                    lg: "none",
+                                },
                             }}
-                        />
-                    </Button>
+                        >
+                            <MenuIcon
+                                sx={{
+                                    mr: 2,
+
+                                    color: "white",
+                                }}
+                            />
+                        </Button>
+                    )}
                     <Drawer
                         anchor="left"
                         open={state["left"]}
