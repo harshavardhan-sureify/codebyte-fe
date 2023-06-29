@@ -236,14 +236,14 @@ const LoginPage = () => {
                             >
                                 Login
                             </Button>
-                            {/* <Typography variant="p">
+                            <Typography variant="p">
                                 <Link
                                     to="/forgotpassword"
                                     style={{ textDecoration: "none" }}
                                 >
                                     Forgot password?
                                 </Link>
-                            </Typography> */}
+                            </Typography>
                             <Typography variant="body2">
                                 Dont have an account?{" "}
                                 <Link

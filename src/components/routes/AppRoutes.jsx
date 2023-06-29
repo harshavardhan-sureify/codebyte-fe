@@ -18,6 +18,7 @@ import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
 import AllPolls from "../admin/AllPolls";
 import { AdminActivePolls } from "./../admin/AdminActivePolls";
+import ForgetPassword from "../forgot password/ForgetPassword";
 import Profile from "../user/Profile";
 import { Alert, Snackbar } from "@mui/material";
 import {
@@ -60,6 +61,10 @@ const AppRoutes = () => {
                 <Route element={<PublicRoute />}>
                     <Route path="/login" element={<LoginPage />} />
                     <Route path="/signup" element={<SignupPage />} />
+                    <Route
+                        path="/forgotpassword"
+                        element={<ForgetPassword />}
+                    />
                 </Route>
                 <Route element={<ProtectedRoute />}>
                     {user.role === ADMIN_ROLE && (
