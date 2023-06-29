@@ -18,7 +18,8 @@ import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
 import AllPolls from "../admin/AllPolls";
 import { AdminActivePolls } from "./../admin/AdminActivePolls";
-import Profile from "../user/Profile";
+import ForgetPassword from "../forgot password/ForgetPassword";
+import Profile from "../user/Profile"
 
 const AppRoutes = () => {
   const user = useSelector(auth);
@@ -29,6 +30,7 @@ const AppRoutes = () => {
         <Route element={<PublicRoute />}>
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/forgotpassword" element={<ForgetPassword />} />
         </Route>
         <Route element={<ProtectedRoute />}>
           {user.role === ADMIN_ROLE && (
@@ -45,7 +47,7 @@ const AppRoutes = () => {
           )}
           {user.role === USER_ROLE && (
             <Route path="/user" element={<LandingPage />}>
-              
+              {/* <Route index element={<PageNotFound />} /> */}
               <Route path="dashboard" element={<ActivePolls />} />
               <Route path="dashboard/:id" element={<ViewSinglePoll />} />
               <Route path="answeredpolls" element={<AnsweredPolls />} />
