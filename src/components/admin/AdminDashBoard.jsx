@@ -14,9 +14,11 @@ import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { adminDashboardApi } from "../../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
+import { theme } from "../../themes/theme";
 const AdminDashBoard = () => {
+    const dispatch = useDispatch();
     const user = useSelector(auth);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
@@ -31,7 +33,7 @@ const AdminDashBoard = () => {
                 valueScale={{ type: "linear" }}
                 indexScale={{ type: "band", round: true }}
                 valueFormat=" <-"
-                colors={{ scheme: "category10" }}
+                colors={["#0E3758"]}
                 indexBy="option"
                 theme={{
                     axis: {
@@ -67,14 +69,6 @@ const AdminDashBoard = () => {
                         },
                     },
                 }}
-                defs={[
-                    {
-                        id: "fiil",
-                        size: 4,
-                        padding: 1,
-                        color: "#38bcb2",
-                    },
-                ]}
                 fill={[
                     {
                         match: {
@@ -98,22 +92,13 @@ const AdminDashBoard = () => {
                     tickSize: 5,
                     tickPadding: 5,
                     tickRotation: 0,
-                    tickValues: [
-                        1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                    ],
                     legend: "No of users",
                     legendPosition: "middle",
                     legendOffset: -40,
                 }}
-                gridYValues={[
-                    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
-                ]}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
-                labelTextColor={{
-                    from: "color",
-                    modifiers: [["darker", 1.6]],
-                }}
+                labelTextColor="white"
                 legends={[
                     {
                         dataFrom: "keys",
@@ -189,6 +174,12 @@ const AdminDashBoard = () => {
                     dd.push(obj);
                 });
                 setBarData(dd);
+            }).catch((err) =>{
+                // dispatch(handleToaster({
+                //     message:err.response.data.data.message,
+                //     severity:'error',
+                //     open:true
+                // }))
             });
     }, [user.token]);
     return (
