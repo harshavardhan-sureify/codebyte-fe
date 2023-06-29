@@ -100,7 +100,7 @@ export const ViewSinglePoll = () => {
 
     return (
         <Box sx={{ display: "flex", justifyContent: "center", mt: "50px" }}>
-            <Card p sx={{ width: "400px", p: "20px", position: "relative" }}>
+            <Card sx={{ width: "400px", p: "20px", position: "relative" }}>
                 <Stack spacing={4} sx={{ alignItems: "center" }}>
                     <Typography
                         variant="h4"
