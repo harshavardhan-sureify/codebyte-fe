@@ -16,11 +16,10 @@ import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
-import AllPolls from "../admin/AllPolls";
-import { AdminActivePolls } from "./../admin/AdminActivePolls";
+ 
+import { Polls } from "./../admin/Polls";
+import Profile from "../user/Profile";
 import ForgetPassword from "../forgot password/ForgetPassword";
-import Profile from "../user/Profile"
-
 const AppRoutes = () => {
   const user = useSelector(auth);
   return (
@@ -39,15 +38,22 @@ const AppRoutes = () => {
               <Route path="create" element={<PollCreate />} />
               <Route path="adduser" element={<AddUserButton />} />
               <Route path="allusers" element={<AllUsers />} />
-              <Route path="allpolls" element={<AllPolls />} />
-              <Route path="activepolls" element={<AdminActivePolls />} />
+              <Route
+                path="allpolls"
+                element={<Polls type={"allPolls"} />}
+              />
+              <Route
+                path="activepolls"
+                element={<Polls type={"activePolls"} />}
+              />
               <Route path="activepolls/:id" element={<ViewSinglePoll />} />
+              <Route path="allpolls/:id" element={<ViewSinglePoll />} />
+
               <Route path="profile" element={<Profile />} />
             </Route>
           )}
           {user.role === USER_ROLE && (
             <Route path="/user" element={<LandingPage />}>
-              {/* <Route index element={<PageNotFound />} /> */}
               <Route path="dashboard" element={<ActivePolls />} />
               <Route path="dashboard/:id" element={<ViewSinglePoll />} />
               <Route path="answeredpolls" element={<AnsweredPolls />} />
