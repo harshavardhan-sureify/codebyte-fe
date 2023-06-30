@@ -13,7 +13,11 @@ export const ViewPolls = ({ activeFlag, pollsData, type }) => {
         <Grid container>
             {pollsData.length > 0 ? (
                 pollsData.map((poll) => (
-                    <Poll activeFlag={activeFlag} poll={poll} />
+                    <Poll
+                        activeFlag={activeFlag}
+                        poll={poll}
+                        key={poll.poll_id}
+                    />
                 ))
             ) : (
                 <EmptyDataContainer
