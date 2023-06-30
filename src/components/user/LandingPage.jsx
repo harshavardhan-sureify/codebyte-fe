@@ -9,7 +9,7 @@ import { ADMIN_ROUTES, USER_ROLE, USER_ROUTES } from "../../constants";
 import LogoutIcon from "@mui/icons-material/Logout";
 export const LandingPage = () => {
     const { role } = useSelector(auth);
-    const dispatch  = useDispatch();
+    const dispatch = useDispatch();
     const navigate = useNavigate();
     const [routes, setRoutes] = useState([]);
     useEffect(() => {
@@ -32,10 +32,10 @@ export const LandingPage = () => {
             textAlign: "center",
         };
     };
-    const handleLogout = () =>{
+    const handleLogout = () => {
         dispatch(logout());
         navigate("/login");
-    }
+    };
     return (
         <Box sx={{ display: "flex" }}>
             <StyledSideBar
@@ -72,17 +72,27 @@ export const LandingPage = () => {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            p: 2,
                         }}
                     >
                         <IconButton
                             variant="contained"
-                            color="error"
-                            sx={{ px: 3, py: 1 ,color:'red',fontWeight:"",fontSize:"16px"}}
+                            sx={{
+                                px: 3,
+                                py: 1,
+                                color: "white",
+                                fontWeight: "",
+                                fontSize: "16px",
+                                background: "grey",
+                                borderRadius: "0px",
+                                width: "100%",
+                                ":hover": {
+                                    background: theme.palette.danger.main,
+                                },
+                            }}
                             onClick={handleLogout}
                             size="medium"
                         >
-                            <LogoutIcon/>  LOGOUT
+                            <LogoutIcon /> LOGOUT
                         </IconButton>
                     </Box>
                 </Box>
