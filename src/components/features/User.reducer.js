@@ -24,10 +24,6 @@ const userSlice = createSlice({
             return state;
         },
         logout(state, action) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("role");
-            localStorage.removeItem("name");
-            localStorage.removeItem("expirationTime");
             localStorage.clear();
             state.token = "";
             state.role = "";
