@@ -5,7 +5,7 @@ export const CardDate = ({ date, flag }) => {
     let dateArray = date.split("-");
     return (
         <StyledCardDate
-            style={{ borderTop: `5px solid ${flag ? "green" : "red"}`}}
+            style={{ borderTop: `5px solid ${flag ? "green" : "red"}` }}
         >
             <div style={{ fontSize: "25px", fontWeight: "bold" }}>
                 {dateArray[2]}

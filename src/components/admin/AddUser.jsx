@@ -11,7 +11,7 @@ import {
   IconButton,
 } from "@mui/material";
 import React, { useState } from "react";
-import { addUser } from "../../constants";
+import { ADD_USER_URL } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
@@ -57,7 +57,7 @@ const AddUser = ({ toast }) => {
           Authorization: `Bearer ${token}`,
         },
       };
-      const res = await axios.post(addUser, dataObj, config);
+      const res = await axios.post(ADD_USER_URL, dataObj, config);
       if (res.status === 200) {
         toast();
       }
@@ -65,7 +65,7 @@ const AddUser = ({ toast }) => {
       if (err.response.data.status === 500) {
         setMsg("Internal server error");
       } else {
-        setMsg(err.response.data.data.error);
+        setMsg(err.response.data.message);
       }
     } finally {
       setButton(false);

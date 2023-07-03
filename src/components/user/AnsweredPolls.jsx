@@ -34,6 +34,7 @@ export const AnsweredPolls = () => {
     };
     useEffect(() => {
         fetchAnsweredPolls();
+        // eslint-disable-next-line
     }, []);
     if (loading) {
         return (

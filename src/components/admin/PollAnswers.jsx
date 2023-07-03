@@ -26,8 +26,8 @@ export const PollAnswers = ({ pollId }) => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const response = await axios.get(POLL_ANSWERS_URL + pollId, config);
-            if (response.status === 200) {  
-                setRows(response.data.data.data);
+            if (response.status === 200) {
+                setRows(response.data.data);
                 setLoading(false);
             }
         } catch (err) {
@@ -36,6 +36,7 @@ export const PollAnswers = ({ pollId }) => {
     };
     React.useEffect(() => {
         fetchPollAnswers();
+        // eslint-disable-next-line
     }, []);
 
     if (loading) {
@@ -49,7 +50,9 @@ export const PollAnswers = ({ pollId }) => {
     return (
         <React.Fragment>
             {rows == null ? (
-                <EmptyDataContainer message={"No one answered this poll yet!!!"} />
+                <EmptyDataContainer
+                    message={"No one answered this poll yet!!!"}
+                />
             ) : (
                 <DataGrid
                     rows={rows}

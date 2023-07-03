@@ -17,7 +17,7 @@ import profileImage from "../assets/images/profileImage.png";
 import { ImagePaper, ImageText } from "./Styles";
 import { MyTextField } from "./Styles";
 import { Link, useNavigate } from "react-router-dom";
-import { loginApi } from "../constants";
+import { LOGIN_URL } from "../constants";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { useDispatch } from "react-redux";
@@ -27,7 +27,6 @@ const intitialize = () => {
         email: "",
         password: "",
     };
-   
 };
 const LoginPage = () => {
     const dispatch = useDispatch();
@@ -42,7 +41,7 @@ const LoginPage = () => {
     const sendDataToServer = (data) => {
         const postData = { ...data };
         axios
-            .post(loginApi, postData)
+            .post(LOGIN_URL, postData)
             .then((res) => {
                 const data = res.data.data;
                 dispatch(login(data));
@@ -51,17 +50,14 @@ const LoginPage = () => {
             .catch((err) => {
                 if (err.response) {
                     const payload = err.response.data;
+                    console.log(payload);
                     if (payload.status === 400) {
-                        if ("error" in payload.data) {
-                            setErrors({
-                                ...errors,
-                                password: payload.data.error,
-                            });
-                        } else {
-                            setErrors({ ...errors, ...payload.data });
-                        }
+                        setErrors({
+                            ...errors,
+                            password: payload.message,
+                        });
                     } else if (payload.status === 404) {
-                        setNotFound("Invalid details");
+                        setNotFound(payload.message);
                     } else {
                         setResponseStatus("Something went wrong");
                         setOpen(true);
@@ -165,7 +161,7 @@ const LoginPage = () => {
                 </Snackbar>
             )}
 
-            <Grid container sx={{ display: "flex", justifyContent: "center"}}>
+            <Grid container sx={{ display: "flex", justifyContent: "center" }}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>
                         <img

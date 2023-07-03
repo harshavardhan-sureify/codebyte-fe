@@ -1,23 +1,23 @@
-const GO_BASE_URL = "http://localhost:8080/api/v1/";
-const PHP_BASE_URL = "http://localhost/api/v1/";
+export const GO_BASE_URL = "http://localhost:8080/api/v1/";
+export const PHP_BASE_URL = "http://localhost/api/v1/";
 
-const createPollApi = PHP_BASE_URL + "createpoll";
-const signUp = GO_BASE_URL + "signup";
-const addUser = GO_BASE_URL + "admin/adduser";
-const ACTIVE_POLLS_URL = PHP_BASE_URL + "activepolls";
-const ANSWERED_POLLS_URL = PHP_BASE_URL + "answeredpolls";
-const loginApi = GO_BASE_URL + "login";
-const adminDashboardApi = GO_BASE_URL + "admin/dashboard";
-const allUsers = PHP_BASE_URL + "viewusers";
-const userInfo = GO_BASE_URL + "user/userinfo";
-const deleteUserApi = GO_BASE_URL + "admin/delete";
+export const CREATE_POLL_URL = PHP_BASE_URL + "createpoll";
+export const SIGNUP_URL = GO_BASE_URL + "signup";
+export const ADD_USER_URL = GO_BASE_URL + "admin/adduser";
+export const ACTIVE_POLLS_URL = PHP_BASE_URL + "activepolls";
+export const ANSWERED_POLLS_URL = PHP_BASE_URL + "answeredpolls";
+export const LOGIN_URL = GO_BASE_URL + "login";
+export const ADMIN_DASHBOARD_URL = GO_BASE_URL + "admin/dashboard";
+export const ALL_USERS_URL = PHP_BASE_URL + "viewusers";
+export const USER_INFO_URL = GO_BASE_URL + "user/userinfo";
+export const DELETE_USER_URL = GO_BASE_URL + "admin/delete";
 export const SAVE_POLL_URL = PHP_BASE_URL + "savepoll";
-const confirmuser = GO_BASE_URL + "user/confirmuser";
-const updateUserProfile = GO_BASE_URL + "user/updateprofile";
-const allPollsUrl = PHP_BASE_URL + "allpolls";
-const forgotPassword = GO_BASE_URL + "user/forgotpassword";
-const validateOtp = GO_BASE_URL + "user/validateotp";
-const resetPassword = GO_BASE_URL + "user/changepassword";
+export const CONFIRM_USER_URL = GO_BASE_URL + "user/confirmuser";
+export const UPDATE_PROFILE_URL = GO_BASE_URL + "user/updateprofile";
+export const ALL_POLLS_URL = PHP_BASE_URL + "allpolls";
+export const FORGOT_PASSWORD_URL = GO_BASE_URL + "user/forgotpassword";
+export const VALIDATE_OTP_URL = GO_BASE_URL + "user/validateotp";
+export const RESET_PASSWORD_URL = GO_BASE_URL + "user/changepassword";
 export const POLL_ANSWERS_URL = GO_BASE_URL + "admin/getanswers/";
 export const ADMIN_ROUTES = [
     {
@@ -58,23 +58,4 @@ export const USER_ROUTES = [
 export const USER_ROLE = "user";
 export const ADMIN_ROLE = "admin";
 
-export {
-    createPollApi,
-    GO_BASE_URL,
-    PHP_BASE_URL,
-    signUp,
-    loginApi,
-    adminDashboardApi,
-    allUsers,
-    addUser,
-    ACTIVE_POLLS_URL,
-    ANSWERED_POLLS_URL,
-    confirmuser,
-    userInfo,
-    updateUserProfile,
-    deleteUserApi,
-    forgotPassword,
-    validateOtp,
-    resetPassword,
-    allPollsUrl,
-};
+

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ViewPolls } from "../user/ViewPolls";
-import { ACTIVE_POLLS_URL, allPollsUrl } from "../../constants";
+import { ACTIVE_POLLS_URL, ALL_POLLS_URL } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
@@ -44,7 +44,7 @@ export const Polls = ({ type }) => {
       if (type === "activePolls") {
         serverURL = ACTIVE_POLLS_URL;
       } else {
-        serverURL = allPollsUrl;
+        serverURL = ALL_POLLS_URL;
       }
       const token = user.token;
       const config = {
@@ -63,8 +63,9 @@ export const Polls = ({ type }) => {
     }
   };
   useEffect(() => {
-    fetchPolls();
-    setSearch("");
+      fetchPolls();
+      setSearch("");
+      // eslint-disable-next-line
   }, [type]);
   if (loading) {
     return (

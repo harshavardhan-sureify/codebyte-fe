@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
-import { allUsers, deleteUserApi } from "../../constants";
+import { ALL_USERS_URL, DELETE_USER_URL } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import {
     Alert,
@@ -29,7 +29,7 @@ import { formatDate } from "./../utils";
 import { LoadingContainer } from "../Styles";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
-    border:"hidden"
+    border: "hidden";
 `;
 const AllUsers = () => {
     const user = useSelector(auth);
@@ -59,16 +59,16 @@ const AllUsers = () => {
     const submitUserDelete = () => {
         setIsOpen(false);
         axios
-            .delete(`${deleteUserApi}\\${deleteUser.user_id}`, {
+            .delete(`${DELETE_USER_URL}\\${deleteUser.user_id}`, {
                 headers: { Authorization: user.token },
             })
             .then((res) => {
                 setSeverity("success");
-                setAlertMessage(res.data.data.message);
+                setAlertMessage(res.data.message);
             })
             .catch((error) => {
                 setSeverity("error");
-                setAlertMessage(error.response.data.data.message);
+                setAlertMessage(error.response.data.message);
             })
             .finally(() => {
                 setAlertOpen(true);
@@ -78,12 +78,12 @@ const AllUsers = () => {
 
     const fetchAllUsers = () => {
         axios
-            .get(allUsers, {
+            .get(ALL_USERS_URL, {
                 headers: { Authorization: "Bearer " + user.token },
             })
-            .then((data) => {
-                setUserData(data.data.data.users);
-                setFilteredData(data.data.data.users);
+            .then((res) => {
+                setUserData(res.data.data.users);
+                setFilteredData(res.data.data.users);
                 setLoading(false);
             })
             .catch((err) => {
@@ -94,6 +94,7 @@ const AllUsers = () => {
 
     useEffect(() => {
         fetchAllUsers();
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         setFilteredData(
@@ -151,19 +152,19 @@ const AllUsers = () => {
                     />
                 </Grid>
                 <Grid item>
-                    <AddUserButton refetch = {fetchAllUsers}/>
+                    <AddUserButton refetch={fetchAllUsers} />
                 </Grid>
             </Grid>
             <Box pt={2}>
                 <Table>
                     <TableHead>
-                        <TableRow sx={{backgroundColor:"lightgrey"}}>
+                        <TableRow sx={{ backgroundColor: "lightgrey" }}>
                             <StyledTableCell>User Id</StyledTableCell>
-                            <StyledTableCell >Username</StyledTableCell>
-                            <StyledTableCell >Email</StyledTableCell>
-                            <StyledTableCell >Status</StyledTableCell>
-                            <StyledTableCell >Created At</StyledTableCell>
-                            <StyledTableCell >Actions</StyledTableCell>
+                            <StyledTableCell>Username</StyledTableCell>
+                            <StyledTableCell>Email</StyledTableCell>
+                            <StyledTableCell>Status</StyledTableCell>
+                            <StyledTableCell>Created At</StyledTableCell>
+                            <StyledTableCell>Actions</StyledTableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
