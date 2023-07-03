@@ -40,13 +40,10 @@ const AppRoutes = () => {
               <Route path="allusers" element={<AllUsers />} />
               <Route
                 path="allpolls"
-                element={<Polls type={"allPolls"} />}
+                element={<Polls  />}
               />
-              <Route
-                path="activepolls"
-                element={<Polls type={"activePolls"} />}
-              />
-              <Route path="activepolls/:id" element={<ViewSinglePoll />} />
+              
+              
               <Route path="allpolls/:id" element={<ViewSinglePoll />} />
 
               <Route path="profile" element={<Profile />} />

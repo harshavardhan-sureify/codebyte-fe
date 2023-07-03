@@ -23,10 +23,7 @@ export const ADMIN_ROUTES = [
     name: "dashboard",
     route: "/admin/dashboard",
   },
-  {
-    name: "Active polls",
-    route: "/admin/activepolls",
-  },
+
   {
     name: "All polls",
     route: "/admin/allpolls",
@@ -75,5 +72,5 @@ export {
   forgotPassword,
   validateOtp,
   resetPassword,
-  allPollsUrl
+  allPollsUrl,
 };
