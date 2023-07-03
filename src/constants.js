@@ -25,11 +25,11 @@ export const ADMIN_ROUTES = [
   },
 
   {
-    name: "All polls",
+    name: "Polls",
     route: "/admin/allpolls",
   },
   {
-    name: "All users",
+    name: "Users",
     route: "/admin/allusers",
   },
   {

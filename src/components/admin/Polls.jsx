@@ -60,17 +60,15 @@ export const Polls = () => {
     const active = [];
     const ended = [];
     const upcoming = [];
-    const currentDate = new Date().setHours(0,0,0,0);
+    const currentDate = new Date().setHours(0, 0, 0, 0);
     data.forEach((cur) => {
-      const startDate = new Date(cur.start_date).setHours(0,0,0,0) ;
-      const endDate = new Date(cur.end_date).setHours(0,0,0,0) ;
+      const startDate = new Date(cur.start_date).setHours(0, 0, 0, 0);
+      const endDate = new Date(cur.end_date).setHours(0, 0, 0, 0);
       if (startDate <= currentDate && endDate >= currentDate) {
         active.push(cur);
-        console.log(currentDate, endDate, currentDate <= endDate);
       } else if (startDate > currentDate) {
         upcoming.push(cur);
       } else {
-         
         ended.push(cur);
       }
     });
@@ -103,8 +101,8 @@ export const Polls = () => {
     setSearch("");
   }, []);
   useEffect(() => {
-    focus===false?setPollsData([...activePolls]):setPollsData(resetPolls)
-  },[focus])
+    focus === false ? setSelectedTab("Active") : setPollsData(resetPolls);
+  }, [focus]);
   if (loading) {
     return (
       <LoadingContainer>
@@ -113,6 +111,7 @@ export const Polls = () => {
       </LoadingContainer>
     );
   }
+
   return (
     <>
       <Stack
@@ -130,14 +129,10 @@ export const Polls = () => {
             value={search}
             onFocus={() => {
               setFocus(true);
-              // setPollsData(resetPolls);
-            }}
-            onBlur={() => {
-              setFocus(false);
-              // setSelectedTab("Active");
             }}
           ></TextField>
         </Box>
+        <Box flex={1} onClick={() => setFocus(false)}></Box>
 
         <Button
           variant="contained"
@@ -150,9 +145,9 @@ export const Polls = () => {
       {!focus && !search.length > 0 && (
         <Box>
           <Tabs value={selectedTab} onChange={handleSelectedTab}>
-            <Tab value="Active" label="Active"></Tab>
-            <Tab value="Ended" label="Ended"></Tab>
-            <Tab value="Upcoming" label="Upcoming"></Tab>
+            <Tab value="Active" label="Active Polls"></Tab>
+            <Tab value="Ended" label="Ended Polls"></Tab>
+            <Tab value="Upcoming" label="Upcoming Polls"></Tab>
           </Tabs>
         </Box>
       )}
