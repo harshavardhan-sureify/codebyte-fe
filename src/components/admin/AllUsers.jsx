@@ -73,7 +73,6 @@ const AllUsers = () => {
   const hanldeSearchText = (event) => {
     const value = event.target.value;
     setsearchText(value);
-    
   };
 
   const submitUserDelete = () => {
@@ -125,9 +124,8 @@ const AllUsers = () => {
 
   useEffect(() => {
     if (searchText.length === 0) {
-       
-      setFilteredData(activeUsers)
-      return
+      setFilteredData(activeUsers);
+      return;
     }
     setFilteredData(
       userData?.filter(
