@@ -6,6 +6,7 @@ import { POLL_ANSWERS_URL } from "../../constants";
 import axios from "axios";
 import { EmptyDataContainer } from "../user/EmptyDataContainer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import { useEffect } from "react";
 
 export const PollAnswers = ({ pollId }) => {
     const [loading, setLoading] = React.useState(true);
@@ -33,7 +34,7 @@ export const PollAnswers = ({ pollId }) => {
             //Handle session termination here
         }
     };
-    React.useEffect(() => {
+    useEffect(() => {
         fetchPollAnswers();
     }, []);
 
