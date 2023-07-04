@@ -28,7 +28,7 @@ import {
 import styled from "@emotion/styled";
 import AddUserButton from "./AddUserButton";
 import { formatDate } from "./../utils";
-import { TurnRight } from "@mui/icons-material";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
 const StyledTableCell = styled(TableCell)`
   text-align: center;
   background-color: ${(props) => (props.head ? "lightgrey" : "white")};
@@ -49,6 +49,7 @@ const AllUsers = () => {
   const [focus, setFocus] = useState(false);
   const [activeUsers, setActiveUsers] = useState([]);
   const [inActiveUsers, setInActiveUsers] = useState([]);
+  const [loading,setLoading]=useState(true)
 
   const handleSelectedTab = (e, value) => {
     setSelectedTab(value);
@@ -84,14 +85,17 @@ const AllUsers = () => {
       .then((res) => {
         setSeverity("success");
         setAlertMessage(res.data.data.message);
+        setLoading(false);
       })
       .catch((error) => {
         setSeverity("error");
         setAlertMessage(error.response.data.data.message);
+        setLoading(false);
       })
       .finally(() => {
         setAlertOpen(true);
         fetchAllUsers();
+        setLoading(false);
       });
   };
 
@@ -111,10 +115,12 @@ const AllUsers = () => {
         );
 
         setFilteredData(active);
+        setLoading(false)
       })
       .catch((err) => {
         setSeverity("error");
         setAlertMessage("Internal Server Error");
+        setLoading(false);
       });
   };
 
@@ -139,6 +145,9 @@ const AllUsers = () => {
   const startIndex = page * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
   const currentPageData = filteredData.slice(startIndex, endIndex);
+  if (loading) {
+    return <LoadingComponent/>
+  }
   return (
     <Box>
       <Snackbar
