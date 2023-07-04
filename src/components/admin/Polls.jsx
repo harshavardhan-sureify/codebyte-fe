@@ -1,20 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { ViewPolls } from "../user/ViewPolls";
-import { ACTIVE_POLLS_URL, allPollsUrl } from "../../constants";
+import {  allPollsUrl } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Stack,
-  Tab,
-  Tabs,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Stack, Tab, Tabs, TextField } from "@mui/material";
 import { LoadingContainer } from "../Styles";
 
 export const Polls = () => {
@@ -101,15 +92,15 @@ export const Polls = () => {
     setSearch("");
   }, []);
   useEffect(() => {
-    focus === false ? setSelectedTab("Active") : setPollsData(resetPolls);
+    if (!focus) {
+      setPollsData([...activePolls]);
+      setSelectedTab("Active");
+    } else {
+      setPollsData(resetPolls);
+    }
   }, [focus]);
   if (loading) {
-    return (
-      <LoadingContainer>
-        <CircularProgress />
-        <Typography variant="subtitle">Loading</Typography>
-      </LoadingContainer>
-    );
+    return <LoadingContainer />;
   }
 
   return (
@@ -145,9 +136,9 @@ export const Polls = () => {
       {!focus && !search.length > 0 && (
         <Box>
           <Tabs value={selectedTab} onChange={handleSelectedTab}>
-            <Tab value="Active" label="Active Polls"></Tab>
-            <Tab value="Ended" label="Ended Polls"></Tab>
-            <Tab value="Upcoming" label="Upcoming Polls"></Tab>
+            <Tab value="Active" label="Active"></Tab>
+            <Tab value="Ended" label="Ended"></Tab>
+            <Tab value="Upcoming" label="Upcoming"></Tab>
           </Tabs>
         </Box>
       )}

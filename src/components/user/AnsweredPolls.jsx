@@ -5,8 +5,7 @@ import { ViewPolls } from "./ViewPolls";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { LoadingContainer } from "../Styles";
-import { CircularProgress, Typography } from "@mui/material";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
 
 export const AnsweredPolls = () => {
     const user = useSelector(auth);
@@ -36,12 +35,7 @@ export const AnsweredPolls = () => {
         fetchAnsweredPolls();
     }, []);
     if (loading) {
-        return (
-            <LoadingContainer>
-                <CircularProgress />
-                <Typography variant="subtitle">Loading</Typography>
-            </LoadingContainer>
-        );
+        return <LoadingComponent />;
     }
     return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
 };

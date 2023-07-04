@@ -49,10 +49,9 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-export default function AddUserButton() {
+export default function AddUserButton({refetch}) {
     const [open, setOpen] = React.useState(false);
     const [msg,setMsg]=React.useState("")
-
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -61,14 +60,15 @@ export default function AddUserButton() {
     };
     const handleToaster=()=>{
         setOpen(false);
-        setMsg("user added successfully")
+        setMsg("user added successfully");
+        refetch();
     }
 
     return (
         <div>
             {msg&& (
                 <Snackbar
-                    open={msg}
+                    open={msg?true:false}
                     autoHideDuration={3200}
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
