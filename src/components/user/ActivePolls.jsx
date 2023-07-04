@@ -5,8 +5,7 @@ import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { CircularProgress, Typography } from "@mui/material";
-import { LoadingContainer } from "../Styles";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
 
 export const ActivePolls = () => {
     const user = useSelector(auth);
@@ -36,12 +35,7 @@ export const ActivePolls = () => {
         // eslint-disable-next-line
     }, []);
     if (loading) {
-        return (
-            <LoadingContainer>
-                <CircularProgress />
-                <Typography variant="subtitle">Loading</Typography>
-            </LoadingContainer>
-        );
+        return <LoadingComponent />;
     }
     return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
 };

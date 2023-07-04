@@ -4,9 +4,9 @@ import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { POLL_ANSWERS_URL } from "../../constants";
 import axios from "axios";
-import { LoadingContainer } from "../Styles";
-import { CircularProgress, Typography } from "@mui/material";
 import { EmptyDataContainer } from "../user/EmptyDataContainer";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import { useEffect } from "react";
 
 export const PollAnswers = ({ pollId }) => {
     const [loading, setLoading] = React.useState(true);
@@ -31,24 +31,19 @@ export const PollAnswers = ({ pollId }) => {
                 setLoading(false);
             }
         } catch (err) {
-            console.log(err);
+            //Handle session termination here
         }
     };
-    React.useEffect(() => {
+    useEffect(() => {
         fetchPollAnswers();
         // eslint-disable-next-line
     }, []);
 
     if (loading) {
-        return (
-            <LoadingContainer>
-                <CircularProgress />
-                <Typography variant="subtitle">Loading</Typography>
-            </LoadingContainer>
-        );
+        return <LoadingComponent />;
     }
     return (
-        <React.Fragment>
+        <>
             {rows == null ? (
                 <EmptyDataContainer
                     message={"No one answered this poll yet!!!"}
@@ -65,6 +60,6 @@ export const PollAnswers = ({ pollId }) => {
                     pageSizeOptions={[5, 10]}
                 />
             )}
-        </React.Fragment>
+        </>
     );
 };
