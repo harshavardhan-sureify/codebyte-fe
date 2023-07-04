@@ -6,7 +6,7 @@ export const EmptyDataContainer = ({ message }) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "80     vh",
+        height: "80vh",
         width: "100%",
         alignItems: "center",
         justifyContent: "center",

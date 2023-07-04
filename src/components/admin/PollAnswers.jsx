@@ -4,9 +4,8 @@ import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { POLL_ANSWERS_URL } from "../../constants";
 import axios from "axios";
-import { LoadingContainer } from "../Styles";
-import { CircularProgress, Typography } from "@mui/material";
 import { EmptyDataContainer } from "../user/EmptyDataContainer";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
 
 export const PollAnswers = ({ pollId }) => {
     const [loading, setLoading] = React.useState(true);
@@ -26,12 +25,12 @@ export const PollAnswers = ({ pollId }) => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const response = await axios.get(POLL_ANSWERS_URL + pollId, config);
-            if (response.status === 200) {  
+            if (response.status === 200) {
                 setRows(response.data.data.data);
                 setLoading(false);
             }
         } catch (err) {
-            console.log(err);
+            //Handle session termination here
         }
     };
     React.useEffect(() => {
@@ -39,17 +38,14 @@ export const PollAnswers = ({ pollId }) => {
     }, []);
 
     if (loading) {
-        return (
-            <LoadingContainer>
-                <CircularProgress />
-                <Typography variant="subtitle">Loading</Typography>
-            </LoadingContainer>
-        );
+        return <LoadingComponent />;
     }
     return (
-        <React.Fragment>
+        <>
             {rows == null ? (
-                <EmptyDataContainer message={"No one answered this poll yet!!!"} />
+                <EmptyDataContainer
+                    message={"No one answered this poll yet!!!"}
+                />
             ) : (
                 <DataGrid
                     rows={rows}
@@ -62,6 +58,6 @@ export const PollAnswers = ({ pollId }) => {
                     pageSizeOptions={[5, 10]}
                 />
             )}
-        </React.Fragment>
+        </>
     );
 };
