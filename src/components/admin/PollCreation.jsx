@@ -13,7 +13,9 @@ import { DatePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
 import LinearProgress from "@mui/material/LinearProgress";
-import { createPollApi } from "../../constants";
+import { CREATE_POLL_URL} from "../../constants";
+import Alert from "@mui/material/Alert";
+import Snackbar from "@mui/material/Snackbar";
 import { ErrorText, CreatePollContainer } from "./../Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -99,6 +101,7 @@ const PollCreate = () => {
 
     useEffect(() => {
         if (isClicked) validateForm();
+        // eslint-disable-next-line
     }, [title, question, options, isClicked, startDate, endDate]);
 
     const handleNewOption = () => {
@@ -129,7 +132,7 @@ const PollCreate = () => {
             options,
         };
         axios
-            .post(createPollApi, pollData, {
+            .post(CREATE_POLL_URL, pollData, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: "Bearer " + token,

@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import EmailPage from "./EmailPage";
 import VerificationPage from "./VerificationPage";
 import ResetPage from "./ResetPage";
-import { forgotPassword } from "../../constants";
+import { Alert, IconButton, Snackbar } from "@mui/material";
+import CancelIcon from "@mui/icons-material/Cancel";
+import { FORGOT_PASSWORD_URL } from "../../constants";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { handleToaster } from "../features/Toaster.reducer";
@@ -27,7 +29,7 @@ const ForgetPassword = () => {
     const sendData = async () => {
         try {
             const data = { email: email };
-            const res = await axios.post(forgotPassword, data);
+            const res = await axios.post(FORGOT_PASSWORD_URL, data);
             if (res.data.status === 200) {
                 setToken(res.data.data.otpToken);
                 if (page === 0) {
@@ -39,7 +41,7 @@ const ForgetPassword = () => {
             if (err.response.data.status === 500) {
                 handleToast("Internal server error");
             } else {
-                setErrors(err.response.data.data.error);
+                setErrors(err.response.data.message);
             }
         } finally {
             setOpen(false);

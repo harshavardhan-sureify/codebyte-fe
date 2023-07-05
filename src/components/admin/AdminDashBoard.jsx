@@ -1,14 +1,9 @@
-import {
-    Card,
-    Grid,
-    Typography,
-    Box,
-} from "@mui/material";
+import { Card, Grid, Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
-import { adminDashboardApi } from "../../constants";
+import { ADMIN_DASHBOARD_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
@@ -92,6 +87,10 @@ const AdminDashBoard = () => {
                     legend: "No of users",
                     legendPosition: "middle",
                     legendOffset: -40,
+                    tickValues: barData?.reduce(
+                        (set, { count }) => set.add(count),
+                        new Set()
+                    ).size,
                 }}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
@@ -156,15 +155,15 @@ const AdminDashBoard = () => {
     };
     useEffect(() => {
         axios
-            .get(adminDashboardApi, {
+            .get(ADMIN_DASHBOARD_URL, {
                 headers: {
                     Authorization: user.token,
                 },
             })
-            .then((data) => {
-                setData(data.data.data);
+            .then((res) => {
+                setData(res.data.data); 
                 const dd = [];
-                data.data.data.recentPolls.forEach((poll, ind) => {
+                res.data.data.recentPolls.forEach((poll, ind) => {
                     const obj = {};
                     obj["count"] = poll.usersAnswered;
                     obj["option"] = poll.title;

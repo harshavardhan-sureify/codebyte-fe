@@ -1,5 +1,5 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { signUp } from "../constants";
+import { SIGNUP_URL } from "../constants";
 import axios from "axios";
 import { theme } from "../themes/theme";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -43,7 +43,7 @@ const SignupPage = () => {
         try {
             const postData = { ...signUpdata };
             delete postData.cpassword;
-            const res = await axios.post(signUp, postData);
+            const res = await axios.post(SIGNUP_URL, postData);
 
             if (res.status === 200) {
                 const data = res.data.data;

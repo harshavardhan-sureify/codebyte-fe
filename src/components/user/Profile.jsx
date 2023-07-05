@@ -14,52 +14,53 @@ import {
 } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { confirmuser, userInfo, updateUserProfile } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { login } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
+import { CONFIRM_USER_URL, UPDATE_PROFILE_URL, USER_INFO_URL } from "../../constants";
 
 const Profile = () => {
-    const [open, setOpen] = useState(false);
-    const [enabled, setEnabled] = useState(false);
-    const [password, setPassword] = useState("");
-    const user = useSelector(auth);
-    const [errors, setErrors] = useState({});
-    const dispatch = useDispatch();
-    const [userData, setuserData] = useState({
-        name: "",
-        email: "",
-        password: "",
-    });
-    const [submitResponse, setSubmitResponse] = useState("");
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-        setPassword("");
-        setSubmitResponse("");
-    };
-    const handleChange = (event) => {
-        setuserData({ ...userData, [event.target.name]: event.target.value });
-        validations(event.target.name, event.target.value);
-    };
-    const validations = (clickedField, value) => {
-        let message = "";
-        value = value.trim();
-        switch (clickedField) {
-            case "name":
-                if (!value) {
-                    message = "Name is required";
-                } else if (value.length < 3) {
-                    message = "Name should contain atleast 3 characters";
-                } else if (!/^[A-Za-z\s]+$/.test(value)) {
-                    message = "Name should not have digits";
-                } else {
-                    message = "";
-                }
-                break;
+  const [open, setOpen] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [password, setPassword] = useState("");
+  const user = useSelector(auth);
+  const [errors, setErrors] = useState({});
+  const [toaster, setToaster] = useState("");
+  const dispatch = useDispatch();
+  const [userData, setuserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [submitResponse, setSubmitResponse] = useState("");
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setPassword("");
+    setSubmitResponse("");
+  };
+  const handleChange = (event) => {
+    setuserData({ ...userData, [event.target.name]: event.target.value });
+    validations(event.target.name, event.target.value);
+  };
+  const validations = (clickedField, value) => {
+    let message = "";
+    value = value.trim();
+    switch (clickedField) {
+      case "name":
+        if (!value) {
+          message = "Name is required";
+        } else if (value.length < 3) {
+          message = "Name should contain atleast 3 characters";
+        } else if (!/^[A-Za-z\s]+$/.test(value)) {
+          message = "Name should not have digits";
+        } else {
+          message = "";
+        }
+        break;
 
             case "email":
                 if (!value) {
@@ -94,13 +95,13 @@ const Profile = () => {
     const updateUserDetails = async (data) => {
         let message = "";
         try {
-            const res = await axios.put(updateUserProfile, data, {
+            const res = await axios.put(UPDATE_PROFILE_URL, data, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
             });
             if (res.status === 200) {
-                message = res.data.data.message;
+                message = res.data.message;
                 handleCancel();
                 dispatch(
                     handleToaster({
@@ -119,18 +120,18 @@ const Profile = () => {
             }
         } catch (error) {
             if (error.response.data.status === 400) {
-                const payload = error.response.data.data.error;
-                if (typeof payload === "string" || payload instanceof String) {
-                    setSubmitResponse(payload);
+                const payload = error.response.data;
+                if (payload.data === null) {
+                    setSubmitResponse(payload.message);
                 } else {
                     let msg = "";
-                    for (let i in payload) {
-                        msg += payload[i] + "\n";
+                    for (let i in payload.data) {
+                        msg += payload.data[i] + "\n";
                     }
                     setSubmitResponse(msg);
                 }
             } else {
-                message = error.response.data.data.error;
+                message = error.response.data.message;
                 dispatch(
                     handleToaster({
                         message,
@@ -169,7 +170,7 @@ const Profile = () => {
         const data = { oldpassword: password };
         let message = "";
         try {
-            const res = await axios.post(confirmuser, data, {
+            const res = await axios.post(CONFIRM_USER_URL, data, {
                 headers: { Authorization: `Bearer ${user.token}` },
             });
             if (res.status === 200) {
@@ -179,9 +180,9 @@ const Profile = () => {
             }
         } catch (error) {
             if (error.response.data.status === 400) {
-                setSubmitResponse(error.response.data.data.message);
+                setSubmitResponse(error.response.data.message);
             } else {
-                message = error.response.data.data.error;
+                message = error.response.data.message;
                 dispatch(
                     handleToaster({
                         message,
@@ -198,7 +199,7 @@ const Profile = () => {
     };
     const fetchUserDetails = async () => {
         try {
-            const res = await axios.get(userInfo, {
+            const res = await axios.get(USER_INFO_URL, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },

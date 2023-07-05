@@ -27,7 +27,7 @@ export const PollAnswers = ({ pollId }) => {
             };
             const response = await axios.get(POLL_ANSWERS_URL + pollId, config);
             if (response.status === 200) {
-                setRows(response.data.data.data);
+                setRows(response.data.data);
                 setLoading(false);
             }
         } catch (err) {
@@ -36,6 +36,7 @@ export const PollAnswers = ({ pollId }) => {
     };
     useEffect(() => {
         fetchPollAnswers();
+        // eslint-disable-next-line
     }, []);
 
     if (loading) {

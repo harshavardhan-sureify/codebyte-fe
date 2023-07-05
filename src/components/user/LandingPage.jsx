@@ -1,5 +1,5 @@
 import { useTheme } from "@emotion/react";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { StyledOutletContainer, StyledSideBar } from "../Styles";

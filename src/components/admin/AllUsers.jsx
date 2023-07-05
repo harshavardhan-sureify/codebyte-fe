@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
-import { allUsers, deleteUserApi } from "../../constants";
+import { ALL_USERS_URL, DELETE_USER_URL } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import { EmptyDataContainer } from "../user/EmptyDataContainer";
 import {
@@ -44,9 +44,6 @@ const AllUsers = () => {
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [deleteUser, setDeleteUser] = useState({});
-    const [alertOpen, setAlertOpen] = useState(false);
-    const [severity, setSeverity] = useState("success");
-    const [alertMessage, setAlertMessage] = useState("");
     const [selectedTab, setSelectedTab] = useState("Active");
     const [focus, setFocus] = useState(false);
     const [activeUsers, setActiveUsers] = useState([]);
@@ -73,22 +70,18 @@ const AllUsers = () => {
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
-    const hanldeSearchText = (event) => {
-        const value = event.target.value;
-        setsearchText(value);
-    };
 
     const submitUserDelete = () => {
         setIsOpen(false);
         let severity = "";
         let message = "";
         axios
-            .delete(`${deleteUserApi}\\${deleteUser.user_id}`, {
+            .delete(`${DELETE_USER_URL}\\${deleteUser.user_id}`, {
                 headers: { Authorization: user.token },
             })
             .then((res) => {
                 severity = "success";
-                message = res.data.data.message;
+                message = res.data.message;
             })
             .catch((error) => {
                 severity = "error";
@@ -103,12 +96,13 @@ const AllUsers = () => {
                     })
                 );
                 fetchAllUsers();
+                setLoading(false);
             });
     };
 
     const fetchAllUsers = () => {
         axios
-            .get(allUsers, {
+            .get(ALL_USERS_URL, {
                 headers: { Authorization: "Bearer " + user.token },
             })
             .then((data) => {
@@ -127,16 +121,16 @@ const AllUsers = () => {
                 setLoading(false);
             })
             .catch((err) => {
-                dispatch(
-                    handleToaster({
-                        message: "Internal Server Error",
-                        severity: "error",
-                        open: true,
-                    })
-                );
-                setLoading(false);
+               dispatch(
+                   handleToaster({
+                       message: "Internal Server Error",
+                       severity: "error",
+                       open: true,
+                   })
+               );
+               setLoading(false);
             });
-    };
+  };
 
     useEffect(() => {
         fetchAllUsers();

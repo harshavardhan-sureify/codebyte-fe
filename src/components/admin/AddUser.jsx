@@ -9,7 +9,7 @@ import {
     Box,
 } from "@mui/material";
 import React, { useState } from "react";
-import { addUser } from "../../constants";
+import { ADD_USER_URL } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -59,11 +59,11 @@ const AddUser = ({ toast }) => {
                     Authorization: `Bearer ${token}`,
                 },
             };
-            const res = await axios.post(addUser, dataObj, config);
+            const res = await axios.post(ADD_USER_URL, dataObj, config);
             if (res.status === 200) {
-                message = res.data.data.message;
+                message = res.data.message;
                 severity = "success";
-                setMsg(res.data.data.message);
+                setMsg(res.data.message);
                 toast();
             }
         } catch (err) {
@@ -72,8 +72,8 @@ const AddUser = ({ toast }) => {
                 setMsg("Internal server error");
                 message = "Internal Server Error";
             } else {
-                setMsg(err.response.data.data.error);
-                message = err.response.data.data.error;
+                setMsg(err.response.data.message);
+                message = err.response.data.message;
             }
         } finally {
             setButton(false);

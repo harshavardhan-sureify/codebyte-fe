@@ -49,28 +49,27 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-export default function AddUserButton({refetch}) {
+export default function AddUserButton({ refetch }) {
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
-    const [msg,setMsg]=React.useState("")
-
+    const [msg, setMsg] = React.useState("");
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
     };
-    const handleToasters=()=>{
+    const handleToasters = () => {
         setOpen(false);
-        refetch();
         dispatch(
             handleToaster({
                 message: "User added successfully",
-                severity:"success",
-                open:true
+                severity: "success",
+                open: true,
             })
         );
-    }
+        refetch();
+    };
 
     return (
         <div>
@@ -78,13 +77,10 @@ export default function AddUserButton({refetch}) {
                 variant="contained"
                 color="success"
                 onClick={handleClickOpen}
-                sx={
-                    {mr:4}
-                }
+                sx={{ mr: 4 }}
             >
-               Add User
-               <AddIcon fontSize="small"/>
-
+                Add User
+                <AddIcon fontSize="small" />
             </Button>
             <BootstrapDialog
                 onClose={handleClose}
@@ -96,7 +92,7 @@ export default function AddUserButton({refetch}) {
                     onClose={handleClose}
                     sx={{ borderRadius: 1 }}
                 ></BootstrapDialogTitle>
-                <AddUser toast={handleToasters}/>
+                <AddUser toast={handleToasters} />
             </BootstrapDialog>
         </div>
     );

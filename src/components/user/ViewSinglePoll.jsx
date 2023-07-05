@@ -165,7 +165,7 @@ export const ViewSinglePoll = () => {
                                             value={option}
                                             control={<Radio />}
                                             label={option}
-                                            disabled={role===ADMIN_ROLE}
+                                            disabled={role === ADMIN_ROLE}
                                             key={option}
                                         />
                                     ))}
@@ -178,9 +178,6 @@ export const ViewSinglePoll = () => {
                                     mt: "15px",
                                 }}
                             >
-                                {/* <StyledBackIcon
-                                    onClick={handleBackNavigation}
-                                /> */}
                                 {isActivePoll && (
                                     <Button
                                         type="submit"
