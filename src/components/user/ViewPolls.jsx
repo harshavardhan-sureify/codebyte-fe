@@ -2,12 +2,12 @@ import { EmptyDataContainer } from "./EmptyDataContainer";
 import { Poll } from "./PollCard";
 import { Grid } from "@mui/material";
 
-export const ViewPolls = ({ activeFlag, pollsData}) => {
-  pollsData.sort((a, b) => {
-    if (a.start_date > b.start_date) return -1;
-    else if (a.start_date < b.start_date) return 1;
-    return 0;
-  });
+export const ViewPolls = ({ activeFlag,message, pollsData }) => {
+    pollsData.sort((a, b) => {
+        if (a.start_date > b.start_date) return -1;
+        else if (a.start_date < b.start_date) return 1;
+        return 0;
+    });
 
     return (
         <Grid container>
@@ -21,7 +21,8 @@ export const ViewPolls = ({ activeFlag, pollsData}) => {
                 ))
             ) : (
                 <EmptyDataContainer
-                    message="No polls found!!"/>
+                    message={message}
+                />
             )}
         </Grid>
     );

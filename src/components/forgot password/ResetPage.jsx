@@ -12,7 +12,7 @@ import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { theme } from "../../themes/theme";
 import axios from "axios";
-import { resetPassword } from "../../constants";
+import { RESET_PASSWORD_URL } from "../../constants";
 import { useNavigate } from "react-router-dom";
 const intitialize = () => {
   return {
@@ -38,13 +38,13 @@ const ResetPage = ({ prop }) => {
   const sendData = async (password) => {
     try {
       const data = { password: password, passToken: prop.token };
-      const res = await axios.post(resetPassword, data);
+      const res = await axios.post(RESET_PASSWORD_URL, data);
       if (res.data.status === 200) {
         prop.setToast("password got reset");
         navigate("/login");
       }
     } catch (err) {
-      prop.setToast(err.response.data.data.error);
+      prop.setToast(err.response.data.message);
     }
   };
   const handleClick = (e) => {

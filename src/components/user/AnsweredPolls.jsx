@@ -11,8 +11,6 @@ export const AnsweredPolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const [loading, setLoading] = useState(true);
-
-    const activeFlag = false;
     const navigate = useNavigate();
 
     const fetchAnsweredPolls = async () => {
@@ -33,9 +31,15 @@ export const AnsweredPolls = () => {
     };
     useEffect(() => {
         fetchAnsweredPolls();
+        // eslint-disable-next-line
     }, []);
     if (loading) {
         return <LoadingComponent />;
     }
-    return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
+    return (
+        <ViewPolls
+            message={"You haven't answered any polls yet"}
+            pollsData={pollsData}
+        />
+    );
 };

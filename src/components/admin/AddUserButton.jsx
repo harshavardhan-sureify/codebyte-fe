@@ -49,26 +49,26 @@ BootstrapDialogTitle.propTypes = {
     onClose: PropTypes.func.isRequired,
 };
 
-export default function AddUserButton({refetch}) {
+export default function AddUserButton({ refetch }) {
     const [open, setOpen] = React.useState(false);
-    const [msg,setMsg]=React.useState("")
+    const [msg, setMsg] = React.useState("");
     const handleClickOpen = () => {
         setOpen(true);
     };
     const handleClose = () => {
         setOpen(false);
     };
-    const handleToaster=()=>{
+    const handleToaster = () => {
         setOpen(false);
-        setMsg("user added successfully");
+        setMsg("credentials sent to user successfully");
         refetch();
-    }
+    };
 
     return (
         <div>
-            {msg&& (
+            {msg && (
                 <Snackbar
-                    open={msg?true:false}
+                    open={msg ? true : false}
                     autoHideDuration={3200}
                     sx={{ paddingTop: "43px" }}
                     anchorOrigin={{
@@ -99,13 +99,10 @@ export default function AddUserButton({refetch}) {
                 variant="contained"
                 color="success"
                 onClick={handleClickOpen}
-                sx={
-                    {mr:4}
-                }
+                sx={{ mr: 4 }}
             >
-               Add User
-               <AddIcon fontSize="small"/>
-
+                Add User
+                <AddIcon fontSize="small" />
             </Button>
             <BootstrapDialog
                 onClose={handleClose}
@@ -117,7 +114,7 @@ export default function AddUserButton({refetch}) {
                     onClose={handleClose}
                     sx={{ borderRadius: 1 }}
                 ></BootstrapDialogTitle>
-                <AddUser toast={handleToaster}/>
+                <AddUser toast={handleToaster} />
             </BootstrapDialog>
         </div>
     );

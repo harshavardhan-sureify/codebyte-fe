@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ViewPolls } from "./ViewPolls";
-import { ACTIVE_POLLS_URL, AUTH_TOKEN } from "../../constants";
+import { ACTIVE_POLLS_URL} from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
@@ -11,7 +11,6 @@ export const ActivePolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const [loading, setLoading] = useState(true);
-    const activeFlag = true;
     const navigate = useNavigate();
 
     const fetchActivePolls = async () => {
@@ -32,9 +31,16 @@ export const ActivePolls = () => {
     };
     useEffect(() => {
         fetchActivePolls();
+        // eslint-disable-next-line
     }, []);
     if (loading) {
         return <LoadingComponent />;
     }
-    return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
+    return (
+        <ViewPolls
+            activeFlag={true}
+            message={"Currently there are no active polls"}
+            pollsData={pollsData}
+        />
+    );
 };
