@@ -4,19 +4,24 @@ import { auth } from "../features/User.reducer";
 import axios from "axios";
 import { allUsers, deleteUserApi } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
+import { EmptyDataContainer } from "../user/EmptyDataContainer";
 import {
+    Alert,
     Avatar,
     Box,
     Button,
     Grid,
     Modal,
     Paper,
+    Snackbar,
+    Tab,
     Table,
     TableBody,
     TableCell,
     TableHead,
     TablePagination,
     TableRow,
+    Tabs,
     TextField,
     Typography,
 } from "@mui/material";
@@ -24,20 +29,39 @@ import styled from "@emotion/styled";
 import AddUserButton from "./AddUserButton";
 import { formatDate } from "./../utils";
 import { handleToaster } from "../features/Toaster.reducer";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
-    border:"hidden"
+    background-color: ${(props) => (props.head ? "lightgrey" : "white")};
 `;
 const AllUsers = () => {
     const user = useSelector(auth);
-    const dispatch = useDispatch();
     const [userData, setUserData] = useState([]);
+    const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const [searchText, setsearchText] = useState("");
     const [filteredData, setFilteredData] = useState([]);
-    const [page, setPage] = useState(0);
+    const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     const [deleteUser, setDeleteUser] = useState({});
+    const [alertOpen, setAlertOpen] = useState(false);
+    const [severity, setSeverity] = useState("success");
+    const [alertMessage, setAlertMessage] = useState("");
+    const [selectedTab, setSelectedTab] = useState("Active");
+    const [focus, setFocus] = useState(false);
+    const [activeUsers, setActiveUsers] = useState([]);
+    const [inActiveUsers, setInActiveUsers] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    const handleSelectedTab = (e, value) => {
+        setSelectedTab(value);
+    };
+    useEffect(() => {
+        const users =
+            selectedTab === "Active" ? [...activeUsers] : [...inActiveUsers];
+        setFilteredData(users);
+        setPage(0);
+    }, [selectedTab]);
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
@@ -48,6 +72,10 @@ const AllUsers = () => {
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
+    };
+    const hanldeSearchText = (event) => {
+        const value = event.target.value;
+        setsearchText(value);
     };
 
     const submitUserDelete = () => {
@@ -67,11 +95,13 @@ const AllUsers = () => {
                 message = error.response.data.data.message;
             })
             .finally(() => {
-                dispatch(handleToaster({
-                    message,
-                    severity,
-                    open:true
-                }))
+                dispatch(
+                    handleToaster({
+                        message,
+                        severity,
+                        open: true,
+                    })
+                );
                 fetchAllUsers();
             });
     };
@@ -83,35 +113,56 @@ const AllUsers = () => {
             })
             .then((data) => {
                 setUserData(data.data.data.users);
-                setFilteredData(data.data.data.users);
+                const active = data.data.data.users.filter(
+                    (curUser) => curUser.is_active === "1"
+                );
+                setActiveUsers(active);
+                setInActiveUsers(
+                    data.data.data.users.filter(
+                        (curUser) => curUser.is_active === "0"
+                    )
+                );
+
+                setFilteredData(active);
+                setLoading(false);
             })
             .catch((err) => {
-                dispatch(handleToaster({
-                    message:"Internal Server Error",
-                    severity:"error",
-                    open:true
-                }))
+                dispatch(
+                    handleToaster({
+                        message: "Internal Server Error",
+                        severity: "error",
+                        open: true,
+                    })
+                );
+                setLoading(false);
             });
     };
-     useEffect(() => {
-         fetchAllUsers();
-     }, []);
 
     useEffect(() => {
-        setFilteredData(
-            userData?.filter(
-                (user) =>
-                    user.name
-                        .toLowerCase()
-                        .includes(searchText.toLowerCase()) ||
-                    user.user_id.includes(searchText)
-            )
-        );
-        setPage(0);
-    }, [searchText, userData]);
+        fetchAllUsers();
+    }, []);
+     useEffect(() => {
+         if (searchText.length === 0) {
+             setFilteredData(activeUsers);
+             return;
+         }
+         setFilteredData(
+             userData?.filter(
+                 (user) =>
+                     user.name
+                         .toLowerCase()
+                         .includes(searchText.toLowerCase()) ||
+                     user.user_id.includes(searchText.trim())
+             )
+         );
+         setPage(0);
+     }, [searchText]);
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     const currentPageData = filteredData.slice(startIndex, endIndex);
+    if (loading) {
+        return <LoadingComponent />;
+    }
     return (
         <Box>
             <Grid
@@ -127,70 +178,92 @@ const AllUsers = () => {
                         value={searchText}
                         onChange={(e) => setsearchText(e.target.value)}
                         size="small"
+                        onFocus={() => setFocus(true)}
+                        onBlur={() => {
+                            setFocus(false);
+                            setSelectedTab("Active");
+                        }}
                     />
                 </Grid>
                 <Grid item>
-                    <AddUserButton refetch = {fetchAllUsers}/>
+                    <AddUserButton refetch={fetchAllUsers} />
                 </Grid>
             </Grid>
-            <Box pt={2}>
-                <Table>
-                    <TableHead>
-                        <TableRow sx={{backgroundColor:"lightgrey"}}>
-                            <StyledTableCell>User Id</StyledTableCell>
-                            <StyledTableCell >Username</StyledTableCell>
-                            <StyledTableCell >Email</StyledTableCell>
-                            <StyledTableCell >Status</StyledTableCell>
-                            <StyledTableCell >Created At</StyledTableCell>
-                            <StyledTableCell >Actions</StyledTableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {currentPageData?.map((user, ind) => (
-                            <TableRow key={user.user_id}>
-                                <StyledTableCell>
-                                    {user.user_id}
+            {!focus && !searchText.length > 0 && (
+                <Box>
+                    <Tabs value={selectedTab} onChange={handleSelectedTab}>
+                        <Tab value={"Active"} label="Active"></Tab>
+                        <Tab value={"Inactive"} label="Inactive"></Tab>
+                    </Tabs>
+                </Box>
+            )}
+            {currentPageData.length > 0 ? (
+                <Box pt={2}>
+                    <Table>
+                        <TableHead>
+                            <TableRow>
+                                <StyledTableCell head="true">
+                                    Sno.
                                 </StyledTableCell>
-                                <StyledTableCell>{user.name}</StyledTableCell>
-                                <StyledTableCell>{user.email}</StyledTableCell>
-                                <StyledTableCell
-                                    sx={{
-                                        color:
-                                            user.is_active === "1"
-                                                ? "green"
-                                                : "red",
-                                    }}
-                                >
-                                    {user.is_active === "1"
-                                        ? "Active"
-                                        : "Inactive"}
+                                <StyledTableCell head="true">
+                                    Username
                                 </StyledTableCell>
-                                <StyledTableCell>
-                                    {formatDate(user.created_at)}
+                                <StyledTableCell head="true">
+                                    Email
                                 </StyledTableCell>
-                                <StyledTableCell>
-                                    <Button
-                                        variant="contained"
-                                        color="error"
-                                        onClick={() => handleDeleteModal(user)}
-                                        disabled={!(user.is_active === "1")}
-                                    >
-                                        Delete
-                                    </Button>
+
+                                <StyledTableCell head="true">
+                                    Created At
+                                </StyledTableCell>
+                                <StyledTableCell head="true">
+                                    Actions
                                 </StyledTableCell>
                             </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-                <TablePagination
-                    component="div"
-                    rowsPerPage={rowsPerPage}
-                    onRowsPerPageChange={handleChangeRowsPerPage}
-                    count={filteredData.length}
-                    page={page}
-                    onPageChange={handleChangePage}
-                />
-            </Box>
+                        </TableHead>
+                        <TableBody>
+                            {currentPageData?.map((user, ind) => (
+                                <TableRow key={user.user_id}>
+                                    <StyledTableCell>
+                                        {startIndex + ind + 1}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {user.name}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        {user.email}
+                                    </StyledTableCell>
+
+                                    <StyledTableCell>
+                                        {formatDate(user.created_at)}
+                                    </StyledTableCell>
+                                    <StyledTableCell>
+                                        <Button
+                                            variant="contained"
+                                            color="error"
+                                            onClick={() =>
+                                                handleDeleteModal(user)
+                                            }
+                                            disabled={!(user.is_active === "1")}
+                                        >
+                                            Delete
+                                        </Button>
+                                    </StyledTableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                    </Table>
+                    <TablePagination
+                        component="div"
+                        rowsPerPage={rowsPerPage}
+                        onRowsPerPageChange={handleChangeRowsPerPage}
+                        count={filteredData.length}
+                        page={page}
+                        onPageChange={handleChangePage}
+                    />
+                </Box>
+            ) : (
+                <EmptyDataContainer message="No user found!!" />
+            )}
             <Modal
                 open={isOpen}
                 onClose={() => {

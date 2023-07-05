@@ -6,20 +6,21 @@ import Typography from "@mui/material/Typography";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo from "../assets/images/logo.png";
 import { auth, isLoggedIn, logout } from "./features/User.reducer";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Button, Drawer, List } from "@mui/material";
+import { Button, Drawer, IconButton, List } from "@mui/material";
 import { USER_ROLE } from "../constants";
 import { USER_ROUTES } from "../constants";
 import { ADMIN_ROUTES } from "../constants";
 import { useTheme } from "@emotion/react";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 export default function NavBar() {
-    const dispatch = useDispatch();
     const isLogIn = useSelector(isLoggedIn);
-    const { role, name } = useSelector(auth);
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { role, name } = useSelector(auth);
     const [routes, setRoutes] = React.useState([]);
     React.useEffect(() => {
         if (role === USER_ROLE) {
@@ -45,6 +46,10 @@ export default function NavBar() {
             textAlign: "center",
         };
     };
+    const handleLogout = () => {
+        dispatch(logout());
+        navigate("/login");
+    };
 
     const list = (anchor) => {
         return (
@@ -53,22 +58,49 @@ export default function NavBar() {
                     width: 200,
                     height: "100vh",
                     background: theme.palette.secondary.main,
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                 }}
                 role="presentation"
                 onClick={toggleDrawer(anchor, false)}
                 onKeyDown={toggleDrawer(anchor, false)}
             >
-                <List>
-                    {routes.map((route) => (
-                        <NavLink
-                            to={route.route}
-                            style={activeStyles}
-                            key={`navlink${route.name}`}
-                        >
-                            {route.name}
-                        </NavLink>
-                    ))}
-                </List>
+                <Box sx={{ width: "100%" }}>
+                    <List>
+                        {routes.map((route) => (
+                            <NavLink
+                                to={route.route}
+                                style={activeStyles}
+                                key={`navlink${route.name}`}
+                            >
+                                {route.name}
+                            </NavLink>
+                        ))}
+                    </List>
+                </Box>
+                <IconButton
+                    variant="contained"
+                    color="error"
+                    sx={{
+                        px: 3,
+                        py: 1,
+                        color: "white",
+                        fontWeight: "",
+                        fontSize: "16px",
+                        background: "grey",
+                        borderRadius: "0px",
+                        width: "100%",
+                        ":hover": {
+                            background: theme.palette.danger.main,
+                        },
+                    }}
+                    onClick={handleLogout}
+                    size="medium"
+                >
+                    <LogoutIcon /> LOGOUT
+                </IconButton>
             </Box>
         );
     };
@@ -82,11 +114,6 @@ export default function NavBar() {
         }
 
         setState({ ...state, [anchor]: open });
-    };
-
-    const handleLogout = () => {
-        dispatch(logout());
-        navigate("/login");
     };
     return (
         <Box sx={{ flexGrow: 1 }}>
@@ -132,7 +159,10 @@ export default function NavBar() {
                         color={"white"}
                         fontWeight={"bold"}
                         component="div"
-                        sx={{ flexGrow: 1 }}
+                        sx={{
+                            flexGrow: 1,
+                            fontSize: { sm: "20px", xs: "20px", md: "33px" },
+                        }}
                     >
                         codebyte
                     </Typography>
@@ -155,14 +185,6 @@ export default function NavBar() {
                                     {name}
                                 </Typography>
                             </Box>
-
-                            <Button
-                                variant="contained"
-                                color="error"
-                                onClick={() => handleLogout()}
-                            >
-                                Logout
-                            </Button>
                         </Box>
                     )}
                 </Toolbar>

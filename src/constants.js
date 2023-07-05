@@ -1,5 +1,5 @@
-const GO_BASE_URL = "http://localhost:8080/api/v1/";
-const PHP_BASE_URL = "http://localhost/api/v1/";
+const GO_BASE_URL = "http://192.168.129.231:8080/api/v1/";
+const PHP_BASE_URL = "http://192.168.129.231:80/api/v1/";
 
 const createPollApi = PHP_BASE_URL + "createpoll";
 const signUp = GO_BASE_URL + "signup";
@@ -18,21 +18,19 @@ const allPollsUrl = PHP_BASE_URL + "allpolls";
 const forgotPassword = GO_BASE_URL + "user/forgotpassword";
 const validateOtp = GO_BASE_URL + "user/validateotp";
 const resetPassword = GO_BASE_URL + "user/changepassword";
+export const POLL_ANSWERS_URL = GO_BASE_URL + "admin/getanswers/";
 export const ADMIN_ROUTES = [
   {
     name: "dashboard",
     route: "/admin/dashboard",
   },
+
   {
-    name: "Active polls",
-    route: "/admin/activepolls",
-  },
-  {
-    name: "All polls",
+    name: "Polls",
     route: "/admin/allpolls",
   },
   {
-    name: "All users",
+    name: "Users",
     route: "/admin/allusers",
   },
   {
@@ -41,18 +39,18 @@ export const ADMIN_ROUTES = [
   },
 ];
 export const USER_ROUTES = [
-  {
-    name: "dashboard",
-    route: "/user/dashboard",
-  },
-  {
-    name: "Answered polls",
-    route: "/user/answeredpolls",
-  },
-  {
-    name: "profile",
-    route: "/user/profile",
-  },
+    {
+        name: "dashboard",
+        route: "/user/dashboard",
+    },
+    {
+        name: "Answered polls",
+        route: "/user/answeredpolls",
+    },
+    {
+        name: "profile",
+        route: "/user/profile",
+    },
 ];
 export const USER_ROLE = "user";
 export const ADMIN_ROLE = "admin";
@@ -75,5 +73,5 @@ export {
   forgotPassword,
   validateOtp,
   resetPassword,
-  allPollsUrl
+  allPollsUrl,
 };

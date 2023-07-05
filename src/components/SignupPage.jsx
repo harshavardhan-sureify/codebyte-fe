@@ -37,7 +37,6 @@ const SignupPage = () => {
     const navigate = useNavigate();
     const [signUpForm, setSignUpForm] = useState(initialize());
     const [error, setErrors] = useState({});
-    const [submitStatus, setSubmitStatus] = useState("");
     const [seePassword, setSeePassword] = useState(false);
 
     const sendSignUpDataToServer = async (signUpdata) => {
@@ -91,27 +90,20 @@ const SignupPage = () => {
     const handleChange = (e) => {
         setSignUpForm({ ...signUpForm, [e.target.name]: e.target.value });
         validations(e.target.name, e.target.value);
-        setSubmitStatus("");
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (Object.keys(error).length !== 4) {
-            if (Object.keys(error).length === 0) {
-                setSubmitStatus("Please fill the form ");
+        const temp = {};
+        for (let i in signUpForm) {
+            temp[i] = validations(i, signUpForm[i]);
+        }
+        setErrors({ ...error, ...temp });
+        for (let i in temp) {
+            if (temp[i] !== "") {
                 return;
             }
-            setSubmitStatus("Please fill the form Properly");
-            return;
-        } else {
-            for (let i in error) {
-                if (error[i].length !== 0) {
-                    setSubmitStatus("Please fill the form properly");
-                    return;
-                }
-            }
         }
-        setSubmitStatus("");
         sendSignUpDataToServer(signUpForm);
     };
 
@@ -167,6 +159,7 @@ const SignupPage = () => {
         }
 
         setErrors({ ...error, [clickedField]: message });
+        return message;
     };
 
     return (
@@ -208,11 +201,7 @@ const SignupPage = () => {
                         }}
                         align={"center"}
                     >
-                        {submitStatus && (
-                            <Alert severity="error">
-                                <strong>{submitStatus} </strong>
-                            </Alert>
-                        )}
+
                         <Avatar
                             sx={{
                                 backgroundColor: theme.palette.secondary.main,
