@@ -101,7 +101,15 @@ export const ViewSinglePoll = () => {
     };
 
     return (
-        <Box sx={{ display: "flex", justifyContent: "space-around",mt:"50px",flexWrap:"wrap",gap:5 }}>
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "space-around",
+                mt: "50px",
+                flexWrap: "wrap",
+                gap: 5,
+            }}
+        >
             <Snackbar
                 sx={{ mt: "40px" }}
                 open={open}
@@ -185,7 +193,7 @@ export const ViewSinglePoll = () => {
                                             value={option}
                                             control={<Radio />}
                                             label={option}
-                                            disabled={role===ADMIN_ROLE}
+                                            disabled={role === ADMIN_ROLE}
                                             key={option}
                                         />
                                     ))}
@@ -198,6 +206,7 @@ export const ViewSinglePoll = () => {
                                     mt: "15px",
                                 }}
                             >
+                                {/* <StyledBackIcon
                                 {/* <StyledBackIcon
                                     onClick={handleBackNavigation}
                                 /> */}

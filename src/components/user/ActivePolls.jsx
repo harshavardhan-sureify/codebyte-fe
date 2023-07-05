@@ -11,7 +11,6 @@ export const ActivePolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const [loading, setLoading] = useState(true);
-    const activeFlag = true;
     const navigate = useNavigate();
 
     const fetchActivePolls = async () => {
@@ -37,5 +36,11 @@ export const ActivePolls = () => {
     if (loading) {
         return <LoadingComponent />;
     }
-    return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
+    return (
+        <ViewPolls
+            activeFlag={true}
+            message={"Currently there are no active polls"}
+            pollsData={pollsData}
+        />
+    );
 };

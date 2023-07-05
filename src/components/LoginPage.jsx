@@ -32,7 +32,6 @@ const LoginPage = () => {
     const dispatch = useDispatch();
     const [loginForm, setLoginForm] = useState(intitialize());
     const [errors, setErrors] = useState({});
-    const [submitStatus, setSubmitStatus] = useState("");
     const navigate = useNavigate();
     const [seePassword, setSeePassword] = useState(false);
     const [open, setOpen] = useState(true);
@@ -69,23 +68,17 @@ const LoginPage = () => {
     const handleChange = (e) => {
         setLoginForm({ ...loginForm, [e.target.name]: e.target.value });
         validations(e.target.name, e.target.value);
-        setSubmitStatus("");
         setNotFound("");
     };
     const handleSubmit = (e) => {
         e.preventDefault();
-        if (errors["password"] === "Incorrect Password ") {
-            errors["password"] = "";
+        const temp = {};
+        for (let i in loginForm) {
+            temp[i] = validations(i, loginForm[i]);
         }
-        if (Object.keys(errors).length !== 2) {
-            if (Object.keys(errors).length === 0) {
-                setSubmitStatus("Please enter the details");
-            } else setSubmitStatus("Please enter the details properly");
-            return;
-        }
-        for (let i in errors) {
-            if (errors[i] !== "") {
-                setSubmitStatus("Please enter the details properly");
+        setErrors({ ...errors, ...temp });
+        for (let i in temp) {
+            if (temp[i] !== "") {
                 return;
             }
         }
@@ -121,8 +114,9 @@ const LoginPage = () => {
                 }
                 break;
             default:
-        }
-        setErrors({ ...errors, [name]: message });
+            }
+            setErrors({ ...errors, [name]: message });
+            return message;
     };
     return (
         <Grid
@@ -144,7 +138,7 @@ const LoginPage = () => {
                 >
                     <Alert
                         severity="error"
-                        variant="filled"
+                        variant="standard"
                         action={
                             <IconButton
                                 size="small"
@@ -184,9 +178,6 @@ const LoginPage = () => {
                         }}
                         align={"center"}
                     >
-                        {submitStatus && (
-                            <Alert severity="error">{submitStatus}</Alert>
-                        )}
                         <Avatar
                             sx={{
                                 backgroundColor: theme.palette.secondary.main,

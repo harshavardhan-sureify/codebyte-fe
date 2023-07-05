@@ -38,5 +38,10 @@ export const AnsweredPolls = () => {
     if (loading) {
         return <LoadingComponent />;
     }
-    return <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
+    return (
+        <ViewPolls
+            message={"You haven't answered any polls yet"}
+            pollsData={pollsData}
+        />
+    );
 };
