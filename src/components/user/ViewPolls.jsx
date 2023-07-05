@@ -21,8 +21,7 @@ export const ViewPolls = ({ activeFlag,message, pollsData }) => {
                 ))
             ) : (
                 <EmptyDataContainer
-                    message={message
-                    }
+                    message={message}
                 />
             )}
         </Grid>

@@ -206,10 +206,6 @@ export const ViewSinglePoll = () => {
                                     mt: "15px",
                                 }}
                             >
-                                {/* <StyledBackIcon
-                                {/* <StyledBackIcon
-                                    onClick={handleBackNavigation}
-                                /> */}
                                 {isActivePoll && (
                                     <Button
                                         type="submit"

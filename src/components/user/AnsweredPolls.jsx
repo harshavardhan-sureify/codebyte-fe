@@ -11,8 +11,6 @@ export const AnsweredPolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const [loading, setLoading] = useState(true);
-
-    const activeFlag = false;
     const navigate = useNavigate();
 
     const fetchAnsweredPolls = async () => {
