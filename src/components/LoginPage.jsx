@@ -1,7 +1,6 @@
 import {
     Alert,
     Avatar,
-    Snackbar,
     Button,
     Grid,
     IconButton,
@@ -19,9 +18,9 @@ import { MyTextField } from "./Styles";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN_URL } from "../constants";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { useDispatch } from "react-redux";
 import { login } from "./features/User.reducer";
+import { handleToaster } from "./features/Toaster.reducer";
 const intitialize = () => {
     return {
         email: "",
@@ -34,8 +33,6 @@ const LoginPage = () => {
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
     const [seePassword, setSeePassword] = useState(false);
-    const [open, setOpen] = useState(true);
-    const [responseStatus, setResponseStatus] = useState("");
     const [notFound, setNotFound] = useState("");
     const sendDataToServer = (data) => {
         const postData = { ...data };
@@ -44,7 +41,9 @@ const LoginPage = () => {
             .then((res) => {
                 const data = res.data.data;
                 dispatch(login(data));
-                navigate(`${data.role}/dashboard`);
+                setTimeout(() => {
+                    navigate(`${data.role}/dashboard`);
+                }, 2000);
             })
             .catch((err) => {
                 if (err.response) {
@@ -58,8 +57,11 @@ const LoginPage = () => {
                     } else if (payload.status === 404) {
                         setNotFound(payload.message);
                     } else {
-                        setResponseStatus("Something went wrong");
-                        setOpen(true);
+                        dispatch(handleToaster({
+                            message:"Something went wrong",
+                            severity:"error",
+                            open:true
+                        }))
                     }
                 }
             });
@@ -125,36 +127,6 @@ const LoginPage = () => {
                 minHeight: "100vh",
             }}
         >
-            {responseStatus && (
-                <Snackbar
-                    open={open}
-                    autoHideDuration={3200}
-                    sx={{ paddingTop: "43px" }}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    onClose={() => setOpen(false)}
-                >
-                    <Alert
-                        severity="error"
-                        variant="standard"
-                        action={
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => setOpen(false)}
-                            >
-                                <CancelIcon></CancelIcon>
-                            </IconButton>
-                        }
-                    >
-                        {responseStatus}
-                    </Alert>
-                </Snackbar>
-            )}
-
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
                 <Grid item xs={6} md={6} lg={4} mt={5}>
                     <ImagePaper elevation={3} align={"center"}>

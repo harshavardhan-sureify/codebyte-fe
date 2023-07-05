@@ -1,13 +1,15 @@
-import { Card, Grid, Typography, Box} from "@mui/material";
+import { Card, Grid, Typography, Box } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { ADMIN_DASHBOARD_URL } from "../../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import { handleToaster } from "../features/Toaster.reducer";
 const AdminDashBoard = () => {
+    const dispatch = useDispatch();
     const user = useSelector(auth);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
@@ -85,6 +87,10 @@ const AdminDashBoard = () => {
                     legend: "No of users",
                     legendPosition: "middle",
                     legendOffset: -40,
+                    tickValues: barData?.reduce(
+                        (set, { count }) => set.add(count),
+                        new Set()
+                    ).size,
                 }}
                 labelSkipWidth={12}
                 labelSkipHeight={12}
@@ -167,11 +173,11 @@ const AdminDashBoard = () => {
                 setLoading(false);
             })
             .catch((err) => {
-                // dispatch(handleToaster({
-                //     message:err.response.data.data.message,
-                //     severity:'error',
-                //     open:true
-                // }))
+                dispatch(handleToaster({
+                    message:err.response.data.data.message,
+                    severity:'error',
+                    open:true
+                }))
             });
     }, [user.token]);
     if (loading) {

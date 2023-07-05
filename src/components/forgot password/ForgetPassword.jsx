@@ -6,96 +6,80 @@ import { Alert, IconButton, Snackbar } from "@mui/material";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { FORGOT_PASSWORD_URL } from "../../constants";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { handleToaster } from "../features/Toaster.reducer";
 const ForgetPassword = () => {
-  const [page, setPage] = useState(0);
-  const [token, setToken] = useState("");
-  const [toast, setToast] = useState("");
-  const [errors, setErrors] = useState("");
-  const [open, setOpen] = useState("");
-  const [email, setEmail] = useState("");
-  const handlePage = () => {
-    setPage(page + 1);
-  };
+    const dispatch = useDispatch();
+    const [page, setPage] = useState(0);
+    const [token, setToken] = useState("");
+    const [errors, setErrors] = useState("");
+    const [open, setOpen] = useState("");
+    const [email, setEmail] = useState("");
+    const handlePage = () => {
+        setPage(page + 1);
+    };
 
-  const sendMail = () => {
-    sendData();
-  };
-  useEffect(() => {
-    setErrors("");
-  }, [page]);
+    const sendMail = () => {
+        sendData();
+    };
+    useEffect(() => {
+        setErrors("");
+    }, [page]);
 
-  const sendData = async () => {
-    try {
-      const data = { email: email };
-      const res = await axios.post(FORGOT_PASSWORD_URL, data);
-      if (res.data.status === 200) {
-        setToken(res.data.data.otpToken);
-        if (page === 0) {
-          handlePage();
-        }
-        setToast("otp sent");
-      }
-    } catch (err) {
-      if (err.response.data.status === 500) {
-        setToast("Internal server error");
-      } else {
-        setErrors(err.response.data.message);
-      }
-    } finally {
-      setOpen(false);
-    }
-  };
-
-  const prop = {
-    errors: errors,
-    setErrors: setErrors,
-    open: open,
-    setOpen: setOpen,
-    token: token,
-    setToken: setToken,
-    page: handlePage,
-    sendData: sendMail,
-    email: email,
-    setEmail: setEmail,
-    setToast: setToast,
-  };
-
-  return (
-    <>
-      {toast && (
-        <Snackbar
-          open={toast?true:false}
-          autoHideDuration={3200}
-          sx={{ paddingTop: "43px" }}
-          anchorOrigin={{
-            vertical: "top",
-            horizontal: "right",
-          }}
-          onClose={() => setToast("")}
-        >
-          <Alert
-            severity={toast === "Internal server error" ? "error" : "success"}
-            variant="standard"
-            action={
-              <IconButton
-                size="small"
-                aria-label="close"
-                color="inherit"
-                onClick={() => setToast("")}
-              >
-                <CancelIcon></CancelIcon>
-              </IconButton>
+    const sendData = async () => {
+        try {
+            const data = { email: email };
+            const res = await axios.post(FORGOT_PASSWORD_URL, data);
+            if (res.data.status === 200) {
+                setToken(res.data.data.otpToken);
+                if (page === 0) {
+                    handlePage();
+                }
+                handleToast("otp sent");
             }
-          >
-            {toast}
-          </Alert>
-        </Snackbar>
-      )}
-      {page === 0 && <EmailPage prop={prop} />}
-      {page === 1 && <VerificationPage prop={prop} />}
-      {page === 2 && <ResetPage prop={prop} />}
-    </>
-  );
+        } catch (err) {
+            if (err.response.data.status === 500) {
+                handleToast("Internal server error");
+            } else {
+                setErrors(err.response.data.message);
+            }
+        } finally {
+            setOpen(false);
+        }
+    };
+
+    const handleToast = (message) => {
+        dispatch(
+            handleToaster({
+                message,
+                severity:
+                    message === "Internal server error" ? "error" : "success",
+                open: true,
+            })
+        );
+    };
+
+    const prop = {
+        errors: errors,
+        setErrors: setErrors,
+        open: open,
+        setOpen: setOpen,
+        token: token,
+        setToken: setToken,
+        page: handlePage,
+        sendData: sendMail,
+        email: email,
+        setEmail: setEmail,
+        setToast: handleToast,
+    };
+
+    return (
+        <>
+            {page === 0 && <EmailPage prop={prop} />}
+            {page === 1 && <VerificationPage prop={prop} />}
+            {page === 2 && <ResetPage prop={prop} />}
+        </>
+    );
 };
 
 export default ForgetPassword;

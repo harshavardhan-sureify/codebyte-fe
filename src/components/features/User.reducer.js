@@ -17,12 +17,14 @@ const userSlice = createSlice({
             localStorage.setItem("token", action.payload.token);
             localStorage.setItem("role", action.payload.role);
             localStorage.setItem("name", action.payload.name);
+            localStorage.setItem(
+                "expirationTime",
+                new Date().getTime() + 60*60*1000
+            );
             return state;
         },
         logout(state, action) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("role");
-            localStorage.removeItem("name");
+            localStorage.clear();
             state.token = "";
             state.role = "";
             state.name = "";

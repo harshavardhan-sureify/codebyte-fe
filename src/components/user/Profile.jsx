@@ -8,61 +8,59 @@ import {
     DialogContentText,
     DialogTitle,
     Grid,
-    IconButton,
-    Snackbar,
     Stack,
     TextField,
     Typography,
 } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { login } from "../features/User.reducer";
+import { handleToaster } from "../features/Toaster.reducer";
 import { CONFIRM_USER_URL, UPDATE_PROFILE_URL, USER_INFO_URL } from "../../constants";
 
 const Profile = () => {
-    const [open, setOpen] = useState(false);
-    const [enabled, setEnabled] = useState(false);
-    const [password, setPassword] = useState("");
-    const user = useSelector(auth);
-    const [errors, setErrors] = useState({});
-    const [toaster, setToaster] = useState("");
-    const dispatch = useDispatch();
-    const [userData, setuserData] = useState({
-        name: "",
-        email: "",
-        password: "",
-    });
-    const [submitResponse, setSubmitResponse] = useState("");
-    const handleOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-        setPassword("");
-        setSubmitResponse("");
-    };
-    const handleChange = (event) => {
-        setuserData({ ...userData, [event.target.name]: event.target.value });
-        validations(event.target.name, event.target.value);
-    };
-    const validations = (clickedField, value) => {
-        let message = "";
-        value = value.trim();
-        switch (clickedField) {
-            case "name":
-                if (!value) {
-                    message = "Name is required";
-                } else if (value.length < 3) {
-                    message = "Name should contain atleast 3 characters";
-                } else if (!/^[A-Za-z\s]+$/.test(value)) {
-                    message = "Name should not have digits";
-                } else {
-                    message = "";
-                }
-                break;
+  const [open, setOpen] = useState(false);
+  const [enabled, setEnabled] = useState(false);
+  const [password, setPassword] = useState("");
+  const user = useSelector(auth);
+  const [errors, setErrors] = useState({});
+  const [toaster, setToaster] = useState("");
+  const dispatch = useDispatch();
+  const [userData, setuserData] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+  const [submitResponse, setSubmitResponse] = useState("");
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+    setPassword("");
+    setSubmitResponse("");
+  };
+  const handleChange = (event) => {
+    setuserData({ ...userData, [event.target.name]: event.target.value });
+    validations(event.target.name, event.target.value);
+  };
+  const validations = (clickedField, value) => {
+    let message = "";
+    value = value.trim();
+    switch (clickedField) {
+      case "name":
+        if (!value) {
+          message = "Name is required";
+        } else if (value.length < 3) {
+          message = "Name should contain atleast 3 characters";
+        } else if (!/^[A-Za-z\s]+$/.test(value)) {
+          message = "Name should not have digits";
+        } else {
+          message = "";
+        }
+        break;
 
             case "email":
                 if (!value) {
@@ -95,16 +93,23 @@ const Profile = () => {
         setErrors({ ...errors, [clickedField]: message });
     };
     const updateUserDetails = async (data) => {
+        let message = "";
         try {
             const res = await axios.put(UPDATE_PROFILE_URL, data, {
                 headers: {
                     Authorization: `Bearer ${user.token}`,
                 },
             });
-            console.log(res);
-            if (res.data.status === 200) {
-                setToaster(res.data.message);
+            if (res.status === 200) {
+                message = res.data.message;
                 handleCancel();
+                dispatch(
+                    handleToaster({
+                        message,
+                        severity: "success",
+                        open: true,
+                    })
+                );
                 dispatch(
                     login({
                         name: userData.name,
@@ -116,8 +121,7 @@ const Profile = () => {
         } catch (error) {
             if (error.response.data.status === 400) {
                 const payload = error.response.data;
-                console.log(payload);
-                if (payload.data == null) {
+                if (payload.data === null) {
                     setSubmitResponse(payload.message);
                 } else {
                     let msg = "";
@@ -127,7 +131,14 @@ const Profile = () => {
                     setSubmitResponse(msg);
                 }
             } else {
-                setToaster(error.response.data.message);
+                message = error.response.data.message;
+                dispatch(
+                    handleToaster({
+                        message,
+                        severity: "error",
+                        open: true,
+                    })
+                );
             }
         }
     };
@@ -157,7 +168,7 @@ const Profile = () => {
 
     const handlePasswordSubmit = async () => {
         const data = { oldpassword: password };
-
+        let message = "";
         try {
             const res = await axios.post(CONFIRM_USER_URL, data, {
                 headers: { Authorization: `Bearer ${user.token}` },
@@ -171,7 +182,14 @@ const Profile = () => {
             if (error.response.data.status === 400) {
                 setSubmitResponse(error.response.data.message);
             } else {
-                setToaster(error.response.data.message);
+                message = error.response.data.message;
+                dispatch(
+                    handleToaster({
+                        message,
+                        severity: "error",
+                        open: true,
+                    })
+                );
             }
             setPassword("");
         }
@@ -195,7 +213,6 @@ const Profile = () => {
     };
     useEffect(() => {
         fetchUserDetails();
-        // eslint-disable-next-line
     }, []);
 
     return (
@@ -334,34 +351,6 @@ const Profile = () => {
                     </Card>
                 </Grid>
             </Grid>
-            {toaster && (
-                <Snackbar
-                    open={!!toaster}
-                    autoHideDuration={1000}
-                    sx={{ paddingTop: "43px" }}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    onClose={() => setSubmitResponse("")}
-                >
-                    <Alert
-                        severity={toaster === "success" ? "success" : "error"}
-                        action={
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => setToaster("")}
-                            >
-                                <CancelIcon></CancelIcon>
-                            </IconButton>
-                        }
-                    >
-                        {toaster}
-                    </Alert>
-                </Snackbar>
-            )}
         </Box>
     );
 };

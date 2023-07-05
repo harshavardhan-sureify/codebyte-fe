@@ -86,10 +86,15 @@ export default function NavBar() {
                     sx={{
                         px: 3,
                         py: 1,
-                        color: "red",
+                        color: "white",
                         fontWeight: "",
                         fontSize: "16px",
-                        mb: 1,
+                        background: "grey",
+                        borderRadius: "0px",
+                        width: "100%",
+                        ":hover": {
+                            background: theme.palette.danger.main,
+                        },
                     }}
                     onClick={handleLogout}
                     size="medium"
@@ -114,25 +119,27 @@ export default function NavBar() {
         <Box sx={{ flexGrow: 1 }}>
             <AppBar position="static" color="secondary">
                 <Toolbar>
-                    <Button
-                        onClick={toggleDrawer("left", true)}
-                        sx={{
-                            display: {
-                                xs: "block",
-                                sm: "block",
-                                md: "none",
-                                lg: "none",
-                            },
-                        }}
-                    >
-                        <MenuIcon
+                    {isLogIn && (
+                        <Button
+                            onClick={toggleDrawer("left", true)}
                             sx={{
-                                mr: 2,
-
-                                color: "white",
+                                display: {
+                                    xs: "block",
+                                    sm: "block",
+                                    md: "none",
+                                    lg: "none",
+                                },
                             }}
-                        />
-                    </Button>
+                        >
+                            <MenuIcon
+                                sx={{
+                                    mr: 2,
+
+                                    color: "white",
+                                }}
+                            />
+                        </Button>
+                    )}
                     <Drawer
                         anchor="left"
                         open={state["left"]}

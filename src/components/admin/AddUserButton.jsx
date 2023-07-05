@@ -8,8 +8,8 @@ import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddUser from "./AddUser";
 import AddIcon from "@mui/icons-material/Add";
-import { Alert, Snackbar } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { useDispatch } from "react-redux";
+import { handleToaster } from "../features/Toaster.reducer";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -50,6 +50,7 @@ BootstrapDialogTitle.propTypes = {
 };
 
 export default function AddUserButton({ refetch }) {
+    const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
     const [msg, setMsg] = React.useState("");
     const handleClickOpen = () => {
@@ -58,43 +59,20 @@ export default function AddUserButton({ refetch }) {
     const handleClose = () => {
         setOpen(false);
     };
-    const handleToaster = () => {
+    const handleToasters = () => {
         setOpen(false);
-        setMsg("credentials sent to user successfully");
+        dispatch(
+            handleToaster({
+                message: "User added successfully",
+                severity: "success",
+                open: true,
+            })
+        );
         refetch();
     };
 
     return (
         <div>
-            {msg && (
-                <Snackbar
-                    open={msg ? true : false}
-                    autoHideDuration={3200}
-                    sx={{ paddingTop: "43px" }}
-                    anchorOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                    }}
-                    onClose={() => setMsg("")}
-                >
-                    <Alert
-                        severity="success"
-                        variant="standard"
-                        action={
-                            <IconButton
-                                size="small"
-                                aria-label="close"
-                                color="inherit"
-                                onClick={() => setMsg("")}
-                            >
-                                <CancelIcon></CancelIcon>
-                            </IconButton>
-                        }
-                    >
-                        {msg}
-                    </Alert>
-                </Snackbar>
-            )}
             <Button
                 variant="contained"
                 color="success"
@@ -114,7 +92,7 @@ export default function AddUserButton({ refetch }) {
                     onClose={handleClose}
                     sx={{ borderRadius: 1 }}
                 ></BootstrapDialogTitle>
-                <AddUser toast={handleToaster} />
+                <AddUser toast={handleToasters} />
             </BootstrapDialog>
         </div>
     );

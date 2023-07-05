@@ -1,5 +1,4 @@
 import {
-    Alert,
     Box,
     Button,
     Card,
@@ -8,7 +7,6 @@ import {
     FormLabel,
     Radio,
     RadioGroup,
-    Snackbar,
     Stack,
     Typography,
 } from "@mui/material";
@@ -18,38 +16,37 @@ import { theme } from "../../themes/theme";
 import { StyledDuration } from "./StyledDuration";
 import axios from "axios";
 import { SAVE_POLL_URL } from "../../constants";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { ADMIN_ROLE } from "../../constants";
+import { handleToaster } from "../features/Toaster.reducer";
 import { PollAnswers } from "../admin/PollAnswers";
 
 export const ViewSinglePoll = () => {
     const { role } = useSelector(auth);
     const location = useLocation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
     const poll = location.state.pollProps;
-    const [open, setOpen] = React.useState(false);
     const isActivePoll = location.state.pollStatus;
     const options = JSON.parse(poll.options).options;
     const [currSelectedValue, setSelectedValue] = useState("");
-    const [toasterObj, setToasterObj] = useState({});
     const prevSelectedValue = options[poll.option_id];
     const user = useSelector(auth);
 
     const handleSelectionChange = (e) => {
         if (isActivePoll) setSelectedValue(e.target.value);
     };
-    // const handleBackNavigation = () => {
-    //     navigate(-1);
-    // };
     const submitPoll = async (e) => {
         e.preventDefault();
         if (currSelectedValue === "") {
-            setToasterObj({
-                message: "Please select a option",
-                severity: "error",
-            });
-            setOpen(true);
+            dispatch(
+                handleToaster({
+                    message: "Please select a option",
+                    severity: "error",
+                    open: true,
+                })
+            );
             return;
         }
         const data = {
@@ -65,11 +62,13 @@ export const ViewSinglePoll = () => {
             };
             const res = await axios.post(SAVE_POLL_URL, data, config);
             if (res.status === 200) {
-                setOpen(true);
-                setToasterObj({
-                    severity: "success",
-                    message: "poll submitted successfully",
-                });
+                dispatch(
+                    handleToaster({
+                        message: "poll submitted successfully",
+                        severity: "success",
+                        open: true,
+                    })
+                );
                 setTimeout(() => {
                     navigate(-1);
                 }, 1000);
@@ -81,11 +80,13 @@ export const ViewSinglePoll = () => {
                     localStorage.clear();
                     navigate("/login");
                 } else {
-                    setOpen(true);
-                    setToasterObj({
-                        severity: "error",
-                        message: "unable to submit poll",
-                    });
+                    dispatch(
+                        handleToaster({
+                            severity: "error",
+                            message: "unable to submit poll",
+                            open: true,
+                        })
+                    );
                     setTimeout(() => {
                         navigate(-1);
                     }, 2000);
@@ -93,38 +94,9 @@ export const ViewSinglePoll = () => {
             }
         }
     };
-    const handleClose = (event, reason) => {
-        if (reason === "clickaway") {
-            return;
-        }
-        setOpen(false);
-    };
 
     return (
-        <Box
-            sx={{
-                display: "flex",
-                justifyContent: "space-around",
-                mt: "50px",
-                flexWrap: "wrap",
-                gap: 5,
-            }}
-        >
-            <Snackbar
-                sx={{ mt: "40px" }}
-                open={open}
-                autoHideDuration={3000}
-                onClose={handleClose}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-            >
-                <Alert
-                    onClose={handleClose}
-                    severity={toasterObj.severity}
-                    sx={{ width: "100%" }}
-                >
-                    {toasterObj.message}
-                </Alert>
-            </Snackbar>
+        <Box sx={{ display: "flex", justifyContent: "space-around",mt:"50px",flexWrap:"wrap",gap:5 }}>
             <Card
                 elevation={4}
                 sx={{
