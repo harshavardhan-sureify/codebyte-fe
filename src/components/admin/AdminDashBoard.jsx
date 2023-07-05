@@ -1,27 +1,17 @@
-import {
-    Card,
-    Grid,
-    Typography,
-    Table,
-    TableHead,
-    TableRow,
-    TableCell,
-    TableBody,
-    Box,
-} from "@mui/material";
+import { Card, Grid, Typography, Box} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
 import axios from "axios";
 import { adminDashboardApi } from "../../constants";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
-import { theme } from "../../themes/theme";
+import { LoadingComponent } from "../commonComponents/LoadingComponent";
 const AdminDashBoard = () => {
-    const dispatch = useDispatch();
     const user = useSelector(auth);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
+    const [loading, setLoading] = useState(true);
     const BarGraph = () => {
         return (
             <ResponsiveBar
@@ -174,7 +164,9 @@ const AdminDashBoard = () => {
                     dd.push(obj);
                 });
                 setBarData(dd);
-            }).catch((err) =>{
+                setLoading(false);
+            })
+            .catch((err) => {
                 // dispatch(handleToaster({
                 //     message:err.response.data.data.message,
                 //     severity:'error',
@@ -182,6 +174,9 @@ const AdminDashBoard = () => {
                 // }))
             });
     }, [user.token]);
+    if (loading) {
+        return <LoadingComponent/>
+    }
     return (
         <div
             style={{

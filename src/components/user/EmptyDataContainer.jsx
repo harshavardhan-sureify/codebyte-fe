@@ -6,7 +6,7 @@ export const EmptyDataContainer = ({ message }) => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "86vh",
+        height: "80vh",
         width: "100%",
         alignItems: "center",
         justifyContent: "center",
@@ -19,7 +19,7 @@ export const EmptyDataContainer = ({ message }) => {
         style={{ width: "150px", borderRadius: "10px" }}
       />
 
-      <Typography variant="h4" fontWeight={500}>
+      <Typography variant="h5" fontWeight={500}>
         {message}
       </Typography>
     </Box>

@@ -18,6 +18,7 @@ const allPollsUrl = PHP_BASE_URL + "allpolls";
 const forgotPassword = GO_BASE_URL + "user/forgotpassword";
 const validateOtp = GO_BASE_URL + "user/validateotp";
 const resetPassword = GO_BASE_URL + "user/changepassword";
+export const POLL_ANSWERS_URL = GO_BASE_URL + "admin/getanswers/";
 export const ADMIN_ROUTES = [
     {
         name: "dashboard",

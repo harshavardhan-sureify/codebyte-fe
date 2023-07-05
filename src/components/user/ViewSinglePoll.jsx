@@ -15,13 +15,13 @@ import {
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../../themes/theme";
-import { StyledBackIcon } from "../Styles";
 import { StyledDuration } from "./StyledDuration";
 import axios from "axios";
 import { SAVE_POLL_URL } from "../../constants";
 import { useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { ADMIN_ROLE } from "../../constants";
+import { PollAnswers } from "../admin/PollAnswers";
 
 export const ViewSinglePoll = () => {
     const { role } = useSelector(auth);
@@ -39,9 +39,9 @@ export const ViewSinglePoll = () => {
     const handleSelectionChange = (e) => {
         if (isActivePoll) setSelectedValue(e.target.value);
     };
-    const handleBackNavigation = () => {
-        navigate(-1);
-    };
+    // const handleBackNavigation = () => {
+    //     navigate(-1);
+    // };
     const submitPoll = async (e) => {
         e.preventDefault();
         if (currSelectedValue === "") {
@@ -101,7 +101,7 @@ export const ViewSinglePoll = () => {
     };
 
     return (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: "50px" }}>
+        <Box sx={{ display: "flex", justifyContent: "space-around",mt:"50px",flexWrap:"wrap",gap:5 }}>
             <Snackbar
                 sx={{ mt: "40px" }}
                 open={open}
@@ -117,7 +117,14 @@ export const ViewSinglePoll = () => {
                     {toasterObj.message}
                 </Alert>
             </Snackbar>
-            <Card sx={{ width: "400px", p: "20px", position: "relative" }}>
+            <Card
+                elevation={4}
+                sx={{
+                    width: "450px",
+                    p: "20px",
+                    position: "relative",
+                }}
+            >
                 <Stack spacing={4} sx={{ alignItems: "center" }}>
                     <Typography
                         variant="h4"
@@ -150,7 +157,6 @@ export const ViewSinglePoll = () => {
                                             : prevSelectedValue
                                     }
                                     onChange={handleSelectionChange}
-                                    
                                 >
                                     {options.map((option) => (
                                         <FormControlLabel
@@ -192,9 +198,9 @@ export const ViewSinglePoll = () => {
                                     mt: "15px",
                                 }}
                             >
-                                <StyledBackIcon
+                                {/* <StyledBackIcon
                                     onClick={handleBackNavigation}
-                                />
+                                /> */}
                                 {isActivePoll && (
                                     <Button
                                         type="submit"
@@ -210,6 +216,11 @@ export const ViewSinglePoll = () => {
                     </Box>
                 </Stack>
             </Card>
+            {role === "admin" && (
+                <Card elevation={4} sx={{ padding: 2 }}>
+                    <PollAnswers pollId={poll.poll_id} />
+                </Card>
+            )}
         </Box>
     );
 };
