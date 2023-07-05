@@ -16,7 +16,6 @@ import { auth } from "../features/User.reducer";
 import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
- 
 import { Polls } from "./../admin/Polls";
 import Profile from "../user/Profile";
 import ForgetPassword from "../forgot password/ForgetPassword";
@@ -38,14 +37,8 @@ const AppRoutes = () => {
               <Route path="create" element={<PollCreate />} />
               <Route path="adduser" element={<AddUserButton />} />
               <Route path="allusers" element={<AllUsers />} />
-              <Route
-                path="allpolls"
-                element={<Polls  />}
-              />
-              
-              
+              <Route path="allpolls" element={<Polls  />}/>
               <Route path="allpolls/:id" element={<ViewSinglePoll />} />
-
               <Route path="profile" element={<Profile />} />
             </Route>
           )}
