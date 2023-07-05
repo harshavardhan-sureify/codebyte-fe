@@ -21,12 +21,7 @@ export const ViewPolls = ({ activeFlag, pollsData}) => {
                 ))
             ) : (
                 <EmptyDataContainer
-                    message={
-                        activeFlag
-                            ? "Currently there are no Active polls for you !!!"
-                            : "You haven't answered any polls yet !!!"
-                    }
-                />
+                    message="No polls found!!"/>
             )}
         </Grid>
     );

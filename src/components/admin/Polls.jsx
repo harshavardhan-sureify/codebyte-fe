@@ -142,7 +142,7 @@ export const Polls = () => {
           </Tabs>
         </Box>
       )}
-      <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />;
+      <ViewPolls activeFlag={activeFlag} pollsData={pollsData} />
     </>
   );
 };
