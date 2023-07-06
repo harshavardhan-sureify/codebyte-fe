@@ -127,9 +127,9 @@ const Profile = () => {
     } catch (error) {
       if (error.response.data.status === 400) {
         const payload = error.response.data;
-        if (payload.data.error !== null) {
-          setSubmitResponse(payload.data.error);
-          let msg = payload.data.error;
+        if (payload.data=== null) {
+          setSubmitResponse(payload.message);
+          let msg = payload.message;
           if (msg.includes("email")) {
             setErrors({ ...errors, email: msg });
           } else {
@@ -193,7 +193,7 @@ const Profile = () => {
       }
     } catch (error) {
       if (error.response.data.status === 400) {
-        setSubmitResponse(error.response.data.data.message);
+        setSubmitResponse(error.response.data.message);
       } else {
         message = error.response.data.message;
         dispatch(
@@ -239,7 +239,7 @@ const Profile = () => {
           alignItems: "center",
         }}
       >
-        <Grid item xs={12} lg={6} sx={{width:"330px"}} >
+        <Grid item xs={12} lg={6} sx={{ width: "330px" }}>
           <Card sx={{ width: "100%", padding: "21px" }} elevation={3}>
             <Stack direction="column" gap={3}>
               {submitResponse.includes("Please") && enabled && (
