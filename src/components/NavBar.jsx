@@ -161,7 +161,7 @@ export default function NavBar() {
                         component="div"
                         sx={{
                             flexGrow: 1,
-                            fontSize: { sm: "20px", xs: "20px", md: "33px" },
+                            fontSize: { sm: "17px", xs: "17px", md: "33px" },
                         }}
                     >
                         codebyte
