@@ -185,6 +185,9 @@ const AllUsers = () => {
                         }}
                     />
                 </Grid>
+                <Grid item flex={1}>
+                    <Box />
+                </Grid>
                 <Grid item>
                     <AddUserButton refetch={fetchAllUsers} />
                 </Grid>

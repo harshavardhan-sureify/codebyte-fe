@@ -126,8 +126,7 @@ export const Polls = () => {
                         }}
                     ></TextField>
                 </Box>
-                <Box onClick={() => setFocus(false)}></Box>
-
+                <Box flex={1} onClick={() => setFocus(false)}></Box>
                 <Button
                     variant="contained"
                     color="success"

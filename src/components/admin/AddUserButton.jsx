@@ -75,7 +75,6 @@ export default function AddUserButton({ refetch }) {
                 variant="contained"
                 color="success"
                 onClick={handleClickOpen}
-                sx={{ mr: 4 }}
             >
                 Add User
             </Button>
