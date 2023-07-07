@@ -40,7 +40,6 @@ const ResetPage = ({ prop }) => {
       const data = { password: password, passToken: prop.token };
       const res = await axios.post(RESET_PASSWORD_URL, data);
       if (res.data.status === 200) {
-        prop.setToast("password got reset");
         navigate("/login");
       }
     } catch (err) {
@@ -65,7 +64,7 @@ const ResetPage = ({ prop }) => {
       return "Field is required";
     }
     if (name === "npassword" && value.length < 8) {
-      return "Password length should be atleast 8";
+      return "Password length should be atleast 8 characters";
     }
     if (name === "npassword" && !passwordRegex.test(value)) {
       return "Password must contain atleast one upper,one lower,one digit and one special character";

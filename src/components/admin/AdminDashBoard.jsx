@@ -1,4 +1,11 @@
-import { Card, Grid, Typography, Box } from "@mui/material";
+import {
+    Card,
+    Grid,
+    Typography,
+    Box,
+    useTheme,
+    useMediaQuery,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import ProgressCircle from "../ProgressCircle";
 import { ResponsiveBar } from "@nivo/bar";
@@ -10,6 +17,8 @@ import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import { handleToaster } from "../features/Toaster.reducer";
 const AdminDashBoard = () => {
     const dispatch = useDispatch();
+    const theme = useTheme();
+    const greaterThanMid = useMediaQuery(theme.breakpoints.up("md"));
     const user = useSelector(auth);
     const [data, setData] = useState([]);
     const [barData, setBarData] = useState([]);
@@ -19,7 +28,12 @@ const AdminDashBoard = () => {
             <ResponsiveBar
                 data={barData}
                 keys={["count"]}
-                margin={{ top: 50, right: 10, bottom: 50, left: 60 }}
+                margin={{
+                    top: 50,
+                    right: 10,
+                    bottom: greaterThanMid ? 50 : 100,
+                    left: 60,
+                }}
                 padding={0.4}
                 innerPadding={1}
                 valueScale={{ type: "linear" }}
@@ -74,10 +88,10 @@ const AdminDashBoard = () => {
                 axisBottom={{
                     tickSize: 5,
                     tickPadding: 7,
-                    tickRotation: 8,
+                    tickRotation: greaterThanMid ? 8 : 90,
                     legend: "Polls",
                     legendPosition: "middle",
-                    legendOffset: 40,
+                    legendOffset: greaterThanMid ? 40 : 80,
                     justify: true,
                 }}
                 axisLeft={{
@@ -95,34 +109,14 @@ const AdminDashBoard = () => {
                 labelSkipWidth={12}
                 labelSkipHeight={12}
                 labelTextColor="white"
-                legends={[
-                    {
-                        dataFrom: "keys",
-                        anchor: "bottom-right",
-                        direction: "column",
-                        justify: true,
-                        translateX: 120,
-                        translateY: 0,
-                        itemsSpacing: 6,
-                        itemWidth: 50,
-                        itemHeight: 20,
-                        itemDirection: "bottom-to-top",
-                        itemOpacity: 0.85,
-                        symbolSize: 20,
-                        effects: [
-                            {
-                                on: "hover",
-                                style: {
-                                    itemOpacity: 1,
-                                    itemBackground: "white",
-                                    itemTextColor: "white",
-                                },
-                            },
-                        ],
-                    },
-                ]}
                 useMesh={true}
                 animate={true}
+                gridYValues={
+                    barData?.reduce(
+                        (set, { count }) => set.add(count),
+                        new Set()
+                    ).size
+                }
                 reverseAnimation={true}
                 motionStiffness={120}
                 motionDamping={10}
@@ -161,7 +155,7 @@ const AdminDashBoard = () => {
                 },
             })
             .then((res) => {
-                setData(res.data.data); 
+                setData(res.data.data);
                 const dd = [];
                 res.data.data.recentPolls.forEach((poll, ind) => {
                     const obj = {};
@@ -173,15 +167,19 @@ const AdminDashBoard = () => {
                 setLoading(false);
             })
             .catch((err) => {
-                dispatch(handleToaster({
-                    message:err.response.data.data.message,
-                    severity:'error',
-                    open:true
-                }))
+                dispatch(
+                    handleToaster({
+                        message: err.response.data.data.message,
+                        severity: "error",
+                        open: true,
+                    })
+                );
             });
+        // eslint-disable-next-line
     }, [user.token]);
+
     if (loading) {
-        return <LoadingComponent/>
+        return <LoadingComponent />;
     }
     return (
         <div
@@ -265,7 +263,12 @@ const AdminDashBoard = () => {
                     <Card elevation={4}>
                         <Grid container columns={10}>
                             <Grid item sm={3} md={5} lg={3}>
-                                <ProgressCircle />
+                                <ProgressCircle
+                                    progress={Math.round(
+                                        (data?.attendedPolls / data?.allPolls) *
+                                            100
+                                    )}
+                                />
                             </Grid>
                             <Grid
                                 item

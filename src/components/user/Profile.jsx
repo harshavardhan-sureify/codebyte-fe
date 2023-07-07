@@ -33,7 +33,6 @@ const Profile = () => {
   const [password, setPassword] = useState("");
   const user = useSelector(auth);
   const [errors, setErrors] = useState({});
-  const [toaster, setToaster] = useState("");
   const [enableField, setEnableField] = useState(false);
   const [seePassword, setSeePassword] = useState(false);
   const dispatch = useDispatch();
@@ -248,19 +247,6 @@ const Profile = () => {
 
               <Typography variant="h6">Profile Info</Typography>
               <Dialog open={open} onClose={handleClose}>
-                {/* {open && submitResponse && (
-                                    <Alert
-                                        severity="error"
-                                        sx={{
-                                            marginTop: "4px",
-                                            marginLeft: "4px",
-                                            marginRight: "5px",
-                                        }}
-                                    >
-                                        {submitResponse}
-                                    </Alert>
-                                )} */}
-
                 <DialogTitle>Confirm Its you!!</DialogTitle>
                 <DialogContent>
                   <DialogContentText>Enter your password</DialogContentText>

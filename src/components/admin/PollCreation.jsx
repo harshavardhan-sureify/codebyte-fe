@@ -14,8 +14,6 @@ import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
 import LinearProgress from "@mui/material/LinearProgress";
 import { CREATE_POLL_URL} from "../../constants";
-import Alert from "@mui/material/Alert";
-import Snackbar from "@mui/material/Snackbar";
 import { ErrorText, CreatePollContainer } from "./../Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -148,6 +146,7 @@ const PollCreate = () => {
                     setEndDate(null);
                     setTitle("");
                     message = response.data.message;
+                    navigate(-1);
                 }
             })
             .catch((error) => {

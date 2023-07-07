@@ -25,7 +25,6 @@ import {
     toaster,
     closeToaster,
 } from "../features/Toaster.reducer";
-import AllPolls from "../admin/AllPolls";
 
 const AppRoutes = () => {
     const user = useSelector(auth);

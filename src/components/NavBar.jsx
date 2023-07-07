@@ -161,8 +161,20 @@ export default function NavBar() {
                         component="div"
                         sx={{
                             flexGrow: 1,
-                            fontSize: { sm: "17px", xs: "17px", md: "33px" },
+                            fontSize: { sm: "20px", xs: "20px", md: "33px" },
+                            ":hover":{
+                                cursor:"pointer"
+                            }
                         }}
+                        onClick={() =>{
+                            if(isLogIn){
+                                navigate(`/${role}/dashboard`)
+                            }
+                            else{
+                                navigate("/login")
+                            }
+                        }}
+                        
                     >
                         codebyte
                     </Typography>

@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import EmailPage from "./EmailPage";
 import VerificationPage from "./VerificationPage";
 import ResetPage from "./ResetPage";
-import { Alert, IconButton, Snackbar } from "@mui/material";
-import CancelIcon from "@mui/icons-material/Cancel";
 import { FORGOT_PASSWORD_URL } from "../../constants";
 import axios from "axios";
 import { useDispatch } from "react-redux";
@@ -35,7 +33,7 @@ const ForgetPassword = () => {
                 if (page === 0) {
                     handlePage();
                 }
-                handleToast("otp sent");
+                handleToast("OTP sent successfully");
             }
         } catch (err) {
             if (err.response.data.status === 500) {

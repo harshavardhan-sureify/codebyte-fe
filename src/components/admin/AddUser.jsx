@@ -21,10 +21,19 @@ const initialize = () => {
     };
 };
 const regex = {
-  name: /^[^\s].{2,}$/,
-  email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    name: { length: 3, expresion: /^[A-Za-z][A-Za-z\s]{2,}$/ },
+    email: {
+        length: 0,
+        expresion: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+    },
 };
-
+const messages = {
+    name: {
+        length: "Name should consist of atleast 3 characters",
+        expresion: "Name should consists of only characters",
+    },
+    email: { expresion: "Please enter a valid email address" },
+};
 const AddUser = ({ toast }) => {
     const user = useSelector(auth);
     const dispatch = useDispatch();
@@ -33,10 +42,6 @@ const AddUser = ({ toast }) => {
     const [submitStatus, setSubmitStatus] = useState("");
     const [msg, setMsg] = useState("");
     const [button, setButton] = useState(false);
-    const errors = {
-        name: "Name must consist of at least 3 characters",
-        email: "Please enter a valid email address",
-    };
 
     const validate = (value, name) => {
         if (!value) {
@@ -44,14 +49,19 @@ const AddUser = ({ toast }) => {
                 return "Enter valid Name";
             }
             return "Enter valid Email";
-        } else if (!regex[name].test(value)) {
-            return errors[name];
+        } else if (value.length < regex[name]["length"]) {
+            return messages[name]["length"];
+        } else if (!regex[name]["expresion"].test(value)) {
+            return messages[name]["expresion"];
         }
         return "";
     };
     const postData = async (dataObj) => {
         let message = "";
         let severity = "";
+        for (let i in dataObj) {
+            dataObj[i] = dataObj[i].trim();
+        }
         try {
             const token = user.token;
             const config = {
@@ -69,21 +79,19 @@ const AddUser = ({ toast }) => {
         } catch (err) {
             severity = "error";
             if (err.response.data.status === 500) {
-                setMsg("Internal server error");
                 message = "Internal Server Error";
+                dispatch(
+                    handleToaster({
+                        severity,
+                        message,
+                        open: true,
+                    })
+                );
             } else {
                 setMsg(err.response.data.message);
-                message = err.response.data.message;
             }
         } finally {
             setButton(false);
-            dispatch(
-                handleToaster({
-                    severity,
-                    message,
-                    open: true,
-                })
-            );
         }
     };
 
@@ -94,34 +102,34 @@ const AddUser = ({ toast }) => {
         setSubmitStatus("");
     };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    var temp = {};
-    for (let x in addUserForm) {
-      temp[x] = validate(addUserForm[x], x);
-    }
-
-    setErrors({ ...error, ...temp });
-
-    if (Object.keys(error).length !== 2) {
-      if (Object.keys(error).length === 0) {
-        setSubmitStatus("Please fill the form ");
-        return;
-      }
-      setSubmitStatus("Enter valid details");
-      return;
-    } else {
-      for (let i in error) {
-        if (error[i].length !== 0) {
-          setSubmitStatus("Enter valid details");
-          return;
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        var temp = {};
+        for (let x in addUserForm) {
+            temp[x] = validate(addUserForm[x], x);
         }
-      }
-    }
-    setSubmitStatus("");
-    postData(addUserForm);
-    setButton(true);
-  };
+
+        setErrors({ ...error, ...temp });
+
+        if (Object.keys(error).length !== 2) {
+            if (Object.keys(error).length === 0) {
+                setSubmitStatus("Please fill the form ");
+                return;
+            }
+            setSubmitStatus("Enter valid details");
+            return;
+        } else {
+            for (let i in error) {
+                if (error[i].length !== 0) {
+                    setSubmitStatus("Enter valid details");
+                    return;
+                }
+            }
+        }
+        setSubmitStatus("");
+        postData(addUserForm);
+        setButton(true);
+    };
 
     const validations = (value, name) => {
         const errorMessage = validate(value, name);
@@ -171,58 +179,58 @@ const AddUser = ({ toast }) => {
                     </Typography>
                 )}
 
-        <TextField
-          sx={{ mt: 1, mb: 1, border: 0 }}
-          label="Name"
-          placeholder="Enter your Name"
-          onChange={handleChange}
-          name="name"
-          fullWidth
-          value={addUserForm.name}
-          error={error.name ? true : false}
-          helperText={error.name}
-          size="small"
-          disabled={button}
-        />
-        <TextField
-          sx={{ mt: 1, mb: 1 }}
-          label="Email"
-          fullWidth
-          placeholder="Enter your Email"
-          onChange={handleChange}
-          name="email"
-          value={addUserForm.email}
-          error={error.email ? true : false}
-          helperText={error.email}
-          disabled={button}
-          size="small"
-        />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            justifyContent: "end",
-            mt: 1,
-            gap: 1,
-            px: 0,
-          }}
-        >
-          <Button
-            type="submit"
-            variant="contained"
-            disabled={button}
-            sx={{
-              height: 40,
-            }}
-            size="small"
-            color="secondary"
-          >
-            Add
-          </Button>
-        </Box>
-      </form>
-    </Paper>
-  );
+                <TextField
+                    sx={{ mt: 1, mb: 1, border: 0 }}
+                    label="Name"
+                    placeholder="Enter your Name"
+                    onChange={handleChange}
+                    name="name"
+                    fullWidth
+                    value={addUserForm.name}
+                    error={error.name ? true : false}
+                    helperText={error.name}
+                    size="small"
+                    disabled={button}
+                />
+                <TextField
+                    sx={{ mt: 1, mb: 1 }}
+                    label="Email"
+                    fullWidth
+                    placeholder="Enter your Email"
+                    onChange={handleChange}
+                    name="email"
+                    value={addUserForm.email}
+                    error={error.email ? true : false}
+                    helperText={error.email}
+                    disabled={button}
+                    size="small"
+                />
+                <Box
+                    sx={{
+                        display: "flex",
+                        flexDirection: "row",
+                        justifyContent: "end",
+                        mt: 1,
+                        gap: 1,
+                        px: 0,
+                    }}
+                >
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={button}
+                        sx={{
+                            height: 40,
+                        }}
+                        size="small"
+                        color="secondary"
+                    >
+                        Add
+                    </Button>
+                </Box>
+            </form>
+        </Paper>
+    );
 };
 
 export default AddUser;

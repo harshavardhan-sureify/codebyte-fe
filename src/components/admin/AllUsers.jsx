@@ -6,14 +6,13 @@ import { ALL_USERS_URL, DELETE_USER_URL } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import { EmptyDataContainer } from "../user/EmptyDataContainer";
 import {
-    Alert,
     Avatar,
     Box,
     Button,
     Grid,
+    IconButton,
     Modal,
     Paper,
-    Snackbar,
     Tab,
     Table,
     TableBody,
@@ -27,6 +26,7 @@ import {
 } from "@mui/material";
 import styled from "@emotion/styled";
 import AddUserButton from "./AddUserButton";
+import DeleteIcon from "@mui/icons-material/Delete";
 import { formatDate } from "./../utils";
 import { handleToaster } from "../features/Toaster.reducer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
@@ -58,6 +58,7 @@ const AllUsers = () => {
             selectedTab === "Active" ? [...activeUsers] : [...inActiveUsers];
         setFilteredData(users);
         setPage(0);
+        // eslint-disable-next-line
     }, [selectedTab]);
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
@@ -105,14 +106,14 @@ const AllUsers = () => {
             .get(ALL_USERS_URL, {
                 headers: { Authorization: "Bearer " + user.token },
             })
-            .then((data) => {
-                setUserData(data.data.data.users);
-                const active = data.data.data.users.filter(
+            .then((res) => {
+                setUserData(res.data.data.users);
+                const active = res.data.data.users.filter(
                     (curUser) => curUser.is_active === "1"
                 );
                 setActiveUsers(active);
                 setInActiveUsers(
-                    data.data.data.users.filter(
+                    res.data.data.users.filter(
                         (curUser) => curUser.is_active === "0"
                     )
                 );
@@ -121,36 +122,38 @@ const AllUsers = () => {
                 setLoading(false);
             })
             .catch((err) => {
-               dispatch(
-                   handleToaster({
-                       message: "Internal Server Error",
-                       severity: "error",
-                       open: true,
-                   })
-               );
-               setLoading(false);
+                dispatch(
+                    handleToaster({
+                        message: "Internal Server Error",
+                        severity: "error",
+                        open: true,
+                    })
+                );
+                setLoading(false);
             });
-  };
+    };
 
     useEffect(() => {
         fetchAllUsers();
+        // eslint-disable-next-line
     }, []);
-     useEffect(() => {
-         if (searchText.length === 0) {
-             setFilteredData(activeUsers);
-             return;
-         }
-         setFilteredData(
-             userData?.filter(
-                 (user) =>
-                     user.name
-                         .toLowerCase()
-                         .includes(searchText.toLowerCase()) ||
-                     user.user_id.includes(searchText.trim())
-             )
-         );
-         setPage(0);
-     }, [searchText]);
+    useEffect(() => {
+        if (searchText.length === 0) {
+            setFilteredData(activeUsers);
+            return;
+        }
+        setFilteredData(
+            userData?.filter(
+                (user) =>
+                    user.name
+                        .toLowerCase()
+                        .includes(searchText.toLowerCase()) ||
+                    user.user_id.includes(searchText.trim())
+            )
+        );
+        setPage(0);
+        // eslint-disable-next-line
+    }, [searchText]);
     const startIndex = page * rowsPerPage;
     const endIndex = startIndex + rowsPerPage;
     const currentPageData = filteredData.slice(startIndex, endIndex);
@@ -165,6 +168,9 @@ const AllUsers = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                 }}
+                pt={2}
+                px={2}
+                rowGap={2}
             >
                 <Grid item>
                     <TextField
@@ -178,6 +184,9 @@ const AllUsers = () => {
                             setSelectedTab("Active");
                         }}
                     />
+                </Grid>
+                <Grid item flex={1}>
+                    <Box />
                 </Grid>
                 <Grid item>
                     <AddUserButton refetch={fetchAllUsers} />
@@ -200,7 +209,7 @@ const AllUsers = () => {
                                     Sno.
                                 </StyledTableCell>
                                 <StyledTableCell head="true">
-                                    Username
+                                    Name
                                 </StyledTableCell>
                                 <StyledTableCell head="true">
                                     Email
@@ -231,7 +240,7 @@ const AllUsers = () => {
                                         {formatDate(user.created_at)}
                                     </StyledTableCell>
                                     <StyledTableCell>
-                                        <Button
+                                        <IconButton
                                             variant="contained"
                                             color="error"
                                             onClick={() =>
@@ -239,8 +248,8 @@ const AllUsers = () => {
                                             }
                                             disabled={!(user.is_active === "1")}
                                         >
-                                            Delete
-                                        </Button>
+                                            <DeleteIcon fontSize="medium" />
+                                        </IconButton>
                                     </StyledTableCell>
                                 </TableRow>
                             ))}

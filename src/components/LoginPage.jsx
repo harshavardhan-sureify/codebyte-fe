@@ -1,5 +1,4 @@
 import {
-  Alert,
   Avatar,
   Button,
   Grid,
@@ -111,7 +110,7 @@ const LoginPage = () => {
         if (!value) {
           message = "Password is required";
         } else if (value.length < 8) {
-          message = "Password length should be atleast 8";
+          message = "Password length should be atleast 8 characters";
         } else if (
           !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])/.test(value)
         ) {
@@ -216,7 +215,7 @@ const LoginPage = () => {
               >
                 Login
               </Button>
-              <Typography variant="p">
+              <Typography variant="body2">
                 <Link to="/forgotpassword" style={{ textDecoration: "none" }}>
                   Forgot password?
                 </Link>
