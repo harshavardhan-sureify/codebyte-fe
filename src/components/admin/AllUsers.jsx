@@ -170,6 +170,7 @@ const AllUsers = () => {
                 }}
                 pt={2}
                 px={2}
+                rowGap={2}
             >
                 <Grid item>
                     <TextField
@@ -205,7 +206,7 @@ const AllUsers = () => {
                                     Sno.
                                 </StyledTableCell>
                                 <StyledTableCell head="true">
-                                    Username
+                                    Name
                                 </StyledTableCell>
                                 <StyledTableCell head="true">
                                     Email

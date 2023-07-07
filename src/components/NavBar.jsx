@@ -167,7 +167,12 @@ export default function NavBar() {
                             }
                         }}
                         onClick={() =>{
-                            navigate(`/${role}/dashboard`)
+                            if(isLogIn){
+                                navigate(`/${role}/dashboard`)
+                            }
+                            else{
+                                navigate("/login")
+                            }
                         }}
                         
                     >

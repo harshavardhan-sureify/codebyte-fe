@@ -110,6 +110,9 @@ export const Polls = () => {
                 justifyContent={"space-between"}
                 pt={2}
                 px={2}
+                display="flex"
+                flexWrap="wrap"
+                rowGap={2}
             >
                 <Box>
                     <TextField
@@ -123,7 +126,7 @@ export const Polls = () => {
                         }}
                     ></TextField>
                 </Box>
-                <Box flex={1} onClick={() => setFocus(false)}></Box>
+                <Box onClick={() => setFocus(false)}></Box>
 
                 <Button
                     variant="contained"
