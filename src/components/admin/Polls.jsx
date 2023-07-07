@@ -110,6 +110,7 @@ export const Polls = () => {
                 justifyContent={"space-between"}
                 marginRight={2}
                 marginLeft={2}
+                flexWrap={"wrap"}
             >
                 <Box>
                     <TextField
@@ -144,7 +145,7 @@ export const Polls = () => {
             )}
             <ViewPolls
                 activeFlag={activeFlag}
-                message={"Currently there are no upcoming polls"}
+                message={"No polls found!!"}
                 pollsData={pollsData}
             />
         </>
