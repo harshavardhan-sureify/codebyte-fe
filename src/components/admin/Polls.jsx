@@ -108,9 +108,8 @@ export const Polls = () => {
             <Stack
                 direction={"row"}
                 justifyContent={"space-between"}
-                marginRight={2}
-                marginLeft={2}
-                flexWrap={"wrap"}
+                pt={2}
+                px={2}
             >
                 <Box>
                     <TextField
@@ -128,7 +127,7 @@ export const Polls = () => {
 
                 <Button
                     variant="contained"
-                    color="secondary"
+                    color="success"
                     onClick={() => navigate("/admin/create")}
                 >
                     Create Poll
@@ -145,7 +144,7 @@ export const Polls = () => {
             )}
             <ViewPolls
                 activeFlag={activeFlag}
-                message={"No polls found!!"}
+                message={"No polls available"}
                 pollsData={pollsData}
             />
         </>

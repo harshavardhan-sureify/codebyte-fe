@@ -19,7 +19,6 @@ const VerificationPage = ({ prop }) => {
             if (res.status === 200) {              
                 prop.setToken(res.data.data.passToken);
                 prop.page();
-                prop.setToast("valid user");
             }
         } catch (err) {
             if (err.response.data.status === 500) {

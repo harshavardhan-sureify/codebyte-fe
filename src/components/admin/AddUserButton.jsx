@@ -7,7 +7,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import AddUser from "./AddUser";
-import AddIcon from "@mui/icons-material/Add";
 import { useDispatch } from "react-redux";
 import { handleToaster } from "../features/Toaster.reducer";
 
@@ -52,7 +51,6 @@ BootstrapDialogTitle.propTypes = {
 export default function AddUserButton({ refetch }) {
     const dispatch = useDispatch();
     const [open, setOpen] = React.useState(false);
-    const [msg, setMsg] = React.useState("");
     const handleClickOpen = () => {
         setOpen(true);
     };
@@ -80,7 +78,6 @@ export default function AddUserButton({ refetch }) {
                 sx={{ mr: 4 }}
             >
                 Add User
-                <AddIcon fontSize="small" />
             </Button>
             <BootstrapDialog
                 onClose={handleClose}
