@@ -225,7 +225,8 @@ const Profile = () => {
     }
   };
   useEffect(() => {
-    fetchUserDetails();
+      fetchUserDetails();
+      // eslint-disable-next-line
   }, []);
 
   return (
@@ -247,7 +248,7 @@ const Profile = () => {
 
               <Typography variant="h6">Profile Info</Typography>
               <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Confirm Its you!!</DialogTitle>
+                <DialogTitle>Confirm its you!!</DialogTitle>
                 <DialogContent>
                   <DialogContentText>Enter your password</DialogContentText>
                   <TextField

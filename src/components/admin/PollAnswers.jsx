@@ -16,7 +16,7 @@ export const PollAnswers = ({ pollId }) => {
         { field: "id", headerName: "Id", width: 70 },
         { field: "userName", headerName: "Name", width: 100 },
         { field: "option", headerName: "Option", width: 130 },
-        { field: "answeredDate", headerName: "AnsweredDate", width: 170 },
+        { field: "answeredDate", headerName: "Answered date", width: 170 },
     ];
 
     const fetchPollAnswers = async () => {
