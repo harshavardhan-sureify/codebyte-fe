@@ -13,7 +13,7 @@ const EmailPage = ({ prop }) => {
                 e.target.value
             )
         ) {
-            prop.setErrors("Enter Valid Email");
+            prop.setErrors("Enter valid email");
             return;
         }
         prop.setErrors("");

@@ -61,7 +61,7 @@ const Option = ({
         </Box>
         {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
         {!errors.options[index] && errors.optionErrors[index] && (
-            <ErrorText>Duplicate option</ErrorText>
+            <ErrorText>Duplicate option</ErrorText> 
         )}
     </Box>
 );
@@ -217,7 +217,7 @@ const PollCreate = () => {
                             value={title}
                         />
                         {errors.title && (
-                            <ErrorText>Enter valid Title</ErrorText>
+                            <ErrorText>Enter valid title</ErrorText>
                         )}
                         <Box
                             sx={{
@@ -253,10 +253,10 @@ const PollCreate = () => {
                             justifyContent="space-between"
                         >
                             {errors.startDate && (
-                                <ErrorText>Select valid start Date</ErrorText>
+                                <ErrorText>Select valid start date</ErrorText>
                             )}
                             {errors.endDate && (
-                                <ErrorText>Select valid end Date</ErrorText>
+                                <ErrorText>Select valid end date</ErrorText>
                             )}
                         </Box>
                     </Grid>
@@ -276,7 +276,7 @@ const PollCreate = () => {
                             }}
                         />
                         {errors.question && (
-                            <ErrorText>Enter valid Question</ErrorText>
+                            <ErrorText>Enter valid question</ErrorText>
                         )}
                     </Box>
                     <Box
