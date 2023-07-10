@@ -13,14 +13,14 @@ import { DatePicker } from "@mui/x-date-pickers";
 import HorizontalRuleIcon from "@mui/icons-material/HorizontalRule";
 import dayjs from "dayjs";
 import LinearProgress from "@mui/material/LinearProgress";
-import { CREATE_POLL_URL} from "../../constants";
+import { CREATE_POLL_URL } from "../../constants";
 import { ErrorText, CreatePollContainer } from "./../Styles";
 import Tooltip from "@mui/material/Tooltip";
 import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { handleToaster } from "../features/Toaster.reducer";
 
 const Option = ({
@@ -61,13 +61,14 @@ const Option = ({
         </Box>
         {errors.options[index] && <ErrorText>Enter valid option</ErrorText>}
         {!errors.options[index] && errors.optionErrors[index] && (
-            <ErrorText>Duplicate option</ErrorText> 
+            <ErrorText>Duplicate option</ErrorText>
         )}
     </Box>
 );
 
 const PollCreate = () => {
     const { token } = useSelector(auth);
+    const location = useLocation();
     const dispatch = useDispatch();
     const [question, setQuestion] = useState("");
     const navigate = useNavigate();
@@ -88,6 +89,8 @@ const PollCreate = () => {
         options: [],
         optionErrors: [],
     });
+    const fromEdit = location.pathname.includes("/admin/edit/");
+    let pollProps = null;
 
     const handleOptionChange = (value, index) => {
         setOptions((prev) => {
@@ -97,6 +100,21 @@ const PollCreate = () => {
         });
     };
 
+    useEffect(() => {
+        if (fromEdit) {
+            if (location.state === null) {
+                navigate("/admin/allpolls");
+            } else {
+                pollProps = location.state.pollProps;
+                const { options } = JSON.parse(pollProps.options);
+                setQuestion(pollProps.question);
+                setTitle(pollProps.title);
+                setStartDate(dayjs(pollProps.start_date));
+                setEndDate(dayjs(pollProps.end_date));
+                setOptions(options);
+            }
+        }
+    }, []);
     useEffect(() => {
         if (isClicked) validateForm();
         // eslint-disable-next-line
@@ -124,11 +142,12 @@ const PollCreate = () => {
         let severity = "";
         const pollData = {
             title,
-            question,
+            question: question.endsWith("?") ? question : question + "?",
             startDate: dayjs(startDate).format("YYYY-MM-DD"),
             endDate: dayjs(endDate).format("YYYY-MM-DD"),
             options,
         };
+        if (pollProps !== null) pollData["id"] = pollProps.id;
         axios
             .post(CREATE_POLL_URL, pollData, {
                 headers: {

@@ -77,7 +77,7 @@ const AppRoutes = () => {
                             <Route path="adduser" element={<AddUserButton />} />
                             <Route path="allusers" element={<AllUsers />} />
                             <Route path="allpolls" element={<Polls />} />
-                        
+                            <Route path="edit/:id" element={<PollCreate />} />
                             <Route
                                 path="allpolls/:id"
                                 element={<ViewSinglePoll />}
