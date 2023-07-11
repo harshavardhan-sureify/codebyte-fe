@@ -19,24 +19,25 @@ export const FORGOT_PASSWORD_URL = GO_BASE_URL + "user/forgotpassword";
 export const VALIDATE_OTP_URL = GO_BASE_URL + "user/validateotp";
 export const RESET_PASSWORD_URL = GO_BASE_URL + "user/changepassword";
 export const POLL_ANSWERS_URL = GO_BASE_URL + "admin/getanswers/";
+export const DELETE_POLL_URL = PHP_BASE_URL + "deletePoll/";
 export const ADMIN_ROUTES = [
-  {
-    name: "dashboard",
-    route: "/admin/dashboard",
-  },
+    {
+        name: "dashboard",
+        route: "/admin/dashboard",
+    },
 
-  {
-    name: "Polls",
-    route: "/admin/allpolls",
-  },
-  {
-    name: "Users",
-    route: "/admin/allusers",
-  },
-  {
-    name: "profile",
-    route: "/admin/profile",
-  },
+    {
+        name: "Polls",
+        route: "/admin/allpolls",
+    },
+    {
+        name: "Users",
+        route: "/admin/allusers",
+    },
+    {
+        name: "profile",
+        route: "/admin/profile",
+    },
 ];
 export const USER_ROUTES = [
     {
@@ -54,4 +55,3 @@ export const USER_ROUTES = [
 ];
 export const USER_ROLE = "user";
 export const ADMIN_ROLE = "admin";
-
