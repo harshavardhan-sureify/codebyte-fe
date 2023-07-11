@@ -81,6 +81,7 @@ const PollCreate = () => {
     const [options, setOptions] = useState(["", ""]);
     const [isClicked, setIsClicked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [pollProps, setPollProps] = useState(null)
     const [errors, setErrors] = useState({
         title: false,
         question: false,
@@ -90,7 +91,6 @@ const PollCreate = () => {
         optionErrors: [],
     });
     const fromEdit = location.pathname.includes("/admin/edit/");
-    let pollProps = null;
 
     const handleOptionChange = (value, index) => {
         setOptions((prev) => {
@@ -105,12 +105,13 @@ const PollCreate = () => {
             if (location.state === null) {
                 navigate("/admin/allpolls");
             } else {
-                pollProps = location.state.pollProps;
-                const { options } = JSON.parse(pollProps.options);
-                setQuestion(pollProps.question);
-                setTitle(pollProps.title);
-                setStartDate(dayjs(pollProps.start_date));
-                setEndDate(dayjs(pollProps.end_date));
+                setPollProps(location.state.pollProps);
+                const poll = location.state.pollProps;
+                const { options } = JSON.parse(poll.options);
+                setQuestion(poll.question);
+                setTitle(poll.title);
+                setStartDate(dayjs(poll.start_date));
+                setEndDate(dayjs(poll.end_date));
                 setOptions(options);
             }
         }
@@ -147,7 +148,7 @@ const PollCreate = () => {
             endDate: dayjs(endDate).format("YYYY-MM-DD"),
             options,
         };
-        if (pollProps !== null) pollData["id"] = pollProps.id;
+        if (pollProps !== null) pollData["id"] = pollProps.poll_id;
         axios
             .post(CREATE_POLL_URL, pollData, {
                 headers: {

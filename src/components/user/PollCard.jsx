@@ -74,7 +74,7 @@ export const Poll = ({ activeFlag, poll }) => {
                                 width: "5rem",
                             }}
                         >
-                            <Tooltip title="edit poll">
+                            <Tooltip title="Edit">
                                 <IconButton onClick={handleEdit}>
                                     <EditRoundedIcon color="warning" />
                                 </IconButton>
