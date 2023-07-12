@@ -13,9 +13,10 @@ import { useNavigate } from "react-router-dom";
 import { StyledCard, StyledPollButton } from "../Styles";
 import { countSum } from "../utils";
 import { StyledDuration } from "./StyledDuration";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DialogComponent } from "../admin/DialogComponent";
-export const Poll = ({ activeFlag, poll,refetch }) => {
+export const Poll = ({ activeFlag, poll, refetch }) => {
     const navigate = useNavigate();
     const handleClick = (flag) => {
         navigate(`${poll.poll_id}`, {
@@ -36,6 +37,9 @@ export const Poll = ({ activeFlag, poll,refetch }) => {
 
     const handleClose = () => {
         setOpen(false);
+    };
+    const handleEdit = () => {
+        navigate(`/admin/edit/${poll.poll_id}`, { state: { pollProps: poll } });
     };
     return (
         <Grid item p={3} xs={12} sm={6} md={4}>
@@ -82,6 +86,11 @@ export const Poll = ({ activeFlag, poll,refetch }) => {
                     >
                         {pollStartDate > currDate && (
                             <>
+                                <Tooltip title="Edit">
+                                    <IconButton onClick={handleEdit}>
+                                        <EditRoundedIcon color="warning" />
+                                    </IconButton>
+                                </Tooltip>
                                 <Tooltip title="Delete">
                                     <IconButton onClick={handleClickOpen}>
                                         <DeleteIcon
