@@ -14,8 +14,9 @@ import { StyledCard, StyledPollButton } from "../Styles";
 import { countSum } from "../utils";
 import { StyledDuration } from "./StyledDuration";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-
-export const Poll = ({ activeFlag, poll }) => {
+import DeleteIcon from "@mui/icons-material/Delete";
+import { DialogComponent } from "../admin/DialogComponent";
+export const Poll = ({ activeFlag, poll, refetch }) => {
     const navigate = useNavigate();
     const handleClick = (flag) => {
         navigate(`${poll.poll_id}`, {
@@ -27,6 +28,16 @@ export const Poll = ({ activeFlag, poll }) => {
     };
     const pollStartDate = new Date(poll.start_date);
     const currDate = new Date();
+
+    const [open, setOpen] = React.useState(false);
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
     const handleEdit = () => {
         navigate(`/admin/edit/${poll.poll_id}`, { state: { pollProps: poll } });
     };
@@ -66,22 +77,45 @@ export const Poll = ({ activeFlag, poll }) => {
                     >
                         {activeFlag ? "Answer Poll" : "View Poll"}
                     </StyledPollButton>
-                    {pollStartDate > currDate && (
-                        <Box
-                            sx={{
-                                display: "flex",
-                                justifyContent: "space-around",
-                                width: "5rem",
-                            }}
-                        >
-                            <Tooltip title="Edit">
-                                <IconButton onClick={handleEdit}>
-                                    <EditRoundedIcon color="warning" />
-                                </IconButton>
-                            </Tooltip>
-                        </Box>
-                    )}
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-around",
+                            width: "5rem",
+                        }}
+                    >
+                        {pollStartDate > currDate && (
+                            <>
+                                <Tooltip title="Edit">
+                                    <IconButton onClick={handleEdit}>
+                                        <EditRoundedIcon color="warning" />
+                                    </IconButton>
+                                </Tooltip>
+                                <Tooltip title="Delete">
+                                    <IconButton onClick={handleClickOpen}>
+                                        <DeleteIcon
+                                            color="error"
+                                            sx={{
+                                                "&:hover": {
+                                                    cursor: "pointer",
+                                                    fontSize: "30px",
+                                                },
+                                            }}
+                                        />
+                                    </IconButton>
+                                </Tooltip>
+                            </>
+                        )}
+                    </Box>
                 </CardActions>
+                <DialogComponent
+                    refetch={refetch}
+                    handleClick={handleClickOpen}
+                    handleClose={handleClose}
+                    open={open}
+                    title={poll.title}
+                    id={poll.poll_id}
+                />
             </StyledCard>
         </Grid>
     );

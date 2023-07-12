@@ -80,6 +80,7 @@ export const Polls = () => {
                 setResetPolls(response.data.data);
                 managePolls(response.data.data);
                 setLoading(false);
+                setSelectedTab("Active");
             }
         } catch (err) {
             localStorage.clear();
@@ -145,6 +146,7 @@ export const Polls = () => {
                 </Box>
             )}
             <ViewPolls
+                refetch={fetchPolls}
                 activeFlag={activeFlag}
                 message={"No polls available"}
                 pollsData={pollsData}

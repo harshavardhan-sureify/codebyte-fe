@@ -39,7 +39,7 @@ const AllUsers = () => {
     const [userData, setUserData] = useState([]);
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
-    const [searchText, setsearchText] = useState("");
+    const [searchText, setSearchText] = useState("");
     const [filteredData, setFilteredData] = useState([]);
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -176,7 +176,7 @@ const AllUsers = () => {
                     <TextField
                         label="Search"
                         value={searchText}
-                        onChange={(e) => setsearchText(e.target.value)}
+                        onChange={(e) => setSearchText(e.target.value)}
                         size="small"
                         onFocus={() => setFocus(true)}
                         onBlur={() => {
@@ -295,23 +295,29 @@ const AllUsers = () => {
                     </Box>
                     <Box sx={{ typography: "subtitle2" }}>
                         <Typography variant="subtitle2">
-                            Are You sure you want to delete the user{" "}
+                            Are you sure want to delete the user {" "}
                             {deleteUser.name}?
                         </Typography>
                     </Box>
                     <Grid container pt={2} justifyContent="flex-end" gap={2}>
                         <Grid item>
-                            <Button onClick={() => setIsOpen(false)}>
-                                Cancel
+                            <Button
+                                onClick={() => setIsOpen(false)}
+                                color="error"
+                                variant="contained"
+                                size="small"
+                            >
+                                no
                             </Button>
                         </Grid>
                         <Grid item>
                             <Button
-                                color="error"
+                                color="success"
                                 variant="contained"
                                 onClick={() => submitUserDelete()}
+                                size="small"
                             >
-                                Delete
+                                yes
                             </Button>
                         </Grid>
                     </Grid>
