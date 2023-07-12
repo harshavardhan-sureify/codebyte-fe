@@ -143,7 +143,7 @@ const PollCreate = () => {
         let severity = "";
         const pollData = {
             title,
-            question: question.endsWith("?") ? question : question + "?",
+            question: question.trim().endsWith("?") ? question.trim() : question.trim() + "?",
             startDate: dayjs(startDate).format("YYYY-MM-DD"),
             endDate: dayjs(endDate).format("YYYY-MM-DD"),
             options,
