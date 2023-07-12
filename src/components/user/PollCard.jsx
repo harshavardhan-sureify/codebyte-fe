@@ -15,7 +15,7 @@ import { countSum } from "../utils";
 import { StyledDuration } from "./StyledDuration";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { DialogComponent } from "../admin/DialogComponent";
-export const Poll = ({ activeFlag, poll }) => {
+export const Poll = ({ activeFlag, poll,refetch }) => {
     const navigate = useNavigate();
     const handleClick = (flag) => {
         navigate(`${poll.poll_id}`, {
@@ -82,7 +82,7 @@ export const Poll = ({ activeFlag, poll }) => {
                     >
                         {pollStartDate > currDate && (
                             <>
-                                <Tooltip title="delete">
+                                <Tooltip title="Delete">
                                     <IconButton onClick={handleClickOpen}>
                                         <DeleteIcon
                                             color="error"
@@ -100,6 +100,7 @@ export const Poll = ({ activeFlag, poll }) => {
                     </Box>
                 </CardActions>
                 <DialogComponent
+                    refetch={refetch}
                     handleClick={handleClickOpen}
                     handleClose={handleClose}
                     open={open}

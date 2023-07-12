@@ -10,12 +10,10 @@ import { DELETE_POLL_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { handleToaster } from "../features/Toaster.reducer";
-import { useNavigate } from "react-router-dom";
 
-export const DialogComponent = ({ title, id, open, handleClose }) => {
+export const DialogComponent = ({ title, id, open, handleClose, refetch }) => {
     const user = useSelector(auth);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const handleSubmit = () => {
         handleClose();
         handleDelete();
@@ -40,9 +38,7 @@ export const DialogComponent = ({ title, id, open, handleClose }) => {
             const response = await axios.delete(DELETE_POLL_URL + id, config);
             if (response.status === 200) {
                 handleToast("Poll deleted successfully", "success");
-                setTimeout(() => {
-                    navigate("activepolls");
-                }, 1000);
+                refetch();
             }
         } catch (err) {
             const message = err.response.data.message;
@@ -55,7 +51,7 @@ export const DialogComponent = ({ title, id, open, handleClose }) => {
                 <DialogTitle>{title}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Do you really want to delete this poll?
+                        Are you sure want to delete this poll?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

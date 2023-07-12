@@ -295,7 +295,7 @@ const AllUsers = () => {
                     </Box>
                     <Box sx={{ typography: "subtitle2" }}>
                         <Typography variant="subtitle2">
-                            Are You sure you want to delete the user{" "}
+                            Are you sure want to delete the user {" "}
                             {deleteUser.name}?
                         </Typography>
                     </Box>
