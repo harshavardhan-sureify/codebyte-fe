@@ -33,7 +33,7 @@ export const ViewSinglePoll = () => {
     const [options, setOptions] = useState(null);
     const [loading, setLoading] = useState(true);
     let prevSelectedValue;
-    if (options != null) {
+    if (options !== null) {
         prevSelectedValue = options[poll.option_id];
     }
     const [currSelectedValue, setSelectedValue] = useState("");

@@ -57,7 +57,7 @@ export const PollAnswers = ({ pollId }) => {
     }
     return (
         <Box sx={{ width: "30rem" }}>
-            {rows == null ? (
+            {rows === null ? (
                 <EmptyDataContainer
                     message={"No one answered this poll yet!!!"}
                 />

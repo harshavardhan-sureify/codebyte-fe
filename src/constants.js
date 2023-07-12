@@ -19,7 +19,7 @@ export const FORGOT_PASSWORD_URL = GO_BASE_URL + "user/forgotpassword";
 export const VALIDATE_OTP_URL = GO_BASE_URL + "user/validateotp";
 export const RESET_PASSWORD_URL = GO_BASE_URL + "user/changepassword";
 export const POLL_ANSWERS_URL = GO_BASE_URL + "admin/getanswers/";
-export const DELETE_POLL_URL = PHP_BASE_URL + "deletePoll/";
+export const DELETE_POLL_URL = PHP_BASE_URL + "deletepoll/";
 export const ADMIN_ROUTES = [
     {
         name: "dashboard",
