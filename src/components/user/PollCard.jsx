@@ -1,8 +1,11 @@
 import {
+    Box,
     CardActions,
     CardContent,
     CardMedia,
     Grid,
+    IconButton,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import React from "react";
@@ -10,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { StyledCard, StyledPollButton } from "../Styles";
 import { countSum } from "../utils";
 import { StyledDuration } from "./StyledDuration";
+import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 export const Poll = ({ activeFlag, poll }) => {
     const navigate = useNavigate();
@@ -20,6 +24,11 @@ export const Poll = ({ activeFlag, poll }) => {
                 pollStatus: flag,
             },
         });
+    };
+    const pollStartDate = new Date(poll.start_date);
+    const currDate = new Date();
+    const handleEdit = () => {
+        navigate(`/admin/edit/${poll.poll_id}`, { state: { pollProps: poll } });
     };
     return (
         <Grid item p={3} xs={12} sm={6} md={4}>
@@ -33,7 +42,10 @@ export const Poll = ({ activeFlag, poll }) => {
                 <CardContent
                     sx={{ display: "flex", flexDirection: "column", gap: 2 }}
                 >
-                    <StyledDuration startDate={poll.start_date} endDate={poll.end_date} />
+                    <StyledDuration
+                        startDate={poll.start_date}
+                        endDate={poll.end_date}
+                    />
                     <Typography
                         variant="h6"
                         fontWeight="bold"
@@ -43,7 +55,9 @@ export const Poll = ({ activeFlag, poll }) => {
                         {poll.title}
                     </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                >
                     <StyledPollButton
                         variant="contained"
                         size="small"
@@ -52,6 +66,21 @@ export const Poll = ({ activeFlag, poll }) => {
                     >
                         {activeFlag ? "Answer Poll" : "View Poll"}
                     </StyledPollButton>
+                    {pollStartDate > currDate && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                justifyContent: "space-around",
+                                width: "5rem",
+                            }}
+                        >
+                            <Tooltip title="Edit">
+                                <IconButton onClick={handleEdit}>
+                                    <EditRoundedIcon color="warning" />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+                    )}
                 </CardActions>
             </StyledCard>
         </Grid>
