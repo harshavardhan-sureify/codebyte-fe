@@ -20,7 +20,7 @@ import ClearIcon from "@mui/icons-material/Clear";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { handleToaster } from "../features/Toaster.reducer";
 
 const Option = ({
@@ -68,6 +68,7 @@ const Option = ({
 
 const PollCreate = () => {
     const { token } = useSelector(auth);
+    const params = useParams();
     const location = useLocation();
     const dispatch = useDispatch();
     const [question, setQuestion] = useState("");
@@ -81,7 +82,7 @@ const PollCreate = () => {
     const [options, setOptions] = useState(["", ""]);
     const [isClicked, setIsClicked] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [pollProps, setPollProps] = useState(null)
+    const [pollProps, setPollProps] = useState(null);
     const [errors, setErrors] = useState({
         title: false,
         question: false,
@@ -90,7 +91,7 @@ const PollCreate = () => {
         options: [],
         optionErrors: [],
     });
-    const fromEdit = location.pathname.includes("/admin/edit/");
+    const fromEdit = params.id !== undefined;
 
     const handleOptionChange = (value, index) => {
         setOptions((prev) => {
@@ -115,6 +116,7 @@ const PollCreate = () => {
                 setOptions(options);
             }
         }
+        // eslint-disable-next-line
     }, []);
     useEffect(() => {
         if (isClicked) validateForm();
@@ -143,7 +145,9 @@ const PollCreate = () => {
         let severity = "";
         const pollData = {
             title,
-            question: question.trim().endsWith("?") ? question.trim() : question.trim() + "?",
+            question: question.trim().endsWith("?")
+                ? question.trim()
+                : question.trim() + "?",
             startDate: dayjs(startDate).format("YYYY-MM-DD"),
             endDate: dayjs(endDate).format("YYYY-MM-DD"),
             options,
