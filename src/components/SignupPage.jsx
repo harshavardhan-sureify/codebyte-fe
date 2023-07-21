@@ -4,6 +4,7 @@ import axios from "axios";
 import { theme } from "../themes/theme";
 import {
     Avatar,
+    Box,
     Button,
     Grid,
     IconButton,
@@ -155,10 +156,10 @@ const SignupPage = () => {
     };
 
     return (
-        <Grid
+        <Box
             sx={{
                 backgroundColor: theme.palette.bColor.main,
-                minHeight: "91vh",
+                minHeight: "90vh",
             }}
         >
             <Grid
@@ -318,7 +319,7 @@ const SignupPage = () => {
                     </Paper>
                 </Grid>
             </Grid>
-        </Grid>
+        </Box>
     );
 };
 

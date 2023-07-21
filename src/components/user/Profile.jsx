@@ -102,7 +102,9 @@ const Profile = () => {
     };
     const updateUserDetails = async (data) => {
         let message = "";
-
+        for (let i in data) {
+            data[i] = data[i].trim();
+        }
         try {
             const res = await axios.put(UPDATE_PROFILE_URL, data, {
                 headers: {
@@ -133,7 +135,7 @@ const Profile = () => {
                 if (payload.data === null) {
                     setSubmitResponse(payload.message);
                     let msg = payload.message;
-                    if (msg.includes("email")) {
+                    if (msg.toLowerCase().includes("email")) {
                         setErrors({ ...errors, email: msg });
                     } else {
                         setErrors({ ...errors, password: msg });

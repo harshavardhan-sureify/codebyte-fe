@@ -3,13 +3,15 @@ import { ViewPolls } from "../user/ViewPolls";
 import { ALL_POLLS_URL } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Stack, Tab, Tabs, TextField } from "@mui/material";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import { handleToaster } from "../features/Toaster.reducer";
 
 export const Polls = () => {
     const user = useSelector(auth);
+    const dispatch = useDispatch();
     const [pollsData, setPollsData] = useState([]);
     const [resetPolls, setResetPolls] = useState([]);
     const [search, setSearch] = useState("");
@@ -83,8 +85,14 @@ export const Polls = () => {
                 setSelectedTab("Active");
             }
         } catch (err) {
-            localStorage.clear();
-            navigate("/login");
+            const message=err.response.data.message
+            dispatch(
+                handleToaster({
+                    message,
+                    severity: "error",
+                    open: true,
+                })
+            );
         }
     };
     useEffect(() => {
