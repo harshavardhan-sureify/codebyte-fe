@@ -8,15 +8,17 @@ import { useNavigate } from "react-router-dom";
 import { Box, Button, Stack, Tab, Tabs, TextField } from "@mui/material";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import { handleToaster } from "../features/Toaster.reducer";
+import { activeTab, handleActiveTab } from "../features/ActiveTab.reducer";
 
 export const Polls = () => {
     const user = useSelector(auth);
+    const { activeTab: currentActiveTab } = useSelector(activeTab);
     const dispatch = useDispatch();
     const [pollsData, setPollsData] = useState([]);
     const [resetPolls, setResetPolls] = useState([]);
     const [search, setSearch] = useState("");
     const activeFlag = false;
-    const [selectedTab, setSelectedTab] = useState("Active");
+    const [selectedTab, setSelectedTab] = useState(currentActiveTab);
     const [activePolls, setActivePolls] = useState([]);
     const [endedPolls, setEndedPolls] = useState([]);
     const [upcomingPolls, setUpcomingPolls] = useState([]);
@@ -33,6 +35,7 @@ export const Polls = () => {
             ? setPollsData([...endedPolls])
             : setPollsData([...upcomingPolls]);
         // eslint-disable-next-line
+        dispatch(handleActiveTab(selectedTab));
     }, [selectedTab]);
 
     const navigate = useNavigate();
@@ -82,10 +85,10 @@ export const Polls = () => {
                 setResetPolls(response.data.data);
                 managePolls(response.data.data);
                 setLoading(false);
-                setSelectedTab("Active");
+                setSelectedTab(currentActiveTab);
             }
         } catch (err) {
-            const message=err.response.data.message
+            const message = err.response.data.message;
             dispatch(
                 handleToaster({
                     message,
@@ -98,12 +101,13 @@ export const Polls = () => {
     useEffect(() => {
         fetchPolls();
         setSearch("");
+        setSelectedTab(currentActiveTab);
         // eslint-disable-next-line
     }, []);
     useEffect(() => {
         if (!focus) {
             setPollsData([...activePolls]);
-            setSelectedTab("Active");
+            setSelectedTab(currentActiveTab);
         } else {
             setPollsData(resetPolls);
         }

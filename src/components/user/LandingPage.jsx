@@ -1,14 +1,16 @@
 import { useTheme } from "@emotion/react";
 import { Box, IconButton } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { NavLink, Outlet, useNavigate } from "react-router-dom";
+import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { StyledOutletContainer, StyledSideBar } from "../Styles";
 import { auth, logout } from "../features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { ADMIN_ROUTES, USER_ROLE, USER_ROUTES } from "../../constants";
 import LogoutIcon from "@mui/icons-material/Logout";
+import { matchPath } from "react-router-dom";
 export const LandingPage = () => {
     const { role } = useSelector(auth);
+    const location = useLocation();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [routes, setRoutes] = useState([]);
@@ -57,15 +59,22 @@ export const LandingPage = () => {
                     }}
                 >
                     <Box>
-                        {routes.map((route) => (
-                            <NavLink
-                                to={route.route}
-                                style={activeStyles}
-                                key={`navlink${route.name}`}
-                            >
-                                {route.name}
-                            </NavLink>
-                        ))}
+                        {routes.map((route) => {
+                            const isActive = route.activePaths
+                                .map((pattern) =>
+                                    matchPath(pattern, location.pathname)
+                                )
+                                .find(Boolean);
+                            return (
+                                <NavLink
+                                    to={route.route}
+                                    style={activeStyles({ isActive })}
+                                    key={`navlink${route.name}`}
+                                >
+                                    {route.name}
+                                </NavLink>
+                            );
+                        })}
                     </Box>
                     <Box
                         sx={{

@@ -24,33 +24,40 @@ export const ADMIN_ROUTES = [
     {
         name: "dashboard",
         route: "/admin/dashboard",
+        activePaths: ["/admin/dashboard"],
     },
 
     {
         name: "Polls",
         route: "/admin/allpolls",
+        activePaths: ["/admin/allpolls", "/admin/create", "/admin/edit/:id"],
     },
     {
         name: "Users",
         route: "/admin/allusers",
+        activePaths: ["/admin/allusers"],
     },
     {
         name: "profile",
         route: "/admin/profile",
+        activePaths:["/admin/profile"],
     },
 ];
 export const USER_ROUTES = [
     {
         name: "dashboard",
         route: "/user/dashboard",
+        activePaths: ["/user/dashboard"],
     },
     {
         name: "Answered polls",
         route: "/user/answeredpolls",
+        activePaths: ["/user/answeredpolls"],
     },
     {
         name: "profile",
         route: "/user/profile",
+        activePaths: ["/user/profile"],
     },
 ];
 export const USER_ROLE = "user";
