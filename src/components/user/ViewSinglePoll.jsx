@@ -93,8 +93,13 @@ export const ViewSinglePoll = () => {
             if (err.response) {
                 const payload = err.response.data;
                 if (payload.status === 401) {
-                    localStorage.clear();
-                    navigate("/login");
+                    dispatch(
+                        handleToaster({
+                            severity: "error",
+                            message: payload.message,
+                            open: true,
+                        })
+                    );
                 } else {
                     dispatch(
                         handleToaster({

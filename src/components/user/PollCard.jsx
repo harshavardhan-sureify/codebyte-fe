@@ -88,20 +88,12 @@ export const Poll = ({ activeFlag, poll, refetch }) => {
                             <>
                                 <Tooltip title="Edit">
                                     <IconButton onClick={handleEdit}>
-                                        <EditRoundedIcon color="warning" />
+                                        <EditRoundedIcon color="secondary" />
                                     </IconButton>
                                 </Tooltip>
                                 <Tooltip title="Delete">
                                     <IconButton onClick={handleClickOpen}>
-                                        <DeleteIcon
-                                            color="error"
-                                            sx={{
-                                                "&:hover": {
-                                                    cursor: "pointer",
-                                                    fontSize: "30px",
-                                                },
-                                            }}
-                                        />
+                                        <DeleteIcon color="error" />
                                     </IconButton>
                                 </Tooltip>
                             </>

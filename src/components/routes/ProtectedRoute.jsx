@@ -26,7 +26,6 @@ const ProtectedRoute = () => {
         localStorage.removeItem("expirationTime");
         setShowPopup(false);
     };
-
     const authenticated = useSelector(isLoggedIn);
     if (authenticated) {
         if (showPopup) {
@@ -48,17 +47,27 @@ const ProtectedRoute = () => {
                                     background: "white",
                                     width: "350px",
                                     p: 2,
-                                    display:"flex",
-                                    alignItems:"center",
-                                    justifyContent:"center",
-                                    flexDirection:"column"
+                                    display: "flex",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    flexDirection: "column",
                                 }}
                             >
-                                <AccessTimeFilledIcon color="secondary" fontSize="large" sx={{mb:2}} />
+                                <AccessTimeFilledIcon
+                                    color="secondary"
+                                    fontSize="large"
+                                    sx={{ mb: 2 }}
+                                />
                                 <Typography>
                                     Your Session expired please login again
                                 </Typography>
-                                <Box sx={{display:"flex" ,alignItems:"flex-end",justifyContent:"flex-end"}}>
+                                <Box
+                                    sx={{
+                                        display: "flex",
+                                        alignItems: "flex-end",
+                                        justifyContent: "flex-end",
+                                    }}
+                                >
                                     <Button
                                         onClick={handleConfirm}
                                         variant="contained"

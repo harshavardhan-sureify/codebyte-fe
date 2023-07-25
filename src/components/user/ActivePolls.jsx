@@ -3,15 +3,15 @@ import { ViewPolls } from "./ViewPolls";
 import { ACTIVE_POLLS_URL} from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import { handleToaster } from "../features/Toaster.reducer";
 
 export const ActivePolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const fetchActivePolls = async () => {
         try {
@@ -25,8 +25,14 @@ export const ActivePolls = () => {
                 setLoading(false);
             }
         } catch (err) {
-            localStorage.clear();
-            navigate("/login");
+           const message = err.response.data.message;
+           dispatch(
+               handleToaster({
+                   message,
+                   severity: "error",
+                   open: true,
+               })
+           );
         }
     };
     useEffect(() => {

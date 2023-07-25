@@ -7,7 +7,7 @@ import AccountCircle from "@mui/icons-material/AccountCircle";
 import logo from "../assets/images/logo.png";
 import { auth, isLoggedIn, logout } from "./features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, matchPath, useLocation, useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Button, Drawer, IconButton, List } from "@mui/material";
 import { USER_ROLE } from "../constants";
@@ -20,6 +20,7 @@ export default function NavBar() {
     const isLogIn = useSelector(isLoggedIn);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const location = useLocation();
     const { role, name } = useSelector(auth);
     const [routes, setRoutes] = React.useState([]);
     React.useEffect(() => {
@@ -69,15 +70,22 @@ export default function NavBar() {
             >
                 <Box sx={{ width: "100%" }}>
                     <List>
-                        {routes.map((route) => (
-                            <NavLink
-                                to={route.route}
-                                style={activeStyles}
-                                key={`navlink${route.name}`}
-                            >
-                                {route.name}
-                            </NavLink>
-                        ))}
+                        {routes.map((route) => {
+                              const isActive = route.activePaths
+                                  .map((pattern) =>
+                                      matchPath(pattern, location.pathname)
+                                  )
+                                  .find(Boolean);
+                            return (
+                                <NavLink
+                                    to={route.route}
+                                    style={activeStyles({ isActive })}
+                                    key={`navlink${route.name}`}
+                                >
+                                    {route.name}
+                                </NavLink>
+                            );
+                        })}
                     </List>
                 </Box>
                 <IconButton
@@ -162,19 +170,17 @@ export default function NavBar() {
                         sx={{
                             flexGrow: 1,
                             fontSize: { sm: "20px", xs: "20px", md: "33px" },
-                            ":hover":{
-                                cursor:"pointer"
+                            ":hover": {
+                                cursor: "pointer",
+                            },
+                        }}
+                        onClick={() => {
+                            if (isLogIn) {
+                                navigate(`/${role}/dashboard`);
+                            } else {
+                                navigate("/login");
                             }
                         }}
-                        onClick={() =>{
-                            if(isLogIn){
-                                navigate(`/${role}/dashboard`)
-                            }
-                            else{
-                                navigate("/login")
-                            }
-                        }}
-                        
                     >
                         codebyte
                     </Typography>
