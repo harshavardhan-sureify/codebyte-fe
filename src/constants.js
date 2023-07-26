@@ -52,7 +52,7 @@ export const USER_ROUTES = [
     {
         name: "dashboard",
         route: "/user/dashboard",
-        activePaths: ["/user/dashboard"],
+        activePaths: ["/user/dashboard", "/user/dashboard/:id"],
     },
     {
         name: "Answered polls",
