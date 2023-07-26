@@ -11,6 +11,7 @@ import {
     Button,
     Grid,
     IconButton,
+    InputAdornment,
     Modal,
     Paper,
     Tab,
@@ -30,6 +31,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { formatDate } from "./../utils";
 import { handleToaster } from "../features/Toaster.reducer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import ClearIcon from "@mui/icons-material/Clear";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
@@ -179,9 +181,21 @@ const AllUsers = () => {
                         onChange={(e) => setSearchText(e.target.value)}
                         size="small"
                         onFocus={() => setFocus(true)}
-                        onBlur={() => {
-                            setFocus(false);
-                            setSelectedTab("Active");
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {focus && (
+                                        <IconButton
+                                            onClick={() => {
+                                                setFocus(false);
+                                                setSearchText("");
+                                            }}
+                                        >
+                                            <ClearIcon />
+                                        </IconButton>
+                                    )}
+                                </InputAdornment>
+                            ),
                         }}
                     />
                 </Grid>
@@ -265,7 +279,7 @@ const AllUsers = () => {
                     />
                 </Box>
             ) : (
-                <EmptyDataContainer message="No user found!!" />
+                <EmptyDataContainer message="No users found!!" />
             )}
             <Modal
                 open={isOpen}
@@ -295,7 +309,7 @@ const AllUsers = () => {
                     </Box>
                     <Box sx={{ typography: "subtitle2" }}>
                         <Typography variant="subtitle2">
-                            Are you sure want to delete the user {" "}
+                            Are you sure want to delete the user{" "}
                             {deleteUser.name}?
                         </Typography>
                     </Box>

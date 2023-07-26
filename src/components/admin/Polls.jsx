@@ -5,10 +5,20 @@ import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Box, Button, Stack, Tab, Tabs, TextField } from "@mui/material";
+import {
+    Box,
+    Button,
+    IconButton,
+    InputAdornment,
+    Stack,
+    Tab,
+    Tabs,
+    TextField,
+} from "@mui/material";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import { handleToaster } from "../features/Toaster.reducer";
 import { activeTab, handleActiveTab } from "../features/ActiveTab.reducer";
+import ClearIcon from "@mui/icons-material/Clear";
 
 export const Polls = () => {
     const user = useSelector(auth);
@@ -28,14 +38,15 @@ export const Polls = () => {
     const handleSelectedTab = (e, value) => {
         setSelectedTab(value);
     };
+
     useEffect(() => {
         selectedTab === "Active"
             ? setPollsData([...activePolls])
             : selectedTab === "Ended"
             ? setPollsData([...endedPolls])
             : setPollsData([...upcomingPolls]);
-        // eslint-disable-next-line
         dispatch(handleActiveTab(selectedTab));
+        // eslint-disable-next-line
     }, [selectedTab]);
 
     const navigate = useNavigate();
@@ -71,7 +82,11 @@ export const Polls = () => {
         setActivePolls(active);
         setUpcomingPolls(upcoming);
         setEndedPolls(ended);
-        setPollsData(active);
+        currentActiveTab === "Active"
+            ? setPollsData([...active])
+            : currentActiveTab === "Ended"
+            ? setPollsData([...ended])
+            : setPollsData([...upcoming]);
     };
 
     const fetchPolls = async () => {
@@ -81,6 +96,7 @@ export const Polls = () => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const response = await axios.get(ALL_POLLS_URL, config);
+
             if (response.status === 200) {
                 setResetPolls(response.data.data);
                 managePolls(response.data.data);
@@ -106,7 +122,11 @@ export const Polls = () => {
     }, []);
     useEffect(() => {
         if (!focus) {
-            setPollsData([...activePolls]);
+            currentActiveTab === "Active"
+                ? setPollsData([...activePolls])
+                : currentActiveTab === "Ended"
+                ? setPollsData([...endedPolls])
+                : setPollsData([...upcomingPolls]);
             setSelectedTab(currentActiveTab);
         } else {
             setPollsData(resetPolls);
@@ -137,9 +157,24 @@ export const Polls = () => {
                         onFocus={() => {
                             setFocus(true);
                         }}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    {focus && (
+                                        <IconButton
+                                            onClick={() => {
+                                                setFocus(false);
+                                                setSearch("");
+                                            }}
+                                        >
+                                            <ClearIcon />
+                                        </IconButton>
+                                    )}
+                                </InputAdornment>
+                            ),
+                        }}
                     ></TextField>
                 </Box>
-                <Box flex={1} onClick={() => setFocus(false)}></Box>
                 <Button
                     variant="contained"
                     color="success"
