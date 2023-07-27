@@ -85,7 +85,7 @@ const Profile = () => {
                 if (!value) {
                     message = "Password is required";
                 } else if (value.length < 8) {
-                    message = "Password length should be atleast 8";
+                    message = "Password length should be atleast 8 characters";
                 } else if (
                     !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])/.test(
                         value
@@ -182,6 +182,7 @@ const Profile = () => {
         setErrors({});
         setSubmitResponse("");
         setEnableField(false);
+        setSeePassword(false);
     };
 
     const handlePasswordSubmit = async () => {

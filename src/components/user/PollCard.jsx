@@ -62,6 +62,10 @@ export const Poll = ({ activeFlag, poll, refetch }) => {
                         fontWeight="bold"
                         textTransform="uppercase"
                         component="div"
+                        textOverflow="ellipsis"
+                        overflow="hidden"
+                        whiteSpace="nowrap"
+                        title={poll.title}
                     >
                         {poll.title}
                     </Typography>

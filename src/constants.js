@@ -30,7 +30,12 @@ export const ADMIN_ROUTES = [
     {
         name: "Polls",
         route: "/admin/allpolls",
-        activePaths: ["/admin/allpolls", "/admin/create", "/admin/edit/:id"],
+        activePaths: [
+            "/admin/allpolls",
+            "/admin/allpolls/:id",
+            "/admin/create",
+            "/admin/edit/:id",
+        ],
     },
     {
         name: "Users",
@@ -40,14 +45,14 @@ export const ADMIN_ROUTES = [
     {
         name: "profile",
         route: "/admin/profile",
-        activePaths:["/admin/profile"],
+        activePaths: ["/admin/profile"],
     },
 ];
 export const USER_ROUTES = [
     {
         name: "dashboard",
         route: "/user/dashboard",
-        activePaths: ["/user/dashboard"],
+        activePaths: ["/user/dashboard", "/user/dashboard/:id"],
     },
     {
         name: "Answered polls",
