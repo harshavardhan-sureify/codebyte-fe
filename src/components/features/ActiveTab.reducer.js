@@ -1,7 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    activeTab: localStorage.getItem("activeTab") ?? "Active",
+    activeTab:
+        localStorage.getItem("activeTab") === null
+            ? "Active"
+            : localStorage.getItem("activeTab"),
 };
 
 const activeTabSlice = createSlice({
