@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    activeTab: "Active",
+    activeTab: localStorage.getItem("activeTab") ?? "Active",
 };
 
 const activeTabSlice = createSlice({
@@ -10,6 +10,7 @@ const activeTabSlice = createSlice({
     reducers: {
         handleActiveTab(state, action) {
             state.activeTab = action.payload;
+            localStorage.setItem("activeTab", action.payload);
             return state;
         },
     },
