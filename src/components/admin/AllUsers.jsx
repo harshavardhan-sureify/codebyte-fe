@@ -265,7 +265,7 @@ const AllUsers = () => {
                                             title={
                                                 user.is_active === "1"
                                                     ? "Delete user"
-                                                    : "Reactivate user"
+                                                    : "Activate user"
                                             }
                                         >
                                             <IconButton
