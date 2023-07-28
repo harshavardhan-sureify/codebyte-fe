@@ -23,6 +23,7 @@ import {
     TableRow,
     Tabs,
     TextField,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -32,7 +33,7 @@ import { formatDate } from "./../utils";
 import { handleToaster } from "../features/Toaster.reducer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import ClearIcon from "@mui/icons-material/Clear";
-import { SettingsBackupRestore } from "@mui/icons-material";
+import RestoreIcon from "@mui/icons-material/Restore";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
@@ -127,6 +128,7 @@ const AllUsers = () => {
 
                 setFilteredData(active);
                 setLoading(false);
+                setSelectedTab("Active")
             })
             .catch((err) => {
                 dispatch(
@@ -259,23 +261,31 @@ const AllUsers = () => {
                                         {formatDate(user.created_at)}
                                     </StyledTableCell>
                                     <StyledTableCell>
-                                        <IconButton
-                                            variant="contained"
-                                            color={
+                                        <Tooltip
+                                            title={
                                                 user.is_active === "1"
-                                                    ? "error"
-                                                    : "success"
-                                            }
-                                            onClick={() =>
-                                                handleStatusUpdateModal(user)
+                                                    ? "Delete user"
+                                                    : "Reactivate user"
                                             }
                                         >
-                                            {user.is_active === "1" ? (
-                                                <DeleteIcon fontSize="medium" />
-                                            ) : (
-                                                <SettingsBackupRestore />
-                                            )}
-                                        </IconButton>
+                                            <IconButton
+                                                variant="contained"
+                                                color={
+                                                    user.is_active === "1"
+                                                        ? "error"
+                                                        : "success"
+                                                }
+                                                onClick={() =>
+                                                    handleStatusUpdateModal(user)
+                                                }
+                                            >
+                                                {user.is_active === "1" ? (
+                                                    <DeleteIcon fontSize="medium" />
+                                                ) : (
+                                                    <RestoreIcon />
+                                                )}
+                                            </IconButton>
+                                        </Tooltip>
                                     </StyledTableCell>
                                 </TableRow>
                             ))}
@@ -322,8 +332,8 @@ const AllUsers = () => {
                     <Box sx={{ typography: "subtitle2" }}>
                         <Typography variant="subtitle2">
                             {statusUpdateUser.is_active === "1"
-                                ? " Are you sure want to delete the user"
-                                : "Are you sure want to activate the user"}
+                                ? "Are you sure want to delete the user "
+                                : "Are you sure want to activate the user "}
                             {statusUpdateUser.name}?
                         </Typography>
                     </Box>
