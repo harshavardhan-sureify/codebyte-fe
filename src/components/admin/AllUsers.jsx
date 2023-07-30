@@ -47,7 +47,7 @@ const AllUsers = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [statusUpdateUser, setStatusUpdateUser] = useState({});
+    const [updateUserStatus, setUpdateUserStatus] = useState({});
     const [selectedTab, setSelectedTab] = useState("Active");
     const [focus, setFocus] = useState(false);
     const [activeUsers, setActiveUsers] = useState([]);
@@ -69,21 +69,21 @@ const AllUsers = () => {
         setPage(0);
     };
     const handleStatusUpdateModal = (user) => {
-        setStatusUpdateUser(user);
+        setUpdateUserStatus(user);
         setIsOpen(true);
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const submitUpdateUserStatus = () => {
+    const changeUserStatus = () => {
         setIsOpen(false);
         let severity = "";
         let message = "";
         axios
             .post(
                 `${UPDATE_USER_STATUS_URL}`,
-                { userId: statusUpdateUser.user_id },
+                { userId: updateUserStatus.user_id },
                 {
                     headers: { Authorization: user.token },
                 }
@@ -128,7 +128,7 @@ const AllUsers = () => {
 
                 setFilteredData(active);
                 setLoading(false);
-                setSelectedTab("Active")
+                setSelectedTab("Active");
             })
             .catch((err) => {
                 dispatch(
@@ -276,7 +276,9 @@ const AllUsers = () => {
                                                         : "success"
                                                 }
                                                 onClick={() =>
-                                                    handleStatusUpdateModal(user)
+                                                    handleStatusUpdateModal(
+                                                        user
+                                                    )
                                                 }
                                             >
                                                 {user.is_active === "1" ? (
@@ -331,10 +333,10 @@ const AllUsers = () => {
                     </Box>
                     <Box sx={{ typography: "subtitle2" }}>
                         <Typography variant="subtitle2">
-                            {statusUpdateUser.is_active === "1"
+                            {updateUserStatus.is_active === "1"
                                 ? "Are you sure want to delete the user "
                                 : "Are you sure want to activate the user "}
-                            {statusUpdateUser.name}?
+                            {updateUserStatus.name}?
                         </Typography>
                     </Box>
                     <Grid container pt={2} justifyContent="flex-end" gap={2}>
@@ -352,7 +354,7 @@ const AllUsers = () => {
                             <Button
                                 color="success"
                                 variant="contained"
-                                onClick={() => submitUpdateUserStatus()}
+                                onClick={() => changeUserStatus()}
                                 size="small"
                             >
                                 yes
