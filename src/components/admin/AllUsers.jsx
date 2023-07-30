@@ -216,7 +216,7 @@ const AllUsers = () => {
             )}
             {currentPageData.length > 0 ? (
                 <Box pt={2}>
-                    <Table>
+                    <Table stickyHeader>
                         <TableHead>
                             <TableRow>
                                 <StyledTableCell head="true">
