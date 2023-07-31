@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import axios from "axios";
-import { ALL_USERS_URL, DELETE_USER_URL } from "../../constants";
+import { ALL_USERS_URL, UPDATE_USER_STATUS_URL } from "../../constants";
 import PersonIcon from "@mui/icons-material/Person";
 import { EmptyDataContainer } from "../user/EmptyDataContainer";
 import {
@@ -23,6 +23,7 @@ import {
     TableRow,
     Tabs,
     TextField,
+    Tooltip,
     Typography,
 } from "@mui/material";
 import styled from "@emotion/styled";
@@ -32,6 +33,7 @@ import { formatDate } from "./../utils";
 import { handleToaster } from "../features/Toaster.reducer";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import ClearIcon from "@mui/icons-material/Clear";
+import RestoreIcon from "@mui/icons-material/Restore";
 const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
@@ -45,7 +47,7 @@ const AllUsers = () => {
     const [filteredData, setFilteredData] = useState([]);
     const [page, setPage] = useState(2);
     const [rowsPerPage, setRowsPerPage] = useState(10);
-    const [deleteUser, setDeleteUser] = useState({});
+    const [updateUserStatus, setUpdateUserStatus] = useState({});
     const [selectedTab, setSelectedTab] = useState("Active");
     const [focus, setFocus] = useState(false);
     const [activeUsers, setActiveUsers] = useState([]);
@@ -66,22 +68,26 @@ const AllUsers = () => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-    const handleDeleteModal = (user) => {
-        setDeleteUser(user);
+    const handleStatusUpdateModal = (user) => {
+        setUpdateUserStatus(user);
         setIsOpen(true);
     };
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
     };
 
-    const submitUserDelete = () => {
+    const changeUserStatus = () => {
         setIsOpen(false);
         let severity = "";
         let message = "";
         axios
-            .delete(`${DELETE_USER_URL}\\${deleteUser.user_id}`, {
-                headers: { Authorization: user.token },
-            })
+            .post(
+                `${UPDATE_USER_STATUS_URL}`,
+                { userId: updateUserStatus.user_id },
+                {
+                    headers: { Authorization: user.token },
+                }
+            )
             .then((res) => {
                 severity = "success";
                 message = res.data.message;
@@ -122,6 +128,7 @@ const AllUsers = () => {
 
                 setFilteredData(active);
                 setLoading(false);
+                setSelectedTab("Active");
             })
             .catch((err) => {
                 dispatch(
@@ -254,16 +261,33 @@ const AllUsers = () => {
                                         {formatDate(user.created_at)}
                                     </StyledTableCell>
                                     <StyledTableCell>
-                                        <IconButton
-                                            variant="contained"
-                                            color="error"
-                                            onClick={() =>
-                                                handleDeleteModal(user)
+                                        <Tooltip
+                                            title={
+                                                user.is_active === "1"
+                                                    ? "Delete user"
+                                                    : "Activate user"
                                             }
-                                            disabled={!(user.is_active === "1")}
                                         >
-                                            <DeleteIcon fontSize="medium" />
-                                        </IconButton>
+                                            <IconButton
+                                                variant="contained"
+                                                color={
+                                                    user.is_active === "1"
+                                                        ? "error"
+                                                        : "success"
+                                                }
+                                                onClick={() =>
+                                                    handleStatusUpdateModal(
+                                                        user
+                                                    )
+                                                }
+                                            >
+                                                {user.is_active === "1" ? (
+                                                    <DeleteIcon fontSize="medium" />
+                                                ) : (
+                                                    <RestoreIcon />
+                                                )}
+                                            </IconButton>
+                                        </Tooltip>
                                     </StyledTableCell>
                                 </TableRow>
                             ))}
@@ -309,8 +333,10 @@ const AllUsers = () => {
                     </Box>
                     <Box sx={{ typography: "subtitle2" }}>
                         <Typography variant="subtitle2">
-                            Are you sure want to delete the user
-                            {deleteUser.name}?
+                            {updateUserStatus.is_active === "1"
+                                ? "Are you sure want to delete the user "
+                                : "Are you sure want to activate the user "}
+                            {updateUserStatus.name}?
                         </Typography>
                     </Box>
                     <Grid container pt={2} justifyContent="flex-end" gap={2}>
@@ -328,7 +354,7 @@ const AllUsers = () => {
                             <Button
                                 color="success"
                                 variant="contained"
-                                onClick={() => submitUserDelete()}
+                                onClick={() => changeUserStatus()}
                                 size="small"
                             >
                                 yes
