@@ -69,3 +69,24 @@ export const USER_ROUTES = [
 ];
 export const USER_ROLE = "user";
 export const ADMIN_ROLE = "admin";
+
+export const PIE_GRAPH_COLORS = [
+    "#fd7f6f",
+    "#7eb0d5",
+    "#009fff",
+    "#df979e",
+    "#b2e061",
+    "#bd7ebe",
+    "#ffb55a",
+    "#ffee65",
+    "#00bfff",
+    "#dedad2",
+    "#beb9db",
+    "#fdcce5",
+    "#8bd3c7",
+    "#ede15b",
+    "#bdcf32",
+    "#0080ff",
+    "#00ffff",
+    "#e4bcad",
+];

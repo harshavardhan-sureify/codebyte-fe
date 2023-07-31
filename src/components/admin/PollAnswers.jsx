@@ -11,7 +11,7 @@ import { useState } from "react";
 
 export const PollAnswers = ({ pollId }) => {
     const [loading, setLoading] = React.useState(true);
-    const [data, setData] = useState(null);
+    const [data, setData] = useState();
     const user = useSelector(auth);
     const dispatch = useDispatch();
     const handleToast = (message, color) => {

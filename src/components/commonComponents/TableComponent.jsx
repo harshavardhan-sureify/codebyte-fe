@@ -26,7 +26,7 @@ export const TableComponent = ({ columns, data }) => {
     };
 
     const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
+        setRowsPerPage(event.target.value);
         setPage(0);
     };
 
@@ -36,7 +36,7 @@ export const TableComponent = ({ columns, data }) => {
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
-                            <StyledTableCell head={true}>S.no</StyledTableCell>
+                            <StyledTableCell head="true">S.no</StyledTableCell>
                             {columns.map((column) => (
                                 <StyledTableCell
                                     head="true"

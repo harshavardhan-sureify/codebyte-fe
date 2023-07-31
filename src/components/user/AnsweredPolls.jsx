@@ -39,7 +39,7 @@ export const AnsweredPolls = () => {
         }
     };
     useEffect(() => {
-        if (location.state != null) {
+        if (location.state !== null) {
             navigate(`${location.state.id}`, {
                 state: {
                     pollProps: location.state.poll,

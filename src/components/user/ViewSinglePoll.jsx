@@ -25,6 +25,7 @@ import { PollAnswers } from "../admin/PollAnswers";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import { PieGraph } from "../commonComponents/PieGraph";
 import { EmptyDataContainer } from "./EmptyDataContainer";
+import { PIE_GRAPH_COLORS } from "../../constants";
 
 export const ViewSinglePoll = () => {
     const { role } = useSelector(auth);
@@ -40,8 +41,16 @@ export const ViewSinglePoll = () => {
     if (options !== null) {
         prevSelectedValue = options[poll.option_id];
     }
+
     const [currSelectedValue, setSelectedValue] = useState("");
     const user = useSelector(auth);
+
+    const AddColorsToData = (data) => {
+        data = data.map((item, index) => {
+            return { ...item, color: PIE_GRAPH_COLORS[index] };
+        });
+        return data;
+    };
     const fetchAnswersStats = async () => {
         try {
             const token = user.token;
@@ -52,7 +61,7 @@ export const ViewSinglePoll = () => {
                 POLL_OPTION_STATS_URL + poll.poll_id,
                 config
             );
-            setPieData(response.data.data);
+            setPieData(AddColorsToData(response.data.data));
         } catch (err) {
             const message = err.response.data.message;
             dispatch(
@@ -76,7 +85,7 @@ export const ViewSinglePoll = () => {
         // eslint-disable-next-line
     }, []);
     useEffect(() => {
-        if (poll != null) {
+        if (poll !== null) {
             fetchAnswersStats();
         }
         // eslint-disable-next-line
@@ -162,6 +171,45 @@ export const ViewSinglePoll = () => {
     if (loading) {
         return <LoadingComponent />;
     }
+    const LegendContainer = ({ data }) => (
+        <Box
+            sx={{
+                width: "100%",
+                position: "absolute",
+                bottom: 10,
+                display: "flex",
+                columnGap: 2,
+                rowGap: "2px",
+                flexWrap: "wrap",
+                p: "0 50px",
+            }}
+        >
+            {data.map((item, index) => {
+                return (
+                    <Box
+                        key={index}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "5px",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "12px",
+                                height: "12px",
+                                background: item.color,
+                            }}
+                        ></Box>
+                        <Typography variant="body2" color={"grey"}>
+                            {item.id}
+                        </Typography>
+                    </Box>
+                );
+            })}
+        </Box>
+    );
 
     return (
         poll && (
@@ -278,41 +326,27 @@ export const ViewSinglePoll = () => {
                     </Card>
                 </Grid>
                 {!isActivePoll && (
-                    <Grid
-                        item
-                        xs={12}
-                        md={6}
-                        sx={{
-                            position: "relative",
-                        }}
-                    >
+                    <Grid item xs={12} md={6}>
                         <Card
                             elevation={4}
                             sx={{
                                 height: "80vh",
                                 maxWidth: "30rem",
                                 margin: "0px auto",
+                                position: "relative",
                             }}
                         >
-                            {pieData != null ? (
-                                <PieGraph data={pieData} />
+                            {pieData !== null ? (
+                                <>
+                                    <PieGraph data={pieData} />
+                                    <LegendContainer data={pieData} />
+                                </>
                             ) : (
                                 <EmptyDataContainer
                                     message={"No one answered this poll yet"}
                                 />
                             )}
                         </Card>
-                        <Typography
-                            variant="caption"
-                            sx={{
-                                position: "absolute",
-                                bottom: 60,
-                                left: 60,
-                                color: "grey",
-                            }}
-                        >
-                            <i>*all stats are in percentages(%)</i>
-                        </Typography>
                     </Grid>
                 )}
                 <Grid item xs={12}>
