@@ -16,7 +16,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../../themes/theme";
 import { StyledDuration } from "./StyledDuration";
 import axios from "axios";
-import { POLL_OPTION_STATS, SAVE_POLL_URL } from "../../constants";
+import { POLL_OPTION_STATS_URL, SAVE_POLL_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { ADMIN_ROLE } from "../../constants";
@@ -49,7 +49,7 @@ export const ViewSinglePoll = () => {
                 headers: { Authorization: `Bearer ${token}` },
             };
             const response = await axios.get(
-                POLL_OPTION_STATS + poll.poll_id,
+                POLL_OPTION_STATS_URL + poll.poll_id,
                 config
             );
             setPieData(response.data.data);
@@ -278,7 +278,14 @@ export const ViewSinglePoll = () => {
                     </Card>
                 </Grid>
                 {!isActivePoll && (
-                    <Grid item xs={12} md={6}>
+                    <Grid
+                        item
+                        xs={12}
+                        md={6}
+                        sx={{
+                            position: "relative",
+                        }}
+                    >
                         <Card
                             elevation={4}
                             sx={{
@@ -290,9 +297,22 @@ export const ViewSinglePoll = () => {
                             {pieData != null ? (
                                 <PieGraph data={pieData} />
                             ) : (
-                                <EmptyDataContainer />
+                                <EmptyDataContainer
+                                    message={"No one answered this poll yet"}
+                                />
                             )}
                         </Card>
+                        <Typography
+                            variant="caption"
+                            sx={{
+                                position: "absolute",
+                                bottom: 60,
+                                left: 60,
+                                color: "grey",
+                            }}
+                        >
+                            <i>*all stats are in percentages(%)</i>
+                        </Typography>
                     </Grid>
                 )}
                 <Grid item xs={12}>

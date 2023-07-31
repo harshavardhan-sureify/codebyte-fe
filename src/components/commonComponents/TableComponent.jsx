@@ -15,14 +15,8 @@ const StyledTableCell = styled(TableCell)`
     text-align: center;
     background-color: ${(props) => (props.head ? "lightgrey" : "white")};
 `;
-const columns = [
-    { id: "id", label: "UserID", minWidth: 100 },
-    { id: "userName", label: "Name", minWidth: 100 },
-    { id: "option", label: "Option", minWidth: 100 },
-    { id: "answeredDate", label: "AnsweredDate", minWidth: 100 },
-];
 
-export const TableComponent = ({ data }) => {
+export const TableComponent = ({ columns, data }) => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(10);
     let rows = data ?? [];
@@ -42,6 +36,7 @@ export const TableComponent = ({ data }) => {
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
+                            <StyledTableCell head={true}>S.no</StyledTableCell>
                             {columns.map((column) => (
                                 <StyledTableCell
                                     head="true"
@@ -62,13 +57,16 @@ export const TableComponent = ({ data }) => {
                                     page * rowsPerPage,
                                     page * rowsPerPage + rowsPerPage
                                 )
-                                .map((row) => {
+                                .map((row, index) => {
                                     return (
                                         <TableRow
                                             hover
                                             tabIndex={-1}
                                             key={row.id}
                                         >
+                                            <StyledTableCell>
+                                                {index + 1}
+                                            </StyledTableCell>
                                             {columns.map((column) => {
                                                 const value = row[column.id];
                                                 return (
