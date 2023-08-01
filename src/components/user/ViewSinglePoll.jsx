@@ -46,6 +46,7 @@ export const ViewSinglePoll = () => {
     const user = useSelector(auth);
 
     const AddColorsToData = (data) => {
+        if (data === null) return null;
         data = data.map((item, index) => {
             return { ...item, color: PIE_GRAPH_COLORS[index] };
         });
