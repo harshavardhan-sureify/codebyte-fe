@@ -24,7 +24,7 @@ export const PollAnswers = ({ pollId }) => {
         );
     };
     const columns = [
-        { id: "id", label: "UserID", minWidth: 100 },
+        { id: "id", label: "AnswerID", minWidth: 100 },
         { id: "userName", label: "Name", minWidth: 100 },
         { id: "option", label: "Option", minWidth: 100 },
         { id: "answeredDate", label: "AnsweredDate", minWidth: 100 },

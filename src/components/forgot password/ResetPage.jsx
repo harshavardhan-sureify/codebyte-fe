@@ -32,12 +32,12 @@ const ResetPage = ({ prop }) => {
     setData({ ...data, [e.target.name]: e.target.value });
     setErrors({
       ...errors,
-      [e.target.name]: validation(e.target.name, e.target.value),
+      [e.target.name]: validation(e.target.name, e.target.value.trim()),
     });
   };
   const sendData = async (password) => {
     try {
-      const data = { password: password, passToken: prop.token };
+      const data = { password: password.trim(), passToken: prop.token };
       const res = await axios.post(RESET_PASSWORD_URL, data);
       if (res.data.status === 200) {
         navigate("/login");
@@ -49,7 +49,7 @@ const ResetPage = ({ prop }) => {
   const handleClick = (e) => {
     let temp = {};
     for (let i in data) {
-      temp[i] = validation(i, data[i]);
+      temp[i] = validation(i, data[i].trim());
     }
     setErrors({ ...errors, ...temp });
     for (let i in temp) {
@@ -61,7 +61,7 @@ const ResetPage = ({ prop }) => {
   };
   const validation = (name, value) => {
     if (!value) {
-      return "Field is required";
+      return "Password is required";
     }
     if (name === "npassword" && value.length < 8) {
       return "Password length should be atleast 8 characters";
@@ -69,7 +69,7 @@ const ResetPage = ({ prop }) => {
     if (name === "npassword" && !passwordRegex.test(value)) {
       return "Password must contain atleast one upper,one lower,one digit and one special character";
     }
-    if (name === "cpassword" && value !== data["npassword"]) {
+    if (name === "cpassword" && value !== data["npassword"].trim()) {
       return "Password doesn't match";
     }
     return "";

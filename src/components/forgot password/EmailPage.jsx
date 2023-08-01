@@ -4,13 +4,13 @@ import LockIcon from "@mui/icons-material/Lock";
 const EmailPage = ({ prop }) => {
     const handleChange = (e) => {
         prop.setEmail(e.target.value);
-        if (!e.target.value) {
-            prop.setErrors("This field is required");
+        if (!e.target.value.trim()) {
+            prop.setErrors("Email is required");
             return;
         }
         if (
             !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(
-                e.target.value
+                e.target.value.trim()
             )
         ) {
             prop.setErrors("Enter valid email");
@@ -20,7 +20,7 @@ const EmailPage = ({ prop }) => {
     };
     const handleClick = () => {
         if (prop.email === "") {
-            prop.setErrors("This field is required");
+            prop.setErrors("Email is required");
             return;
         }
         if (prop.errors !== "") {

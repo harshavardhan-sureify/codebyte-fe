@@ -169,7 +169,7 @@ const AdminDashBoard = () => {
             .catch((err) => {
                 dispatch(
                     handleToaster({
-                        message: err.response.data.data.message,
+                        message: err.response.data.message,
                         severity: "error",
                         open: true,
                     })

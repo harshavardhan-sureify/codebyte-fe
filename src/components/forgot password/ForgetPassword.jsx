@@ -26,7 +26,7 @@ const ForgetPassword = () => {
 
     const sendData = async () => {
         try {
-            const data = { email: email };
+            const data = { email: email.trim()};
             const res = await axios.post(FORGOT_PASSWORD_URL, data);
             if (res.data.status === 200) {
                 setToken(res.data.data.otpToken);
