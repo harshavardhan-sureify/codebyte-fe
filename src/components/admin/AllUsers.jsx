@@ -196,6 +196,7 @@ const AllUsers = () => {
                                             onClick={() => {
                                                 setFocus(false);
                                                 setSearchText("");
+                                                setSelectedTab("Active");
                                             }}
                                         >
                                             <ClearIcon />

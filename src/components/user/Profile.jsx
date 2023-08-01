@@ -168,7 +168,6 @@ const Profile = () => {
         const data = {};
         for (let i in errors) {
             if (errors[i].length !== 0) {
-                setSubmitResponse("Please fill the details properly");
                 return;
             } else {
                 data[i] = userData[i];

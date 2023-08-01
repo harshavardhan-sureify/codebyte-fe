@@ -73,7 +73,6 @@ const AddUser = ({ toast }) => {
             if (res.status === 200) {
                 message = res.data.message;
                 severity = "success";
-                setMsg(res.data.message);
                 toast();
             }
         } catch (err) {

@@ -109,15 +109,14 @@ const LoginPage = () => {
             case "password":
                 if (!value) {
                     message = "Password is required";
-                } else if (value.length < 8) {
-                    message = "Password length should be atleast 8 characters";
                 } else if (
+                    !value ||
                     !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()])/.test(
                         value
-                    )
+                    ) ||
+                    value.length < 8
                 ) {
-                    message =
-                        "Password must contain atleast one upper,one lower,one digit and one special character";
+                    message = "Invalid password";
                 }
                 break;
             default:
@@ -129,7 +128,7 @@ const LoginPage = () => {
         <Grid
             sx={{
                 backgroundColor: theme.palette.bColor.main,
-                height:"90vh"
+                height: "90vh",
             }}
         >
             <Grid container sx={{ display: "flex", justifyContent: "center" }}>
