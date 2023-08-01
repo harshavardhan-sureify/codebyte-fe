@@ -20,6 +20,8 @@ export const VALIDATE_OTP_URL = GO_BASE_URL + "user/validateotp";
 export const RESET_PASSWORD_URL = GO_BASE_URL + "user/changepassword";
 export const POLL_ANSWERS_URL = GO_BASE_URL + "admin/getanswers/";
 export const DELETE_POLL_URL = PHP_BASE_URL + "deletepoll/";
+export const POLL_OPTION_STATS_URL = GO_BASE_URL + "user/polloptionstats/";
+
 export const ADMIN_ROUTES = [
     {
         name: "dashboard",
@@ -67,3 +69,24 @@ export const USER_ROUTES = [
 ];
 export const USER_ROLE = "user";
 export const ADMIN_ROLE = "admin";
+
+export const PIE_GRAPH_COLORS = [
+    "#fd7f6f",
+    "#7eb0d5",
+    "#009fff",
+    "#df979e",
+    "#b2e061",
+    "#bd7ebe",
+    "#ffb55a",
+    "#ffee65",
+    "#00bfff",
+    "#dedad2",
+    "#beb9db",
+    "#fdcce5",
+    "#8bd3c7",
+    "#ede15b",
+    "#bdcf32",
+    "#0080ff",
+    "#00ffff",
+    "#e4bcad",
+];

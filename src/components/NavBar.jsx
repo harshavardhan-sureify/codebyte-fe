@@ -71,11 +71,11 @@ export default function NavBar() {
                 <Box sx={{ width: "100%" }}>
                     <List>
                         {routes.map((route) => {
-                              const isActive = route.activePaths
-                                  .map((pattern) =>
-                                      matchPath(pattern, location.pathname)
-                                  )
-                                  .find(Boolean);
+                            const isActive = route.activePaths
+                                .map((pattern) =>
+                                    matchPath(pattern, location.pathname)
+                                )
+                                .find(Boolean);
                             return (
                                 <NavLink
                                     to={route.route}
@@ -166,7 +166,6 @@ export default function NavBar() {
                         variant="h4"
                         color={"white"}
                         fontWeight={"bold"}
-                        component="div"
                         sx={{
                             flexGrow: 1,
                             fontSize: { sm: "20px", xs: "20px", md: "33px" },
@@ -174,15 +173,18 @@ export default function NavBar() {
                                 cursor: "pointer",
                             },
                         }}
-                        onClick={() => {
-                            if (isLogIn) {
-                                navigate(`/${role}/dashboard`);
-                            } else {
-                                navigate("/login");
-                            }
-                        }}
                     >
-                        codebyte
+                        <span
+                            onClick={() => {
+                                if (isLogIn) {
+                                    navigate(`/${role}/dashboard`);
+                                } else {
+                                    navigate("/login");
+                                }
+                            }}
+                        >
+                            codebyte
+                        </span>
                     </Typography>
                     {isLogIn && (
                         <Box

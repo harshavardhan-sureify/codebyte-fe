@@ -5,6 +5,7 @@ import {
     FormControl,
     FormControlLabel,
     FormLabel,
+    Grid,
     Radio,
     RadioGroup,
     Stack,
@@ -15,13 +16,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { theme } from "../../themes/theme";
 import { StyledDuration } from "./StyledDuration";
 import axios from "axios";
-import { SAVE_POLL_URL } from "../../constants";
+import { POLL_OPTION_STATS_URL, SAVE_POLL_URL } from "../../constants";
 import { useDispatch, useSelector } from "react-redux";
 import { auth } from "../features/User.reducer";
 import { ADMIN_ROLE } from "../../constants";
 import { handleToaster } from "../features/Toaster.reducer";
 import { PollAnswers } from "../admin/PollAnswers";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
+import { PieGraph } from "../commonComponents/PieGraph";
+import { EmptyDataContainer } from "./EmptyDataContainer";
+import { PIE_GRAPH_COLORS } from "../../constants";
 
 export const ViewSinglePoll = () => {
     const { role } = useSelector(auth);
@@ -32,12 +36,44 @@ export const ViewSinglePoll = () => {
     const [isActivePoll, setIsActivePoll] = useState(false);
     const [options, setOptions] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [pieData, setPieData] = useState([]);
     let prevSelectedValue;
     if (options !== null) {
         prevSelectedValue = options[poll.option_id];
     }
+
     const [currSelectedValue, setSelectedValue] = useState("");
     const user = useSelector(auth);
+
+    const AddColorsToData = (data) => {
+        if (data === null) return null;
+        data = data.map((item, index) => {
+            return { ...item, color: PIE_GRAPH_COLORS[index] };
+        });
+        return data;
+    };
+    const fetchAnswersStats = async () => {
+        try {
+            const token = user.token;
+            const config = {
+                headers: { Authorization: `Bearer ${token}` },
+            };
+            const response = await axios.get(
+                POLL_OPTION_STATS_URL + poll.poll_id,
+                config
+            );
+            setPieData(AddColorsToData(response.data.data));
+        } catch (err) {
+            const message = err.response.data.message;
+            dispatch(
+                handleToaster({
+                    message: message,
+                    severity: "error",
+                    open: true,
+                })
+            );
+        }
+    };
     useEffect(() => {
         if (location.state === null) {
             navigate(-1);
@@ -49,9 +85,16 @@ export const ViewSinglePoll = () => {
         }
         // eslint-disable-next-line
     }, []);
-
+    useEffect(() => {
+        if (poll !== null) {
+            fetchAnswersStats();
+        }
+        // eslint-disable-next-line
+    }, [poll]);
     const handleSelectionChange = (e) => {
-        if (isActivePoll) setSelectedValue(e.target.value);
+        if (isActivePoll) {
+            setSelectedValue(e.target.value);
+        }
     };
     const submitPoll = async (e) => {
         e.preventDefault();
@@ -86,7 +129,18 @@ export const ViewSinglePoll = () => {
                     })
                 );
                 setTimeout(() => {
-                    navigate(-1);
+                    navigate(`/user/answeredpolls`, {
+                        state: {
+                            id: poll.poll_id,
+                            poll: {
+                                ...poll,
+                                option_id: options.findIndex(
+                                    (option) => option === currSelectedValue
+                                ),
+                            },
+                        },
+                        replace: true,
+                    });
                 }, 1000);
             }
         } catch (err) {
@@ -110,7 +164,7 @@ export const ViewSinglePoll = () => {
                     );
                     setTimeout(() => {
                         navigate(-1);
-                    }, 2000);
+                    }, 1000);
                 }
             }
         }
@@ -118,24 +172,64 @@ export const ViewSinglePoll = () => {
     if (loading) {
         return <LoadingComponent />;
     }
-    if (poll)
-        return (
-            poll && (
-                <Box
+    const LegendContainer = ({ data }) => (
+        <Box
+            sx={{
+                width: "100%",
+                position: "absolute",
+                bottom: 10,
+                display: "flex",
+                columnGap: 2,
+                rowGap: "2px",
+                flexWrap: "wrap",
+                p: "0 50px",
+            }}
+        >
+            {data.map((item, index) => {
+                return (
+                    <Box
+                        key={index}
+                        sx={{
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "5px",
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                width: "12px",
+                                height: "12px",
+                                background: item.color,
+                            }}
+                        ></Box>
+                        <Typography variant="body2" color={"grey"}>
+                            {item.id}
+                        </Typography>
+                    </Box>
+                );
+            })}
+        </Box>
+    );
+
+    return (
+        poll && (
+            <Grid container spacing={2} p={3}>
+                <Grid
+                    item
+                    xs={12}
+                    md={isActivePoll ? 12 : 6}
                     sx={{
                         display: "flex",
-                        justifyContent: "space-around",
-                        mt: "50px",
-                        flexWrap: "wrap",
-                        gap: 5,
+                        justifyContent: "center",
                     }}
                 >
                     <Card
                         elevation={4}
                         sx={{
-                            width: "30rem",
                             p: "20px",
-                            position: "relative",
+                            minHeight: "80vh",
+                            width: "30rem",
                         }}
                     >
                         <Stack spacing={4} sx={{ alignItems: "center" }}>
@@ -196,6 +290,7 @@ export const ViewSinglePoll = () => {
                                                         px: "10px",
                                                         ml: "10px",
                                                         borderRadius: "10px",
+                                                        width: "26rem",
                                                     }}
                                                     value={option}
                                                     control={<Radio />}
@@ -230,12 +325,35 @@ export const ViewSinglePoll = () => {
                             </Box>
                         </Stack>
                     </Card>
-                    {role === "admin" && (
-                        <Card elevation={4} sx={{ padding: 2 }}>
-                            <PollAnswers pollId={poll.poll_id} />
+                </Grid>
+                {!isActivePoll && (
+                    <Grid item xs={12} md={6}>
+                        <Card
+                            elevation={4}
+                            sx={{
+                                height: "80vh",
+                                maxWidth: "30rem",
+                                margin: "0px auto",
+                                position: "relative",
+                            }}
+                        >
+                            {pieData !== null ? (
+                                <>
+                                    <PieGraph data={pieData} />
+                                    <LegendContainer data={pieData} />
+                                </>
+                            ) : (
+                                <EmptyDataContainer
+                                    message={"No one answered this poll yet"}
+                                />
+                            )}
                         </Card>
-                    )}
-                </Box>
-            )
-        );
+                    </Grid>
+                )}
+                <Grid item xs={12}>
+                    {role === "admin" && <PollAnswers pollId={poll.poll_id} />}
+                </Grid>
+            </Grid>
+        )
+    );
 };

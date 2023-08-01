@@ -6,12 +6,15 @@ import { auth } from "../features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
 import { LoadingComponent } from "../commonComponents/LoadingComponent";
 import { handleToaster } from "../features/Toaster.reducer";
+import { useLocation, useNavigate } from "react-router-dom";
 
 export const AnsweredPolls = () => {
     const user = useSelector(auth);
     const [pollsData, setPollsData] = useState({});
     const [loading, setLoading] = useState(true);
     const dispatch = useDispatch();
+    const location = useLocation();
+    const navigate = useNavigate();
 
     const fetchAnsweredPolls = async () => {
         try {
@@ -36,7 +39,17 @@ export const AnsweredPolls = () => {
         }
     };
     useEffect(() => {
-        fetchAnsweredPolls();
+        if (location.state !== null) {
+            navigate(`${location.state.id}`, {
+                state: {
+                    pollProps: location.state.poll,
+                    pollStatus: false,
+                },
+                replace: true,
+            });
+        } else {
+            fetchAnsweredPolls();
+        }
         // eslint-disable-next-line
     }, []);
     if (loading) {
