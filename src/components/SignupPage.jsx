@@ -145,7 +145,7 @@ const SignupPage = () => {
                 if (!value) {
                     message = " Confirm password is required";
                 } else if (value !== signUpForm.password.trim()) {
-                    message = "Password not match";
+                    message = "Password doesn't match";
                 }
                 break;
             default:
