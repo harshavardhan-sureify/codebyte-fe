@@ -212,13 +212,16 @@ export const ViewSinglePoll = () => {
         </Box>
     );
 
+    const pollStartDate = new Date(poll.start_date);
+    const currDate = new Date();
+
     return (
         poll && (
             <Grid container spacing={2} p={3}>
                 <Grid
                     item
                     xs={12}
-                    md={isActivePoll ? 12 : 6}
+                    md={isActivePoll || pollStartDate > currDate ? 12 : 6}
                     sx={{
                         display: "flex",
                         justifyContent: "center",
@@ -228,7 +231,7 @@ export const ViewSinglePoll = () => {
                         elevation={4}
                         sx={{
                             p: "20px",
-                            minHeight: "80vh",
+                            minHeight: { md: "80vh" },
                             width: "30rem",
                         }}
                     >
@@ -326,12 +329,12 @@ export const ViewSinglePoll = () => {
                         </Stack>
                     </Card>
                 </Grid>
-                {!isActivePoll && (
+                {!isActivePoll && pollStartDate < currDate && (
                     <Grid item xs={12} md={6}>
                         <Card
                             elevation={4}
                             sx={{
-                                height: "80vh",
+                                height: { xs: "40vh", md: "80vh" },
                                 maxWidth: "30rem",
                                 margin: "0px auto",
                                 position: "relative",
@@ -351,7 +354,9 @@ export const ViewSinglePoll = () => {
                     </Grid>
                 )}
                 <Grid item xs={12}>
-                    {role === "admin" && <PollAnswers pollId={poll.poll_id} />}
+                    {role === "admin" && pollStartDate < currDate && (
+                        <PollAnswers pollId={poll.poll_id} />
+                    )}
                 </Grid>
             </Grid>
         )
