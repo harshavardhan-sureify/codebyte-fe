@@ -293,7 +293,6 @@ export const ViewSinglePoll = () => {
                                                         px: "10px",
                                                         ml: "10px",
                                                         borderRadius: "10px",
-                                                        width: "26rem",
                                                     }}
                                                     value={option}
                                                     control={<Radio />}
