@@ -226,8 +226,8 @@ const AdminDashBoard = () => {
                     p: 2,
                 }}
             >
-                {topCardsData.map((cardData) => (
-                    <Grid item xs={12} sm={6} lg={4} md={4}>
+                {topCardsData.map((cardData, index) => (
+                    <Grid item xs={12} sm={6} lg={4} md={4} key={index}>
                         <Card elevation={4} sx={{ height: "100%" }}>
                             <Grid container columns={12}>
                                 <Grid item sm={4} md={6} lg={4}>
