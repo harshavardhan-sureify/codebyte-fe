@@ -181,6 +181,38 @@ const AdminDashBoard = () => {
     if (loading) {
         return <LoadingComponent />;
     }
+    const topCardsData = [
+        {
+            heading: "Total active users",
+            subHeading1: "Active users",
+            subHeading2: "Total users",
+            progressPercentage: Math.round(
+                (data?.activeUsers / data?.allUsers) * 100
+            ),
+            subHeading1Data: data.activeUsers,
+            subHeading2Data: data.allUsers,
+        },
+        {
+            heading: "Total active polls",
+            subHeading1: "Active polls",
+            subHeading2: "Total polls",
+            progressPercentage: Math.round(
+                (data?.activePolls / data?.allPolls) * 100
+            ),
+            subHeading1Data: data.activePolls,
+            subHeading2Data: data.allPolls,
+        },
+        {
+            heading: "Total attended users",
+            subHeading1: "",
+            subHeading2: "",
+            progressPercentage: Math.round(
+                (data?.attendedPolls / data?.allPolls) * 100
+            ),
+            subHeading1Data: "",
+            subHeading2Data: "",
+        },
+    ];
     return (
         <div
             style={{
@@ -194,97 +226,43 @@ const AdminDashBoard = () => {
                     p: 2,
                 }}
             >
-                <Grid item xs={12} sm={6} lg={4} md={4}>
-                    {/* total active users */}
-                    <Card elevation={4}>
-                        <Grid container columns={12}>
-                            <Grid item sm={4} md={6} lg={4}>
-                                <ProgressCircle
-                                    progress={Math.round(
-                                        (data?.activeUsers / data?.allUsers) *
-                                            100
+                {topCardsData.map((cardData) => (
+                    <Grid item xs={12} sm={6} lg={4} md={4}>
+                        <Card elevation={4} sx={{ height: "100%" }}>
+                            <Grid container columns={12}>
+                                <Grid item sm={4} md={6} lg={4}>
+                                    <ProgressCircle
+                                        progress={cardData.progressPercentage}
+                                    />
+                                </Grid>
+                                <Grid
+                                    item
+                                    sm={8}
+                                    md={6}
+                                    lg={8}
+                                    alignItems="flex-start"
+                                    p={2}
+                                >
+                                    <Typography variant="h6">
+                                        {cardData.heading}
+                                    </Typography>
+                                    {cardData.subHeading1 && (
+                                        <Typography color={"grey"}>
+                                            {cardData.subHeading1} :{" "}
+                                            <b>{cardData.subHeading1Data}</b>
+                                        </Typography>
                                     )}
-                                />
-                            </Grid>
-                            <Grid
-                                item
-                                sm={8}
-                                md={6}
-                                lg={8}
-                                alignItems="flex-start"
-                                p={2}
-                            >
-                                <Typography variant="h6">
-                                    Total Active Users
-                                </Typography>
-                                <Typography color={"grey"}>
-                                    Active Users : {data.activeUsers}
-                                </Typography>
-                                <Typography color={"grey"}>
-                                    All Users : {data.allUsers}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4} md={4}>
-                    <Card elevation={4}>
-                        <Grid container columns={10}>
-                            <Grid item sm={3} md={5} lg={3}>
-                                <ProgressCircle
-                                    progress={Math.round(
-                                        (data?.activePolls / data?.allPolls) *
-                                            100
+                                    {cardData.subHeading2 && (
+                                        <Typography color={"grey"}>
+                                            {cardData.subHeading2} :{" "}
+                                            <b>{cardData.subHeading2Data}</b>
+                                        </Typography>
                                     )}
-                                />
+                                </Grid>
                             </Grid>
-                            <Grid
-                                item
-                                sm={7}
-                                md={5}
-                                lg={7}
-                                alignItems="flex-start"
-                                p={2}
-                            >
-                                <Typography variant="h6">
-                                    Total Active Polls
-                                </Typography>
-                                <Typography color={"grey"}>
-                                    Active Polls : {data.activePolls}
-                                </Typography>
-                                <Typography color={"grey"}>
-                                    All Polls : {data.allPolls}
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Card>
-                </Grid>
-                <Grid item xs={12} sm={6} lg={4} md={4}>
-                    <Card elevation={4}>
-                        <Grid container columns={10}>
-                            <Grid item sm={3} md={5} lg={3}>
-                                <ProgressCircle
-                                    progress={Math.round(
-                                        (data?.attendedPolls / data?.allPolls) *
-                                            100
-                                    )}
-                                />
-                            </Grid>
-                            <Grid
-                                item
-                                sm={7}
-                                md={5}
-                                lg={7}
-                                alignItems="flex-start"
-                                p={2}
-                            >
-                                <Typography variant="h6">
-                                    Total Attended polls
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Card>
-                </Grid>
+                        </Card>
+                    </Grid>
+                ))}
                 <Grid item xs={12} sm={12} md={12} lg={12}>
                     <Card elevation={4} sx={{ height: "420px" }}>
                         <BarGraph />
