@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ViewPolls } from "./ViewPolls";
-import { ACTIVE_POLLS_URL} from "../../constants";
+import { ACTIVE_POLLS_URL } from "../../constants";
 import axios from "axios";
 import { auth } from "../features/User.reducer";
 import { useDispatch, useSelector } from "react-redux";
@@ -25,14 +25,14 @@ export const ActivePolls = () => {
                 setLoading(false);
             }
         } catch (err) {
-           const message = err.response.data.message;
-           dispatch(
-               handleToaster({
-                   message,
-                   severity: "error",
-                   open: true,
-               })
-           );
+            const message = err.response.data.message;
+            dispatch(
+                handleToaster({
+                    message,
+                    severity: "error",
+                    open: true,
+                })
+            );
         }
     };
     useEffect(() => {

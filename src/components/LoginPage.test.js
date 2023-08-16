@@ -6,13 +6,15 @@ import { BrowserRouter } from "react-router-dom";
 import store from "./features/store";
 import { theme } from "../themes/theme";
 import "@testing-library/jest-dom";
-import { server } from "../tests/server";
+import { server } from "../server";
+import Toaster from "./Toaster";
 
 const MockLoginPage = () => {
     return (
         <Provider store={store}>
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
+                    <Toaster />
                     <LoginPage />
                 </BrowserRouter>
             </ThemeProvider>
@@ -23,7 +25,7 @@ describe("Test Login Page", () => {
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
     afterAll(() => server.close());
-    it("should render the login page correctly", () => {
+    it("Should render the login page correctly", () => {
         render(<MockLoginPage />);
         expect(screen.getByText(/Welcome/)).toBeInTheDocument();
         expect(screen.getByPlaceholderText(/Email/)).toBeInTheDocument();
@@ -33,7 +35,7 @@ describe("Test Login Page", () => {
         ).toBeInTheDocument();
     });
 
-    it("should render error helpertext for invalid user input", () => {
+    it("Should render error helpertext for invalid user input", () => {
         render(<MockLoginPage />);
         const emailEle = screen.getByPlaceholderText(/Email/);
         const passwordEle = screen.getByPlaceholderText(/Password/);
@@ -50,7 +52,7 @@ describe("Test Login Page", () => {
         expect(screen.getByText("Invalid password")).toBeInTheDocument();
     });
 
-    it("should redirect to dashboard on successful login", async () => {
+    it("Should redirect to dashboard on successful login", async () => {
         render(<MockLoginPage />);
         const emailEle = screen.getByPlaceholderText(/Email/);
         const passwordEle = screen.getByPlaceholderText(/Password/);
@@ -64,7 +66,7 @@ describe("Test Login Page", () => {
             );
         });
     });
-    it("should display user doesn't exist  message on entering invalid email", async () => {
+    it("Should display user doesn't exist  message on entering invalid email", async () => {
         render(<MockLoginPage />);
         const emailEle = screen.getByPlaceholderText(/Email/);
         const passwordEle = screen.getByPlaceholderText(/Password/);
@@ -79,7 +81,7 @@ describe("Test Login Page", () => {
             expect(screen.getByText("User doesn't exists")).toBeInTheDocument();
         });
     });
-    it("should display incorrect password message on entering wrong password", async () => {
+    it("Should display incorrect password message on entering wrong password", async () => {
         render(<MockLoginPage />);
         const emailEle = screen.getByPlaceholderText(/Email/);
         const passwordEle = screen.getByPlaceholderText(/Password/);
@@ -93,7 +95,7 @@ describe("Test Login Page", () => {
             expect(screen.getByText("Incorrect password")).toBeInTheDocument();
         });
     });
-    it("should render visibility button correctly and work perfectly", async () => {
+    it("Should render visibility button correctly and work perfectly", async () => {
         render(<MockLoginPage />);
         const passwordEle = screen.getByPlaceholderText(/Password/);
         const visibilityBtnEle = screen.getByTestId("visibilityIcon");
@@ -101,20 +103,22 @@ describe("Test Login Page", () => {
         fireEvent.click(visibilityBtnEle);
         expect(passwordEle.type).toBe("text");
     });
-    // it("should display toaster for unknown error in BE", async () => {
-    //     render(<MockLoginPage />);
-    //     const emailEle = screen.getByPlaceholderText(/Email/);
-    //     const passwordEle = screen.getByPlaceholderText(/Password/);
-    //     const loginBtnEle = screen.getByRole("button", { name: /login/i });
-    //     fireEvent.change(emailEle, {
-    //         target: { value: "servererror@gmail.com" },
-    //     });
-    //     fireEvent.change(passwordEle, {
-    //         target: { value: "Mani@1234" },
-    //     });
-    //     fireEvent.click(loginBtnEle);
-    //     await waitFor(async () => {
-    //         expect(screen.getByText(/something/i)).toBeInTheDocument();
-    //     });
-    // });
+    it("Should display toaster for unknown error in BE", async () => {
+        render(<MockLoginPage />);
+        const emailEle = screen.getByPlaceholderText(/Email/);
+        const passwordEle = screen.getByPlaceholderText(/Password/);
+        const loginBtnEle = screen.getByRole("button", { name: /login/i });
+        fireEvent.change(emailEle, {
+            target: { value: "servererror@gmail.com" },
+        });
+        fireEvent.change(passwordEle, {
+            target: { value: "Mani@1234" },
+        });
+        fireEvent.click(loginBtnEle);
+        await waitFor(async () => {
+            expect(
+                screen.getByText("Something went wrong")
+            ).toBeInTheDocument();
+        });
+    });
 });
