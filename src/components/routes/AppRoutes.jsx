@@ -13,49 +13,21 @@ import { ADMIN_ROLE, USER_ROLE } from "../../constants";
 import AdminDashBoard from "../admin/AdminDashBoard";
 import ProtectedRoute from "./ProtectedRoute";
 import { auth } from "../features/User.reducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import PublicRoute from "./PublicRoute";
 import AllUsers from "./../admin/AllUsers";
- 
+
 import { Polls } from "./../admin/Polls";
 import Profile from "../user/Profile";
 import ForgetPassword from "../forgot password/ForgetPassword";
-import { Alert, Snackbar } from "@mui/material";
-import {
-    toaster,
-    closeToaster,
-} from "../features/Toaster.reducer";
+import Toaster from "../Toaster";
 
 const AppRoutes = () => {
     const user = useSelector(auth);
-    const toast = useSelector(toaster);
-    const dispatch = useDispatch();
-    const handleToastClose = () => {
-        dispatch(
-            closeToaster({
-                severity: "success",
-                message: "",
-                open: false,
-            })
-        );
-    };
+
     return (
         <>
-            <Snackbar
-                open={toast.open}
-                autoHideDuration={2000}
-                onClose={handleToastClose}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                sx={{ paddingTop: "43px" }}
-            >
-                <Alert
-                    onClose={handleToastClose}
-                    severity={toast.severity ? toast.severity : "info"}
-                    sx={{ width: "100%" }}
-                >
-                    {toast.message}
-                </Alert>
-            </Snackbar>
+            <Toaster />
             <NavBar />
             <Routes>
                 <Route element={<PublicRoute />}>
