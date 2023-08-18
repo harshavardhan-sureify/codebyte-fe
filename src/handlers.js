@@ -2,6 +2,7 @@ import { rest } from "msw";
 import {
     ACTIVE_POLLS_URL,
     ADD_USER_URL,
+    ANSWERED_POLLS_URL,
     CONFIRM_USER_URL,
     LOGIN_URL,
     SIGNUP_URL,
@@ -59,6 +60,24 @@ export const handlers = [
                         start_date: "2023-08-10",
                         end_date: "2023-08-18",
                     },
+                ],
+            })
+        );
+    }),
+    rest.get(ANSWERED_POLLS_URL, (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({
+                status: 200,
+                message: "Success",
+                data: [
+                    {
+                        poll_id: "1",
+                        title: "Answered Poll 1",
+                        start_date: "2023-08-01",
+                        end_date: "2023-08-10",
+                    },
+                    // Add more mock answered poll data if needed
                 ],
             })
         );
