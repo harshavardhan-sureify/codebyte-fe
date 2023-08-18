@@ -7,11 +7,9 @@ export const EmptyDataContainer = ({ message }) => {
             sx={{
                 display: "flex",
                 flexDirection: "column",
-                width: "100%",
                 height: "60vh",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: 2,
             }}
         >
             <img
@@ -20,7 +18,7 @@ export const EmptyDataContainer = ({ message }) => {
                 style={{ width: "150px", borderRadius: "10px" }}
             />
 
-            <Typography variant="h5" fontWeight={500}>
+            <Typography variant="h5" fontWeight={500} textAlign="center" m={2}>
                 {message}
             </Typography>
         </Box>
