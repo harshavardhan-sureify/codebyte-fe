@@ -333,7 +333,7 @@ export const ViewSinglePoll = () => {
                         <Card
                             elevation={4}
                             sx={{
-                                height: { xs: "40vh", md: "80vh" },
+                                height: { xs: "60vh", md: "80vh" },
                                 maxWidth: "30rem",
                                 margin: "0px auto",
                                 position: "relative",

@@ -1,3 +1,4 @@
+import { RestHandler } from "msw";
 import { rest } from "msw";
 import {
     ACTIVE_POLLS_URL,
