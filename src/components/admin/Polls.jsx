@@ -162,6 +162,7 @@ export const Polls = () => {
                                 <InputAdornment position="end">
                                     {focus && (
                                         <IconButton
+                                            aria-label="clear"
                                             onClick={() => {
                                                 setFocus(false);
                                                 setSearch("");
