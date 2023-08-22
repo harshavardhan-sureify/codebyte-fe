@@ -1,13 +1,14 @@
-
 import { rest } from "msw";
 import {
     ACTIVE_POLLS_URL,
     ADD_USER_URL,
+    ALL_POLLS_URL,
     ALL_USERS_URL,
     ANSWERED_POLLS_URL,
     CONFIRM_USER_URL,
     FORGOT_PASSWORD_URL,
     LOGIN_URL,
+    POLL_ANSWERS_URL,
     SIGNUP_URL,
     UPDATE_USER_STATUS_URL,
     USER_INFO_URL,
@@ -101,6 +102,32 @@ export const handlers = [
             })
         );
     }),
+    rest.get(POLL_ANSWERS_URL + "1", (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({
+                status: 200,
+                message: "Success",
+                data: [
+                    {
+                        answerId: "4",
+                        userName: "sai",
+                        option: "yes",
+                    },
+                ],
+            })
+        );
+    }),
+    rest.get(POLL_ANSWERS_URL + "2", (req, res, ctx) => {
+        return res(
+            ctx.status(500),
+            ctx.json({
+                status: 500,
+                message: "Internal Error",
+                data: null,
+            })
+        );
+    }),
     rest.post(CONFIRM_USER_URL, async (req, res, ctx) => {
         const { oldpassword } = await req.json();
         if (oldpassword === "wrongpassword") {
@@ -119,6 +146,23 @@ export const handlers = [
                 status: 200,
                 message: "Success",
                 data: null,
+            })
+        );
+    }),
+    rest.get(ALL_POLLS_URL, (req, res, ctx) => {
+        return res(
+            ctx.status(200),
+            ctx.json({
+                status: 200,
+                message: "Success",
+                data: [
+                    {
+                        poll_id: "1",
+                        title: "Favourite movie",
+                        start_date: "2023-08-12",
+                        end_date: "2023-08-24",
+                    },
+                ],
             })
         );
     }),
