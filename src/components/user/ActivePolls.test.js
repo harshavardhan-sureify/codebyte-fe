@@ -28,7 +28,7 @@ const MockActivePolls = () => {
 describe("ActivePolls Component", () => {
     beforeAll(() => server.listen());
     afterEach(() => server.resetHandlers());
-    afterAll(() => server.close());
+    afterAll(() => server.close())  
 
     it("should render active polls", async () => {
         render(<MockActivePolls />);
