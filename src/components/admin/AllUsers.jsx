@@ -94,7 +94,7 @@ const AllUsers = () => {
             })
             .catch((error) => {
                 severity = "error";
-                message = error.response.data.data.message;
+                message = error.response.data.message;
             })
             .finally(() => {
                 dispatch(
