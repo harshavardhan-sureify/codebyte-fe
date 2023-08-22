@@ -207,6 +207,7 @@ const LoginPage = () => {
                                     endAdornment: (
                                         <InputAdornment position="end">
                                             <IconButton
+                                                data-testid="visibilityIcon"
                                                 onClick={() =>
                                                     setSeePassword(!seePassword)
                                                 }
